@@ -2932,7 +2932,7 @@ git commit -m "feat: subject screen (consent, hold-space, close) and operator st
 - Consumes: `guard_environment`, `LLM` (8); `load_bank` (4); `Engine` (9); `Transcriber` (11); `SessionStore` (12); `create_app` (13).
 - Produces: `main(argv: list[str] | None = None) -> int`; command `ember serve [--port 8765] [--sessions ./sessions]`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_cli.py`:
 ```python
@@ -2952,12 +2952,12 @@ def test_cli_refuses_api_key(monkeypatch):
         main(["serve", "--no-warm", "--port", "0"])
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_cli.py -v`
 Expected: `No module named ember.cli`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/cli.py`:
 ```python
@@ -3002,17 +3002,17 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_cli.py -v`
 Expected: `2 passed`
 
-- [ ] **Step 5: Full suite**
+- [x] **Step 5: Full suite**
 
 Run: `uv run pytest -v`
 Expected: everything passes; `slow` and `api` tests included (recordings exist from Task 10; the STT tests take ~10 s).
 
-- [ ] **Step 6: Real end-to-end run — manual checklist**
+- [x] **Step 6: Real end-to-end run — manual checklist**
 
 Run from a plain terminal (not inside Claude Code): `cd ~/Desktop/ember && uv run ember serve`
 
@@ -3025,7 +3025,7 @@ Run from a plain terminal (not inside Claude Code): `cd ~/Desktop/ember && uv ru
 7. Check `sessions/S00_*/`: `transcript.json` has only Q/A + timestamps; `engine_log.json` has one entry per turn with `offered`, `latency_ms`, `meta.usage`; `audio/` has one wav per answer.
 8. Note the observed release-to-next-question gap in the spec Appendix B (`end-to-end turn latency, first real run: <N> s`).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add ember/cli.py tests/test_cli.py docs/superpowers/specs/2026-09-11-ember-v1-design.md
