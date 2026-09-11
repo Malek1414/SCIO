@@ -1657,7 +1657,7 @@ git commit -m "feat: Claude Agent SDK wrapper with isolation options and environ
 - Consumes: `Bank`, `Candidate` (Task 4); `Session`, `Turn` (Task 6); guards (Task 7); `LLM`, `LLMError` (Task 8); `contains_verbatim`, `extract_quote`, `word_count`, `longest_sentence` (Task 3); `TAGS`, `TAG_HINTS` (Task 2).
 - Produces: pydantic `Action` (`action: Literal["pick","probe","close"], candidate_id: str | None, probe_text: str | None, surfaced_tags: list[str], reason: str`), `CloseOut` (`mirror: str, take_home: str`); dataclass `Next` (`kind: str, slot: int, question_id: str | None, text: str, fallback_used: bool, log: dict`); `ACTION_SCHEMA: dict`, `CLOSE_SCHEMA: dict`; `build_system_prompt(bank: Bank) -> str`, `build_turn_prompt(session: Session, slot: int, offered: list[Candidate], probe_ok: bool, elapsed_s: float) -> str`, `build_close_prompt(session: Session) -> str`; `class Engine(bank: Bank, llm)` with `first() -> Next`, `next(session: Session, now: float) -> Next` (mutates `session.surfaced_tags` and `session.probes_used`), `close(session: Session) -> CloseOut`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_engine.py`:
 ```python
@@ -1786,12 +1786,12 @@ def test_close_fallback_uses_longest_fire_sentence(mini_bank):
     assert out.take_home == mini_bank.opener.fallback_take_home
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_engine.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.engine'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/engine.py`:
 ```python
@@ -2011,12 +2011,12 @@ class Engine:
         return CloseOut(mirror=mirror, take_home=self.bank.opener.fallback_take_home)
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_engine.py -v`
 Expected: `13 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/engine.py tests/test_engine.py
