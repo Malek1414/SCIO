@@ -2464,7 +2464,7 @@ git commit -m "feat: session store with observer-only transcript.json and SQLite
   - `GET /api/session/{sid}/state` → operator JSON
   - `GET /` subject page, `GET /operator` operator page (Task 14 provides the files; this task serves them).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_server.py`:
 ```python
@@ -2569,12 +2569,12 @@ def test_resume_returns_pending_question(tmp_path, mini_bank):
     assert r["kind"] == "spine" and r["slot"] == 1 and r["question"] == mini_bank.opener.text
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_server.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.server'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/server.py`:
 ```python
@@ -2710,12 +2710,12 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
     return app
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_server.py -v`
 Expected: `7 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/server.py tests/test_server.py
