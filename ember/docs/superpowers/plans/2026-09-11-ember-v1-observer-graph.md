@@ -344,7 +344,7 @@ git commit -m "feat: observer contract, coverage, and deterministic validation" 
 - Consumes: everything in Task 1; `FakeLLM` from `tests/conftest.py`.
 - Produces: verified behaviour of `score()`, `observe_session()`, `load_results()`.
 
-- [ ] **Step 1: Append the failing tests**
+- [x] **Step 1: Append the failing tests**
 
 Append to `tests/test_observer.py`:
 ```python
@@ -384,12 +384,12 @@ def test_import_wall():
         assert forbidden not in src, forbidden
 ```
 
-- [ ] **Step 2: Run to verify the new tests pass against Task 1's implementation**
+- [x] **Step 2: Run to verify the new tests pass against Task 1's implementation**
 
 Run: `uv run pytest tests/test_observer.py -v`
 Expected: `7 passed`. (Task 1 implemented these entry points; this task pins their behaviour. If any fail, fix `ember/observer.py` — do not weaken the test.)
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add tests/test_observer.py

@@ -75,3 +75,37 @@ def test_validate_declined_bad_score_and_clamp(bank):
     assert out.constructs["G1"].score == 7
     assert "ZZ" not in out.declined and out.flags[0] == "subject paused 30 s before F2"
     assert isinstance(out, ObserverResult) and out.rubric_version == "1.0.0"
+
+
+from ember.observer import score, observe_session, load_results, build_observer_system, build_observer_user
+from tests.conftest import FakeLLM
+
+
+def test_score_calls_llm_with_rubric_high_effort_and_stamps_version(bank):
+    llm = FakeLLM([raw(F1={"score": 6, "evidence": ["never wait to feel ready"], "note": "n"})])
+    out = score(transcript(bank), bank, llm, now=1_757_600_000.0)
+    call = llm.calls[0]
+    assert call["effort"] == "high" and call["schema"] is OBSERVER_SCHEMA
+    assert "F3 — Mediocrity tolerance (inverse" in call["system"] and "watching someone fall asleep" in call["system"]
+    assert A2 in call["user"] and "[2] spine slot 2" in call["user"]
+    assert out.rubric_version == "1.0.0" and out.scored_at.startswith("2025-09-11")
+    assert out.constructs["F1"].score == 6 and out.constructs["F1"].signal == "low"      # one quote → low
+
+
+def test_observe_session_reads_only_transcript_and_overwrites(tmp_path: Path, bank):
+    d = tmp_path / "S01_x"
+    d.mkdir()
+    (d / "transcript.json").write_text(json.dumps(transcript(bank)))
+    (d / "engine_log.json").write_text('[{"secret": "engine reasoning must never be read"}]')
+    p = observe_session(d, bank, FakeLLM([raw(G1={"score": 2, "evidence": [], "note": ""})]))
+    first = json.loads(p.read_text())
+    assert p.name == "observer.json" and first["constructs"]["G1"]["score"] == 2 and first["subject_id"] == "S01"
+    observe_session(d, bank, FakeLLM([raw(G1={"score": 5, "evidence": [], "note": ""})]))
+    assert json.loads(p.read_text())["constructs"]["G1"]["score"] == 5
+    assert load_results(tmp_path) == {"S01_x": json.loads(p.read_text())}
+
+
+def test_import_wall():
+    src = (Path(__file__).parent.parent / "ember" / "observer.py").read_text()
+    for forbidden in ("from .engine", "from .guards", "from .session", "from .server", "from .llm", "import ember.engine"):
+        assert forbidden not in src, forbidden
