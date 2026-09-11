@@ -1473,7 +1473,7 @@ git commit -m "feat: EN | DE toggle, per-language engines and transcribers, copy
 - Consumes: `for_language`, `WhisperTranscriber`, `ParakeetTranscriber`, `STT_CONFIG` (Task 4); `load_bank("de")` (Task 7); `RecordingLLM` (`tests/recording.py`).
 - Produces: `wer(reference: str, hypothesis: str) -> float`; `Clip` dataclass (`path: Path, language: str, reference_text: str`); `load_clips(path: Path) -> list[Clip]`; `evaluate(clips, backends: list[tuple[str, str, str]]) -> list[dict]`; `render(rows) -> str`; `ember stt-eval [--clips …] [--lang …]`.
 
-- [ ] **Step 1: Write the failing eval test**
+- [x] **Step 1: Write the failing eval test**
 
 `tests/test_stt_eval.py`:
 ```python
@@ -1506,12 +1506,12 @@ def test_render_table_has_a_row_per_backend_and_clip():
     assert "whisper" in out and "5.0%" in out and "1.20s" in out and "de" in out
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_stt_eval.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.stt_eval'`.
 
-- [ ] **Step 3: Implement the eval**
+- [x] **Step 3: Implement the eval**
 
 `ember/stt_eval.py`:
 ```python
@@ -1607,7 +1607,7 @@ DEFAULT_BACKENDS = [("whisper turbo", "whisper", MODEL_REPO),
                     ("parakeet v3", "parakeet", PARAKEET_REPO)]
 ```
 
-- [ ] **Step 4: Create the reference clips**
+- [x] **Step 4: Create the reference clips**
 
 ```bash
 cd ~/Desktop/SCIO/ember && mkdir -p calibration/clips
@@ -1638,7 +1638,7 @@ clips:
 YAML
 ```
 
-- [ ] **Step 5: Wire the CLI subcommand**
+- [x] **Step 5: Wire the CLI subcommand**
 
 In `ember/cli.py`, add the parser after the `calibrate` one:
 ```python
@@ -1659,12 +1659,12 @@ and the branch after the `calibrate` branch:
         return 0
 ```
 
-- [ ] **Step 6: Run the eval and record the numbers**
+- [x] **Step 6: Run the eval and record the numbers**
 
 Run: `uv run pytest tests/test_stt_eval.py -v && uv run ember stt-eval`
 Expected: `3 passed`, then a table of six rows. Paste the table into the spec's **Appendix A** under a new heading `### Re-run <date> — bootstrap clips, all backends`, and commit the spec change with the code.
 
-- [ ] **Step 7: Write the recorded German engine test**
+- [x] **Step 7: Write the recorded German engine test**
 
 `tests/test_engine_recorded_de.py`:
 ```python
@@ -1707,13 +1707,13 @@ def test_german_turn_is_german_and_verbatim(engine):
         assert engine.bank.by_id(n.question_id).language == "de"
 ```
 
-- [ ] **Step 8: Record it, then replay**
+- [x] **Step 8: Record it, then replay**
 
 Run: `EMBER_RECORD=1 uv run pytest tests/test_engine_recorded_de.py -v`
 Expected: `1 passed`, one new file in `tests/fixtures/recorded/`. Then `uv run pytest tests/test_engine_recorded_de.py -v` — passes offline.
 If the probe comes back in English, strengthen the German line in `build_system_prompt` (Task 6 Step 4), delete the recording, re-record.
 
-- [ ] **Step 9: Full suite, then commit**
+- [x] **Step 9: Full suite, then commit**
 
 Run: `uv run pytest -q`
 Expected: all pass.

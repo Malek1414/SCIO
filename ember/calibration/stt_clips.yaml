@@ -1,0 +1,15 @@
+# Reference clips for `ember stt-eval`. Synthetic macOS voices bootstrap the set;
+# replace with hand-corrected real session audio once German pilots exist — synthetic speech
+# is a floor and does not separate models (spec §3.2).
+clips:
+  - path: clips/de1.wav
+    language: de
+    reference_text: >-
+      Ehrlich gesagt komme ich immer wieder auf dieses Projekt zurück, das ich vor zwei Jahren
+      angefangen habe. Niemand hat mich darum gebeten. Ich habe es dreimal neu gebaut, weil sich
+      die ersten Versionen falsch angefühlt haben.
+  - path: clips/en1.wav
+    language: en
+    reference_text: >-
+      Honestly the thing I keep coming back to is this project I started two years ago.
+      Nobody asked me to. I rebuilt it three times because the first versions felt wrong.

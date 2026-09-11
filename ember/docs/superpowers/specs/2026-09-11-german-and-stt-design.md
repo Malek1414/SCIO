@@ -168,3 +168,33 @@ Real human speech — the seven S00 recordings, English, 16–47 s each:
 | agreement (token ratio) | — | 70–94 %, every divergence a disfluency |
 
 No real German speech has been tested. The first German pilot supplies it.
+
+### Re-run 2026-09-12 — `ember stt-eval`, bootstrap clips, all backends
+
+| backend | lang | WER | time | RTF |
+|---|---|---|---|---|
+| whisper turbo | de | 0.0 % | 1.25 s | 11× |
+| whisper turbo | en | 3.2 % | 1.15 s | 9× |
+| whisper large-v3 | de | 0.0 % | 2.67 s | 5× |
+| whisper large-v3 | en | 12.9 % | 2.55 s | 4× |
+| parakeet v3 | de | **0.0 %** | **0.40 s** | 34× |
+| parakeet v3 | en | **0.0 %** | **0.31 s** | 32× |
+
+**Read these numbers with the transcripts, not alone.**
+
+- **large-v3's 12.9 % English is a formatting artifact.** It writes "2 years", "3 times" where the reference
+  says "two", "three". Word-level WER counts those as errors; a listener would not.
+- **turbo's 3.2 % is a real hallucination.** It transcribed "Nobody asked me to" as *"Nobody asked me to **book**"* —
+  and produced the identical "book" insertion on a separate recording of the same sentence earlier the same day.
+  Reproducible, not noise.
+- **Parakeet was exact on both clips.** Combined with its 1.9× speed advantage on the real S00 recordings, the only
+  thing keeping it out of the defaults is the disfluency decision (§3.2) — and `clean_disfluencies()` now exists
+  and is tested. **This is an open question for the first German pilot to settle**, not a closed one.
+- Synthetic clips remain a floor. Nothing here separates the models on German, where all three scored 0 %.
+
+### Priming (§3.3) — no effect measured yet
+
+`initial_prompt` was wired and exercised on the German clip; the primed and unprimed transcripts were identical
+because the clip already transcribed perfectly. The lever is in place and unmeasured. It needs a clip the model
+gets *wrong* — real speech with a proper noun or a domain word — which the first German pilot supplies.
+The server does not pass a prime today; switching it on is one argument at the `transcriber.transcribe` call site.

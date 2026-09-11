@@ -27,6 +27,10 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--scores", type=Path, default=Path("calibration/human_scores.yaml"))
     c.add_argument("--sessions", type=Path, default=Path("sessions"))
 
+    v = sub.add_parser("stt-eval", help="measure STT backends against reference clips")
+    v.add_argument("--clips", type=Path, default=Path("calibration/stt_clips.yaml"))
+    v.add_argument("--lang", default=None, help="restrict to one language")
+
     args = p.parse_args(argv)
 
     if args.cmd == "serve":
@@ -86,6 +90,16 @@ def main(argv: list[str] | None = None) -> int:
         rep = agreement(load_results(args.sessions), load_human_scores(args.scores))
         print(render(rep))
         return 0 if rep.passed else 1
+
+    if args.cmd == "stt-eval":
+        from .stt_eval import DEFAULT_BACKENDS, evaluate, load_clips, render
+
+        clips = [c for c in load_clips(args.clips) if args.lang is None or c.language == args.lang]
+        if not clips:
+            print(f"no clips in {args.clips}" + (f" for language {args.lang}" if args.lang else ""))
+            return 1
+        print(render(evaluate(clips, DEFAULT_BACKENDS)))
+        return 0
 
     return 0
 
