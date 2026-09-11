@@ -1,0 +1,110 @@
+rubric:
+  - construct: F1
+    name: Driver specificity
+    anchors:
+      - score: 1
+        description: Names only abstractions — impact, success, freedom. Cannot say what a good day of it looks like.
+        exemplar: I just want to build something that matters.
+      - score: 4
+        description: Names a domain or a project but describes it from outside — outcomes, not the doing.
+        exemplar: I want to run my own studio, be my own boss.
+      - score: 7
+        description: Describes the itch from inside — a specific moment, sensation, or mechanism, unprompted.
+        exemplar: When the pieces fit and something clunky becomes obvious — I don't get that anywhere else.
+  - construct: F2
+    name: Trade-off evidence
+    anchors:
+      - score: 1
+        description: Only hypothetical sacrifice. No cost has actually been paid.
+        exemplar: I'd give up anything for it.
+      - score: 4
+        description: Names a real cost but frames it as temporary or reversible, or performs regret.
+        exemplar: I skipped a few parties, but I'll make it up to them.
+      - score: 7
+        description: Names a specific cost already paid — time, money, a relationship — plainly, without asking to be admired for it.
+        exemplar: Some relationships too, if I'm being honest.
+  - construct: F3
+    name: Mediocrity tolerance
+    inverse: true
+    anchors:
+      - score: 1
+        description: Describes settled people with warmth, ease, or open envy. A comfortable life sounds fine.
+        exemplar: Honestly he seems happy. I'd take that.
+      - score: 4
+        description: Mixed. Respects settling in others but says it isn't for them, without heat.
+        exemplar: Good for them. It's just not what I want.
+      - score: 7
+        description: Visible discomfort or restlessness around settling; describes it as something to avoid, sometimes as fear.
+        exemplar: Being around him is like watching someone fall asleep.
+  - construct: C1
+    name: Values–reality gap
+    anchors:
+      - score: 1
+        description: Stated code and the pressure decision contradict, and the subject does not notice.
+        exemplar: I always put people first. I took the deal and told them after.
+      - score: 4
+        description: Partial. Names a tension but resolves it with a rationalisation.
+        exemplar: I know it looked bad, but they'd have done the same.
+      - score: 7
+        description: Code and decision match, or the subject names the gap themselves before being asked.
+        exemplar: I say loyalty matters and I chose the money. I know.
+  - construct: C2
+    name: Transcendence frame
+    anchors:
+      - score: 1
+        description: Nothing larger than self. "Biggest thing" returns a job, a team, a friend group.
+        exemplar: My company, I guess.
+      - score: 4
+        description: Names something larger — a cause, a tradition, a family line — but cannot say how it changes a decision.
+        exemplar: I believe in something bigger, sure.
+      - score: 7
+        description: A specific frame that exceeds the self, and a concrete way it has shaped a choice.
+        exemplar: My grandfather built the first one. I can't be the one who lets it go.
+  - construct: C3
+    name: Fear specificity
+    anchors:
+      - score: 1
+        description: Cannot name a fear, or names a generic outcome.
+        exemplar: Failing, I guess.
+      - score: 4
+        description: Names an outcome with detail — losing a specific thing.
+        exemplar: Ending up broke in my parents' house at thirty-five.
+      - score: 7
+        description: Names a self they fear becoming, specifically.
+        exemplar: The guy who talks about the thing he was going to do.
+  - construct: G1
+    name: Solitude stance
+    anchors:
+      - score: 1
+        description: Has never considered it. The empty room fills with activity or is deflected with a joke.
+        exemplar: I'd probably just sleep.
+      - score: 4
+        description: Knows what happens but describes it from outside — activities, not what surfaces.
+        exemplar: I'd read, tidy up, think about work.
+      - score: 7
+        description: Knows precisely what surfaces at minute forty and why — or says exactly that they don't, and that it unsettles them.
+        exemplar: That's when the thing I've been avoiding shows up.
+  - construct: G2
+    name: Disruption processed
+    anchors:
+      - score: 1
+        description: Names an event with no account of what changed after.
+        exemplar: My parents split when I was twelve.
+      - score: 4
+        description: Names consequences, but as things that happened to them.
+        exemplar: After that I sort of stopped trusting people.
+      - score: 7
+        description: Names what they built, decided, or dropped as a result, in causal language they own.
+        exemplar: I decided I'd never depend on one person for everything again. That's why I started the business.
+  - construct: G3
+    name: Relational orientation
+    anchors:
+      - score: 1
+        description: People are audience or fuel and the subject cannot see it.
+        exemplar: At my best? They're watching, honestly.
+      - score: 4
+        description: Mixed or unexamined. People are present but their role is vague.
+        exemplar: They're just around, I guess.
+      - score: 7
+        description: People are anchors — or the subject names the audience/fuel pattern in themselves.
+        exemplar: They're doing their own thing, and I know they're there. That's the whole point.

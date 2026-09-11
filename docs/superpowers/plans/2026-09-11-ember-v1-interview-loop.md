@@ -732,7 +732,7 @@ git commit -m "feat: question bank schema, validation rules, loader" \
 - Consumes: `load_bank`, `BANK_DIR` from Task 4.
 - Produces: the shipped bank. `load_bank()` with no argument loads it.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_real_bank.py`:
 ```python
@@ -756,12 +756,12 @@ def test_fire_threat_monotonicity_is_satisfiable():
             assert any(n.threat >= c.threat for n in bank.for_slot(s + 1)), f"{c.id} strands slot {s + 1}"
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_real_bank.py -v`
 Expected: `FileNotFoundError: … ember/bank/opener.yaml`
 
-- [ ] **Step 3: Write the opener**
+- [x] **Step 3: Write the opener**
 
 `ember/bank/opener.yaml`:
 ```yaml
@@ -775,7 +775,7 @@ fallback_take_home: >-
   What would you have to stop doing to become the person you described first?
 ```
 
-- [ ] **Step 4: Write the spine questions**
+- [x] **Step 4: Write the spine questions**
 
 `ember/bank/questions.yaml`:
 ```yaml
@@ -991,7 +991,7 @@ candidates:
     rephrase: Being alone that much — who actually knows that about you?
 ```
 
-- [ ] **Step 5: Write the rubric anchors**
+- [x] **Step 5: Write the rubric anchors**
 
 `ember/bank/rubric.yaml`:
 ```yaml
@@ -1107,12 +1107,12 @@ rubric:
         exemplar: They're doing their own thing, and I know they're there. That's the whole point.
 ```
 
-- [ ] **Step 6: Run to verify pass**
+- [x] **Step 6: Run to verify pass**
 
 Run: `uv run pytest tests/test_real_bank.py tests/test_bank.py -v`
 Expected: all pass. If a question trips the yes/no validator, rewrite that question — do not weaken the validator.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add ember/bank/ tests/test_real_bank.py
@@ -1121,7 +1121,7 @@ git commit -m "feat: author v1 question bank — opener, 21 spine questions, rub
   -m "Claude-Session: https://claude.ai/code/session_011xY91ug8K4Ke8JHFsa5ekB"
 ```
 
-- [ ] **Step 8: STOP — human review gate**
+- [x] **Step 8: STOP — human review gate**
 
 Spec §5.1: *"every line reviewed by Malek before the pilots."* Send Malek `ember/bank/questions.yaml`, `opener.yaml`, and `rubric.yaml`. Do not start Task 6 until he has read them and either approved or requested edits. Apply edits as a follow-up commit `bank: revisions from review`.
 
