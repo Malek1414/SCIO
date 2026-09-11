@@ -52,3 +52,21 @@ def mini_bank(mini_bank_dir):
 def make_session(now: float = 1000.0):
     from ember.session import Session, new_session_id
     return Session(session_id=new_session_id("S01", now), subject_code="S01", started_at=now, consent_at=now - 5)
+
+
+class FakeLLM:
+    """Stand-in for ember.llm.LLM. Pops canned responses; an Exception instance is raised instead."""
+
+    def __init__(self, responses=None):
+        self.responses = list(responses or [])
+        self.calls: list[dict] = []
+        self.last_meta: dict = {}
+
+    def call_json(self, *, system: str, user: str, schema: dict, effort: str) -> dict:
+        self.calls.append({"system": system, "user": user, "schema": schema, "effort": effort})
+        if not self.responses:
+            raise AssertionError("FakeLLM: no more responses queued")
+        r = self.responses.pop(0)
+        if isinstance(r, Exception):
+            raise r
+        return r

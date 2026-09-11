@@ -1425,7 +1425,7 @@ git commit -m "feat: deterministic time, probe, and candidate guards" \
 - Produces: `class LLMError(RuntimeError)`; `guard_environment() -> None`; `class LLM` with `__init__(self, *, model: str = "opus", fallback_model: str = "sonnet", timeout_s: float = 15.0, query_fn=None)`, `options(self, *, system: str, schema: dict, effort: str) -> ClaudeAgentOptions`, `call_json(self, *, system: str, user: str, schema: dict, effort: str) -> dict` (synchronous; runs its own event loop — callers already on a loop use `asyncio.to_thread`; bounded by `timeout_s` per attempt with one retry, then raises `LLMError`), and `last_meta: dict` (cost, duration, usage of the last call).
 - Test helper: `FakeLLM` added to `tests/conftest.py`.
 
-- [ ] **Step 1: Add FakeLLM to conftest**
+- [x] **Step 1: Add FakeLLM to conftest**
 
 Append to `tests/conftest.py`:
 ```python
@@ -1447,7 +1447,7 @@ class FakeLLM:
         return r
 ```
 
-- [ ] **Step 2: Write the failing tests**
+- [x] **Step 2: Write the failing tests**
 
 `tests/test_llm.py`:
 ```python
@@ -1539,12 +1539,12 @@ def test_guard_environment(monkeypatch):
         guard_environment()
 ```
 
-- [ ] **Step 3: Run to verify failure**
+- [x] **Step 3: Run to verify failure**
 
 Run: `uv run pytest tests/test_llm.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.llm'`
 
-- [ ] **Step 4: Implement**
+- [x] **Step 4: Implement**
 
 `ember/llm.py`:
 ```python
@@ -1632,12 +1632,12 @@ class LLM:
         return out
 ```
 
-- [ ] **Step 5: Run to verify pass**
+- [x] **Step 5: Run to verify pass**
 
 Run: `uv run pytest tests/test_llm.py -v`
 Expected: `8 passed`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add ember/llm.py tests/test_llm.py tests/conftest.py
