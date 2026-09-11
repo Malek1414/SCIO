@@ -1137,7 +1137,7 @@ Spec §5.1: *"every line reviewed by Malek before the pilots."* Send Malek `embe
 - Produces: `Turn` dataclass (`slot: int, kind: str, question_id: str | None, question: str, asked_at: float, answer: str = "", answered_at: float | None = None, skipped: bool = False, rephrased: bool = False`); `Session` dataclass (fields below) with `elapsed(now) -> float`, `spine_turns() -> list[Turn]`, `current_slot() -> int`, `last_answer() -> str`, `last_spine() -> Turn | None`, `used_ids() -> set[str]`, `fire_answers() -> list[str]`, `transcript_text() -> str`, `add_tags(tags) -> None`, `transcript_for_observer() -> list[dict]`, `to_dict() -> dict`, `Session.from_dict(d) -> Session`; `new_session_id(subject_code: str, now: float) -> str`.
 - Test helper: `make_session(now)` added to `tests/conftest.py`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `tests/conftest.py`:
 ```python
@@ -1195,12 +1195,12 @@ def test_round_trip_and_observer_view():
     assert "surfaced_tags" not in view[0]
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_session.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.session'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/session.py`:
 ```python
@@ -1292,12 +1292,12 @@ class Session:
         return cls(**d)
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_session.py -v`
 Expected: `4 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/session.py tests/test_session.py tests/conftest.py

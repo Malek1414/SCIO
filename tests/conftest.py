@@ -47,3 +47,8 @@ def mini_bank_dir(tmp_path: Path) -> Path:
 def mini_bank(mini_bank_dir):
     from ember.bank import load_bank
     return load_bank(mini_bank_dir)
+
+
+def make_session(now: float = 1000.0):
+    from ember.session import Session, new_session_id
+    return Session(session_id=new_session_id("S01", now), subject_code="S01", started_at=now, consent_at=now - 5)
