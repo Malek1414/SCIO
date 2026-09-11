@@ -459,7 +459,7 @@ def full_transcript(bank):
 @pytest.fixture(scope="module")
 def llm():
     guard_environment()
-    return RecordingLLM(inner=LLM())
+    return RecordingLLM(inner=LLM(timeout_s=120.0))
 
 
 def test_observer_scores_full_session(llm):
@@ -1102,6 +1102,8 @@ from pathlib import Path
 
 from .llm import guard_environment
 
+OBSERVER_TIMEOUT_S = 120.0   # offline scoring at effort high takes 20–40 s; §9's 15 s bound is for the live engine only
+
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="ember")
@@ -1152,7 +1154,7 @@ def main(argv: list[str] | None = None) -> int:
         from .llm import LLM
         from .observer import observe_session
 
-        out = observe_session(args.session_dir, load_bank(), LLM())
+        out = observe_session(args.session_dir, load_bank(), LLM(timeout_s=OBSERVER_TIMEOUT_S))
         r = json.loads(out.read_text(encoding="utf-8"))
         print(f"wrote {out}")
         for cid, cs in r["constructs"].items():

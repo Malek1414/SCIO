@@ -45,7 +45,7 @@ def full_transcript(bank):
 @pytest.fixture(scope="module")
 def llm():
     guard_environment()
-    return RecordingLLM(inner=LLM())
+    return RecordingLLM(inner=LLM(timeout_s=120.0))
 
 
 def test_observer_scores_full_session(llm):

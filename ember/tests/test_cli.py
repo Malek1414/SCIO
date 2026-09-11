@@ -36,3 +36,28 @@ def test_cli_export_and_calibrate_on_fixtures(tmp_path, monkeypatch):
     assert main(["calibrate", "--scores", str(scores), "--sessions", str(tmp_path / "sessions")]) == 0
     scores.write_text(yaml.safe_dump({"sessions": {"S01_x": {"malek": {c: 7 for c in ALL}}}}))
     assert main(["calibrate", "--scores", str(scores), "--sessions", str(tmp_path / "sessions")]) == 1
+
+
+def test_cli_observe_uses_a_long_timeout(tmp_path, monkeypatch):
+    import json
+    import ember.llm as llm_mod
+    from ember.cli import main
+    ALL = ("F1", "F2", "F3", "C1", "C2", "C3", "G1", "G2", "G3")
+    captured = {}
+
+    class RecordingLLMClass:
+        def __init__(self, **kw):
+            captured.update(kw)
+
+        def call_json(self, **kw):
+            return {"constructs": {c: {"score": 4, "evidence": [], "note": "n"} for c in ALL}, "declined": [], "flags": []}
+
+    monkeypatch.setattr(llm_mod, "LLM", RecordingLLMClass)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    d = tmp_path / "S01_x"
+    d.mkdir()
+    (d / "transcript.json").write_text(json.dumps({"session_id": "S01_x", "subject_code": "S01", "started_at": 0, "closed": True,
+                                                   "mirror": None, "take_home": None, "turns": []}))
+    assert main(["observe", str(d)]) == 0
+    assert captured["timeout_s"] >= 60                     # offline scoring must not use the live engine's 15 s bound
+    assert (d / "observer.json").exists()
