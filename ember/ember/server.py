@@ -9,6 +9,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from .audio import to_wav
+from .copy import copy_for
 from .engine import Engine, Next
 from .guards import STT_MIN_WORDS, MAX_RETRIES
 from .session import Session, Turn
@@ -20,12 +21,16 @@ STATIC = Path(__file__).parent / "static"
 
 class NewSession(BaseModel):
     subject_code: str
+    language: str = "en"
 
 
-def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
+def create_app(store: SessionStore, engines: dict, transcribers: dict) -> FastAPI:
     app = FastAPI(title="ember")
-    app.state.store, app.state.engine, app.state.transcriber = store, engine, transcriber
+    app.state.store, app.state.engines, app.state.transcribers = store, engines, transcribers
     app.state.to_wav = to_wav
+
+    def _engine(session: Session) -> Engine:
+        return engines.get(session.language, engines["en"])
 
     def _load(sid: str) -> Session:
         try:
@@ -42,19 +47,24 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
         return {"kind": nxt.kind, "question": nxt.text, "slot": nxt.slot}
 
     def _close(session: Session, now: float) -> dict:
-        out = engine.close(session)
+        out = _engine(session).close(session)
         session.pending = None
         session.closed, session.mirror, session.take_home = True, out.mirror, out.take_home
         store.append_engine_log(session.session_id, {"at": now, "kind": "close", "mirror": out.mirror, "take_home": out.take_home})
         store.save(session)
         return {"kind": "close", "mirror": out.mirror, "take_home": out.take_home}
 
+    @app.get("/api/copy/{lang}")
+    def copy(lang: str):
+        return copy_for(lang)
+
     @app.post("/api/session")
     def new_session(body: NewSession):
         now = time.time()
-        session = store.create(body.subject_code, consent_at=now, now=now)
-        resp = _ask(session, engine.first(), now)
-        return {"session_id": session.session_id, **resp}
+        lang = body.language if body.language in engines else "en"
+        session = store.create(body.subject_code, consent_at=now, now=now, language=lang)
+        resp = _ask(session, engines[lang].first(), now)
+        return {"session_id": session.session_id, "language": lang, **resp}
 
     @app.post("/api/session/{sid}/answer")
     async def answer(sid: str, audio: UploadFile = File(...)):
@@ -68,13 +78,15 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
             src = Path(tmp.name)
         wav = app.state.to_wav(src, store.dir_for(sid) / "audio" / f"q{idx}.wav")
         src.unlink(missing_ok=True)
-        text = await asyncio.to_thread(app.state.transcriber.transcribe, wav)
+        transcriber = app.state.transcribers.get(session.language, app.state.transcribers["en"])
+        text = await asyncio.to_thread(transcriber.transcribe, wav)
 
         if word_count(text) < STT_MIN_WORDS:
             session.retries += 1
             if session.retries <= MAX_RETRIES:
                 store.save(session)
-                return {"retry": True, "question": session.pending.question, "message": "Didn't catch that — once more?"}
+                return {"retry": True, "question": session.pending.question,
+                        "message": copy_for(session.language)["retry"]}
             session.pending.skipped, session.pending.answer, session.pending.answered_at = True, "", now
         else:
             session.pending.answer, session.pending.answered_at = text, now
@@ -82,7 +94,7 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
         session.pending, session.retries = None, 0
         store.save(session)
 
-        nxt = await asyncio.to_thread(engine.next, session, now)
+        nxt = await asyncio.to_thread(_engine(session).next, session, now)
         shown_at = time.time()                       # the question is on screen from here, not from request start
         if nxt.kind == "close":
             store.append_engine_log(sid, {"at": shown_at, "kind": "close-decision", **nxt.log})
@@ -96,7 +108,8 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
             raise HTTPException(409, "nothing pending")
         p = session.pending
         if p.kind == "spine":
-            p.question = engine.bank.opener.rephrase if p.question_id is None else engine.bank.by_id(p.question_id).rephrase
+            bank = _engine(session).bank
+            p.question = bank.opener.rephrase if p.question_id is None else bank.by_id(p.question_id).rephrase
         p.rephrased = True
         store.save(session)
         return {"question": p.question}
@@ -113,7 +126,8 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
     @app.get("/api/session/{sid}/state")
     def state(sid: str):
         s = _load(sid)
-        return {"session_id": s.session_id, "subject_code": s.subject_code, "elapsed": time.time() - s.started_at,
+        return {"session_id": s.session_id, "subject_code": s.subject_code, "language": s.language,
+                "elapsed": time.time() - s.started_at,
                 "slot": s.current_slot(), "closed": s.closed, "probes_used": s.probes_used,
                 "surfaced_tags": s.surfaced_tags, "retries": s.retries,
                 "pending": ({"question_id": s.pending.question_id, "question": s.pending.question, "kind": s.pending.kind}

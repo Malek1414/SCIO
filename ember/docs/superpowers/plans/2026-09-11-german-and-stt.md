@@ -1252,7 +1252,7 @@ Spec §4.2 and v1 spec §5.1: the bank is reviewed line by line before any sessi
 - Consumes: `copy_for` (Task 6); `for_language` (Task 4); `load_bank(lang)` (Task 3); `SessionStore.create(..., language=)` (Task 5).
 - Produces: `create_app(store, engines: dict[str, Engine], transcribers: dict[str, Transcriber]) -> FastAPI` — **both are now dicts keyed by language**; `GET /api/copy/{lang}`; `POST /api/session` accepts `{"subject_code", "language"}`; `GET /api/session/{sid}/state` includes `language`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 In `tests/test_server.py`, replace the `_client` helper so it builds the per-language dicts, and append the new tests:
 ```python
@@ -1319,12 +1319,12 @@ def test_pages_served_and_wired(tmp_path, mini_bank):
     assert 'id="transcript"' not in subj and "last_answer" not in subj   # subject never sees their transcript
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_server.py tests/test_static.py -v`
 Expected: `TypeError` — `create_app()` gets a dict where it expects an `Engine`.
 
-- [ ] **Step 3: Make the server language-aware**
+- [x] **Step 3: Make the server language-aware**
 
 In `ember/server.py`: add `from .copy import copy_for` to the imports, add `language` to `NewSession`, and change `create_app` and the three affected routes.
 
@@ -1380,7 +1380,7 @@ In `answer`'s retry branch, the message comes from copy:
 ```
 In `rephrase`, the bank lookup becomes `_engine(session).bank`. In `state`, add `"language": s.language,` to the returned dict.
 
-- [ ] **Step 4: Build one engine and transcriber per language in the CLI**
+- [x] **Step 4: Build one engine and transcriber per language in the CLI**
 
 In `ember/cli.py`, inside the `serve` branch, replace the transcriber/app construction:
 ```python
@@ -1394,7 +1394,7 @@ In `ember/cli.py`, inside the `serve` branch, replace the transcriber/app constr
 ```
 changing the import line `from .stt import Transcriber` to `from .stt import for_language`.
 
-- [ ] **Step 5: Add the language bar to the subject page**
+- [x] **Step 5: Add the language bar to the subject page**
 
 In `ember/static/subject.html`, add to the `<style>` block:
 ```css
@@ -1436,7 +1436,7 @@ Then replace the three hard-coded strings in the existing script: in `showQuesti
 ```
 In the resume IIFE, add `$('langbar').style.display = 'none';` before `showQuestion`.
 
-- [ ] **Step 6: Show the language on the operator page**
+- [x] **Step 6: Show the language on the operator page**
 
 In `ember/static/operator.html`, add a row to the `<dl>` after the `slot` row:
 ```html
@@ -1447,12 +1447,12 @@ and in `tick()`, after the `slot` assignment:
   $('language').textContent = s.language || 'en';
 ```
 
-- [ ] **Step 7: Run the full suite**
+- [x] **Step 7: Run the full suite**
 
 Run: `uv run pytest -q`
 Expected: all pass.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add ember/server.py ember/cli.py ember/static/ tests/test_server.py tests/test_static.py

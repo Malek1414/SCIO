@@ -18,9 +18,12 @@ class FakeTranscriber:
         return self.texts.pop(0)
 
 
-def _client(tmp_path, mini_bank, llm_responses, stt_texts):
+def _client(tmp_path, mini_bank, llm_responses, stt_texts, language="en"):
     store = SessionStore(tmp_path / "sessions")
-    app = create_app(store, Engine(mini_bank, FakeLLM(llm_responses)), FakeTranscriber(stt_texts))
+    engines = {"en": Engine(mini_bank, FakeLLM(llm_responses)),
+               "de": Engine(mini_bank.model_copy(update={"language": "de"}), FakeLLM(list(llm_responses)))}
+    transcribers = {"en": FakeTranscriber(stt_texts), "de": FakeTranscriber(list(stt_texts))}
+    app = create_app(store, engines, transcribers)
 
     def _fake_wav(src, dst):                                  # skip ffmpeg in tests
         dst.write_bytes(b"RIFF")
@@ -107,3 +110,34 @@ def test_next_question_asked_at_is_after_answer(tmp_path, mini_bank):
     _post_audio(client, sid)
     s = store.load(sid)
     assert s.pending.asked_at > s.turns[-1].answered_at      # speaking time must not include processing time
+
+
+def test_copy_endpoint_serves_both_languages(tmp_path, mini_bank):
+    client, _ = _client(tmp_path, mini_bank, [], [])
+    en = client.get("/api/copy/en").json()
+    de = client.get("/api/copy/de").json()
+    assert en["start"] == "I understand — start" and de["start"] == "Verstanden — los"
+    assert set(en) == set(de)
+    assert client.get("/api/copy/fr").json() == en          # unknown language falls back
+
+
+def test_session_language_selects_store_and_state(tmp_path, mini_bank):
+    client, store = _client(tmp_path, mini_bank, [], [])
+    sid = client.post("/api/session", json={"subject_code": "S01", "language": "de"}).json()["session_id"]
+    assert store.load(sid).language == "de"
+    assert client.get(f"/api/session/{sid}/state").json()["language"] == "de"
+
+
+def test_language_defaults_to_english_when_omitted(tmp_path, mini_bank):
+    client, store = _client(tmp_path, mini_bank, [], [])
+    sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
+    assert store.load(sid).language == "en"
+
+
+def test_answer_uses_the_session_language_transcriber(tmp_path, mini_bank):
+    client, store = _client(tmp_path, mini_bank,
+                            [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}],
+                            [LONG])
+    sid = client.post("/api/session", json={"subject_code": "S01", "language": "de"}).json()["session_id"]
+    _post_audio(client, sid)
+    assert store.load(sid).turns[0].answer == LONG          # the "de" transcriber was the one consulted

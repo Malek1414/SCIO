@@ -9,9 +9,16 @@
   p{color:#bdbdbd}button{font:inherit;padding:.7em 1.3em;border:0;border-radius:10px;background:#ececec;color:#111;cursor:pointer}
   .hint{margin-top:auto;color:#7a7a7a;font-size:.9rem}
   .rec{color:#ff5a5a}.wait{color:#7a7a7a}
+  #langbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;
+           padding:10px 18px;font-size:.85rem;color:#7a7a7a}
+  #langbar button{background:none;border:0;color:#7a7a7a;font:inherit;cursor:pointer;padding:2px 6px;border-radius:4px}
+  #langbar button[aria-pressed="true"]{color:#ececec;background:#222}
   #mirror{font-size:1.6rem;color:#ececec;margin:0 0 1.5em}#takehome{font-size:2rem;font-weight:500}
 </style>
 <main>
+  <div id="langbar"><span>ember</span>
+    <span><button data-lang="en" aria-pressed="true">EN</button><button data-lang="de" aria-pressed="false">DE</button></span>
+  </div>
   <section id="consent" class="on">
     <h1>Before we start</h1>
     <p>1. This is a ~7-minute psychological interview. It's recorded and transcribed.</p>
@@ -49,8 +56,25 @@ function armSilence(){
 
 function showQuestion(body){
   if (body.kind === 'close'){ $('mirror').textContent = '“' + body.mirror + '”'; $('takehome').textContent = body.take_home; show('close'); return; }
-  $('qtext').textContent = body.question; setStatus('Hold space to speak. Release when you\'re done.'); show('question'); armSilence();
+  $('qtext').textContent = body.question; setStatus(C.hint_idle); show('question'); armSilence();
 }
+
+let lang = new URLSearchParams(location.search).get('lang') === 'de' ? 'de' : 'en';
+let C = {};
+
+async function loadCopy(){
+  C = await fetch(`/api/copy/${lang}`).then(r=>r.json());
+  $('consent').querySelector('h1').textContent = C.consent_title;
+  const ps = $('consent').querySelectorAll('p');
+  ps[0].textContent = C.consent_1; ps[1].textContent = C.consent_2; ps[2].textContent = C.consent_3;
+  $('consent').querySelector('label').childNodes[0].textContent = C.code_label + ' ';
+  $('accept').textContent = C.start;
+  $('close').querySelector('.hint').textContent = C.closing;
+  setStatus(C.hint_idle);
+  for (const b of document.querySelectorAll('#langbar button')) b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+}
+for (const b of document.querySelectorAll('#langbar button')) b.onclick = () => { lang = b.dataset.lang; loadCopy(); };
+loadCopy();
 
 $('accept').onclick = async () => {
   const code = $('code').value.trim() || 'S00';
@@ -58,7 +82,8 @@ $('accept').onclick = async () => {
   rec = new MediaRecorder(stream, {mimeType:'audio/webm'});
   rec.ondataavailable = e => chunks.push(e.data);
   rec.onstop = send;
-  const body = await fetch('/api/session', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({subject_code: code})}).then(r=>r.json());
+  const body = await fetch('/api/session', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({subject_code: code, language: lang})}).then(r=>r.json());
+  $('langbar').style.display = 'none';
   sid = body.session_id; showQuestion(body);
 };
 
@@ -67,12 +92,13 @@ $('accept').onclick = async () => {
   if (!sid0) return;
   const stream = await navigator.mediaDevices.getUserMedia({audio:true});
   rec = new MediaRecorder(stream, {mimeType:'audio/webm'}); rec.ondataavailable = e => chunks.push(e.data); rec.onstop = send;
+  $('langbar').style.display = 'none';
   sid = sid0; showQuestion(await fetch(`/api/session/${sid}/resume`, {method:'POST'}).then(r=>r.json()));
 })();
 
 window.addEventListener('keydown', e => {
   if (e.code !== 'Space' || busy || !rec || rec.state === 'recording' || !$('question').classList.contains('on')) return;
-  e.preventDefault(); clearTimeout(silenceTimer); chunks = []; rec.start(); setStatus('● recording — release space when done', 'rec');
+  e.preventDefault(); clearTimeout(silenceTimer); chunks = []; rec.start(); setStatus(C.hint_recording, 'rec');
 });
 window.addEventListener('keyup', e => {
   if (e.code !== 'Space' || !rec || rec.state !== 'recording') return;
@@ -80,12 +106,12 @@ window.addEventListener('keyup', e => {
 });
 
 async function send(){
-  busy = true; setStatus('…', 'wait');
+  busy = true; setStatus(C.hint_waiting, 'wait');
   const blob = new Blob(chunks, {type:'audio/webm'});
   const fd = new FormData(); fd.append('audio', blob, 'answer.webm');
   const body = await fetch(`/api/session/${sid}/answer`, {method:'POST', body: fd}).then(r=>r.json());
   busy = false;
-  if (body.retry){ setStatus(body.message + '  Hold space to speak.'); armSilence(); return; }
+  if (body.retry){ setStatus(body.message + '  ' + C.hint_idle); armSilence(); return; }
   showQuestion(body);
 }
 </script>

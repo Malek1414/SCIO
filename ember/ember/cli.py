@@ -37,12 +37,15 @@ def main(argv: list[str] | None = None) -> int:
         from .llm import LLM
         from .server import create_app
         from .store import SessionStore
-        from .stt import Transcriber
+        from .stt import for_language
 
-        transcriber = Transcriber()
+        from .bank import LANGUAGES
+        transcribers = {lang: for_language(lang) for lang in LANGUAGES}
         if not args.no_warm:
-            print(f"loading whisper… {transcriber.warm():.1f}s")
-        app = create_app(SessionStore(args.sessions), Engine(load_bank(), LLM()), transcriber)
+            for lang, t in transcribers.items():
+                print(f"loading {lang} speech model… {t.warm():.1f}s")
+        engines = {lang: Engine(load_bank(lang), LLM()) for lang in LANGUAGES}
+        app = create_app(SessionStore(args.sessions), engines, transcribers)
         if args.port == 0:
             return 0
         print(f"subject:  http://127.0.0.1:{args.port}/\noperator: http://127.0.0.1:{args.port}/operator")

@@ -11,6 +11,7 @@
 <dl>
   <dt>elapsed</dt><dd id="elapsed" class="big">–</dd>
   <dt>slot</dt><dd id="slot"></dd>
+  <dt>language</dt><dd id="language"></dd>
   <dt>pending</dt><dd id="pending"></dd>
   <dt>probes used</dt><dd id="probes"></dd>
   <dt>tags</dt><dd id="tags"></dd>
@@ -29,7 +30,7 @@ async function tick(){
   if (!r.ok){ $('err').textContent = 'unknown session'; return; } $('err').textContent = '';
   const s = await r.json();
   $('elapsed').textContent = mmss(s.elapsed); $('elapsed').className = 'big' + (s.elapsed > 270 ? ' warn' : '');
-  $('slot').textContent = s.slot; $('probes').textContent = s.probes_used; $('retries').textContent = s.retries;
+  $('slot').textContent = s.slot; $('language').textContent = s.language || 'en'; $('probes').textContent = s.probes_used; $('retries').textContent = s.retries;
   $('pending').textContent = s.pending ? `${s.pending.kind} ${s.pending.question_id || '(opener/probe)'} — ${s.pending.question}` : '—';
   $('tags').textContent = s.surfaced_tags.join(', ') || '—'; $('last').textContent = s.last_answer || '—';
   $('closed').textContent = s.closed; $('mirror').textContent = s.mirror || '—'; $('takehome').textContent = s.take_home || '—';
