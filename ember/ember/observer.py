@@ -47,13 +47,14 @@ class ObserverResult(BaseModel):
     session_id: str
     scored_at: str
     rubric_version: str
+    language: str = "en"
     constructs: dict[str, ConstructScore]
     declined: list[str] = Field(default_factory=list)
     flags: list[str] = Field(default_factory=list)
 
 
 # ── prompts ──────────────────────────────────────────────────────────────────
-def build_observer_system(rubric: dict[str, RubricEntry]) -> str:
+def build_observer_system(rubric: dict[str, RubricEntry], language: str = "en") -> str:
     blocks = []
     for cid in CONSTRUCTS:
         r = rubric[cid]
@@ -62,6 +63,7 @@ def build_observer_system(rubric: dict[str, RubricEntry]) -> str:
         inv = " (inverse: a high score means LOW tolerance)" if r.inverse else ""
         blocks.append(f"- {cid} — {r.name}{inv}\n{anchors}")
     joined = "\n".join(blocks)
+    note = ("\nThe transcript is in German. Score against the English rubric above; quote evidence verbatim "\n            "in German, exactly as the subject said it. Write every note and flag in English — the operator reads them.\n"\n            if language == "de" else "")
     return f"""You score an interview transcript against a fixed rubric. You are not the interviewer. You never advise, \
 praise, or diagnose — you place each construct on a 1–7 scale using the anchors below and you cite evidence.
 
@@ -76,7 +78,7 @@ Never paraphrase. If the transcript gives no evidence, return an empty list.
 
 Rubric:
 {joined}
-"""
+{note}"""
 
 
 def build_observer_user(transcript: dict) -> str:
@@ -108,7 +110,7 @@ def coverage(transcript: dict, bank: Bank) -> dict[str, bool]:
 
 # ── validation: the model proposes, this function disposes ───────────────────
 def validate(raw: dict, transcript: dict, bank: Bank, *, subject_id: str, session_id: str,
-             scored_at: str, rubric_version: str) -> ObserverResult:
+             scored_at: str, rubric_version: str, language: str = "en") -> ObserverResult:
     answers = [t.get("answer", "") for t in transcript["turns"] if t.get("answer")]
     cov = coverage(transcript, bank)
     raw_c = raw.get("constructs") or {}
@@ -140,17 +142,19 @@ def validate(raw: dict, transcript: dict, bank: Bank, *, subject_id: str, sessio
         constructs[cid] = ConstructScore(score=score, signal=signal_for(len(kept), len(hit_turns), skipped),
                                          evidence=kept[:3], note=str(entry.get("note") or "")[:200])
     return ObserverResult(subject_id=subject_id, session_id=session_id, scored_at=scored_at,
-                          rubric_version=rubric_version, constructs=constructs,
+                          rubric_version=rubric_version, language=language, constructs=constructs,
                           declined=sorted(declined), flags=flags)
 
 
 # ── entry points ─────────────────────────────────────────────────────────────
 def score(transcript: dict, bank: Bank, llm, *, now: float | None = None) -> ObserverResult:
-    raw = llm.call_json(system=build_observer_system(bank.rubric), user=build_observer_user(transcript),
+    language = transcript.get("language", "en")
+    raw = llm.call_json(system=build_observer_system(bank.rubric, language), user=build_observer_user(transcript),
                         schema=OBSERVER_SCHEMA, effort="high")
     ts = datetime.fromtimestamp(now if now is not None else time.time(), tz=timezone.utc).isoformat()
     return validate(raw, transcript, bank, subject_id=transcript["subject_code"],
-                    session_id=transcript["session_id"], scored_at=ts, rubric_version=RUBRIC_VERSION)
+                    session_id=transcript["session_id"], scored_at=ts, rubric_version=RUBRIC_VERSION,
+                    language=language)
 
 
 def observe_session(session_dir: Path, bank: Bank, llm) -> Path:

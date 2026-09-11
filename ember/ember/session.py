@@ -28,6 +28,7 @@ class Session:
     subject_code: str
     started_at: float
     consent_at: float
+    language: str = "en"
     turns: list[Turn] = field(default_factory=list)
     pending: Turn | None = None
     surfaced_tags: list[str] = field(default_factory=list)

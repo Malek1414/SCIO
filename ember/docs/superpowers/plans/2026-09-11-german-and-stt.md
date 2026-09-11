@@ -675,7 +675,7 @@ git commit -m "feat: pluggable STT backends with per-language config and questio
 - Consumes: `load_bank(lang)` (Task 3).
 - Produces: `Session.language: str = "en"` (field order: after `consent_at`, before `turns`); `SessionStore.create(subject_code, consent_at, now, language="en")`; `language` in `meta.json`, `session.json`, `transcript.json`, `observer.json` and each `graph/data.js` subject; `ObserverResult.language: str`; `score(transcript, bank, llm, *, now=None)` reads `transcript.get("language", "en")`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `tests/test_session.py`:
 ```python
@@ -734,19 +734,19 @@ def test_language_reaches_the_graph(tmp_path: Path):
     assert data["subjects"][0]["language"] == "de"
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_session.py tests/test_store.py tests/test_observer.py tests/test_export.py -v`
 Expected: four failures — `Session` has no `language`, `create()` rejects the keyword, `ObserverResult` has no `language`, subjects have no `language`.
 
-- [ ] **Step 3: Add the field to `Session`**
+- [x] **Step 3: Add the field to `Session`**
 
 In `ember/session.py`, inside `class Session`, insert after `consent_at: float`:
 ```python
     language: str = "en"
 ```
 
-- [ ] **Step 4: Record it in the store**
+- [x] **Step 4: Record it in the store**
 
 In `ember/store.py`, change the `create` signature and the two writes:
 ```python
@@ -769,7 +769,7 @@ and in `save`, add `language` to the `transcript.json` payload:
             "turns": session.transcript_for_observer()}, indent=2, ensure_ascii=False))
 ```
 
-- [ ] **Step 5: Tell the observer**
+- [x] **Step 5: Tell the observer**
 
 In `ember/observer.py`, add `language: str = "en"` to `class ObserverResult` (after `rubric_version`). Change `build_observer_system` to take the language and append one line — replace its signature and final return:
 ```python
@@ -798,19 +798,19 @@ def score(transcript: dict, bank: Bank, llm, *, now: float | None = None) -> Obs
                     language=language)
 ```
 
-- [ ] **Step 6: Carry it to the graph**
+- [x] **Step 6: Carry it to the graph**
 
 In `ember/export.py`, inside `collect`'s subject dict, add after `"rubric_version": r["rubric_version"],`:
 ```python
                          "language": tr.get("language", r.get("language", "en")),
 ```
 
-- [ ] **Step 7: Run the full suite**
+- [x] **Step 7: Run the full suite**
 
 Run: `uv run pytest -q`
 Expected: all pass.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add ember/session.py ember/store.py ember/observer.py ember/export.py \

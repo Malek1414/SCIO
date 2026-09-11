@@ -119,3 +119,16 @@ def test_every_declined_construct_has_low_signal(bank):
     assert "F1" in out.declined
     assert out.constructs["F1"].signal == "low"
     assert all(out.constructs[c].signal == "low" for c in out.declined)
+
+
+def test_observer_carries_language_and_tells_the_model(bank):
+    tr = transcript(bank)
+    tr["language"] = "de"
+    llm = FakeLLM([raw()])
+    out = score(tr, bank, llm, now=0.0)
+    assert out.language == "de"
+    assert "German" in llm.calls[0]["system"]
+    tr_en = transcript(bank)
+    llm_en = FakeLLM([raw()])
+    assert score(tr_en, bank, llm_en, now=0.0).language == "en"
+    assert "German" not in llm_en.calls[0]["system"]

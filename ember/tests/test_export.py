@@ -35,3 +35,13 @@ def test_write_data_js_is_a_global_assignment(tmp_path: Path):
     out = write_data_js({"subjects": [], "constructs": []}, tmp_path / "graph" / "data.js")
     text = out.read_text()
     assert text.startswith("window.EMBER_DATA = {") and text.rstrip().endswith("};")
+
+
+def test_language_reaches_the_graph(tmp_path: Path):
+    _session(tmp_path, "S01_x", "S01", 4, "first")
+    p = tmp_path / "S01_x"
+    tr = json.loads((p / "transcript.json").read_text())
+    tr["language"] = "de"
+    (p / "transcript.json").write_text(json.dumps(tr))
+    data = collect(tmp_path, load_bank(), now=0.0)
+    assert data["subjects"][0]["language"] == "de"

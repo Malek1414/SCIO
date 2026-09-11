@@ -25,14 +25,15 @@ class SessionStore:
     def dir_for(self, session_id: str) -> Path:
         return self.root / session_id
 
-    def create(self, subject_code: str, consent_at: float, now: float) -> Session:
+    def create(self, subject_code: str, consent_at: float, now: float, language: str = "en") -> Session:
         s = Session(session_id=new_session_id(subject_code, now), subject_code=subject_code,
-                    started_at=now, consent_at=consent_at)
+                    started_at=now, consent_at=consent_at, language=language)
         d = self.dir_for(s.session_id)
         (d / "audio").mkdir(parents=True, exist_ok=True)
         (d / "meta.json").write_text(json.dumps({
             "session_id": s.session_id, "subject_code": subject_code, "started_at": now,
-            "consent_at": consent_at, "rubric_version": RUBRIC_VERSION, "operator_notes": ""}, indent=2))
+            "consent_at": consent_at, "language": language,
+            "rubric_version": RUBRIC_VERSION, "operator_notes": ""}, indent=2))
         (d / "engine_log.json").write_text("[]")
         self.save(s)
         return s
@@ -42,7 +43,7 @@ class SessionStore:
         (d / "session.json").write_text(json.dumps(session.to_dict(), indent=2, ensure_ascii=False))
         (d / "transcript.json").write_text(json.dumps({
             "session_id": session.session_id, "subject_code": session.subject_code,
-            "started_at": session.started_at, "closed": session.closed,
+            "started_at": session.started_at, "closed": session.closed, "language": session.language,
             "mirror": session.mirror, "take_home": session.take_home,
             "turns": session.transcript_for_observer()}, indent=2, ensure_ascii=False))
         with self._db() as db:

@@ -34,3 +34,14 @@ def test_engine_log_appends(tmp_path: Path):
     st.append_engine_log(s.session_id, {"slot": 3, "offered": ["b"]})
     log = json.loads((st.dir_for(s.session_id) / "engine_log.json").read_text())
     assert [e["slot"] for e in log] == [2, 3]
+
+
+def test_language_is_recorded_in_meta_and_transcript(tmp_path: Path):
+    st = SessionStore(tmp_path / "sessions")
+    s = st.create("S05", consent_at=99.0, now=100.0, language="de")
+    assert s.language == "de"
+    assert json.loads((st.dir_for(s.session_id) / "meta.json").read_text())["language"] == "de"
+    st.save(s)
+    assert json.loads((st.dir_for(s.session_id) / "transcript.json").read_text())["language"] == "de"
+    assert st.load(s.session_id).language == "de"
+    assert st.create("S06", consent_at=1.0, now=2.0).language == "en"      # default unchanged

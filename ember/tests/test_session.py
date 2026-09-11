@@ -43,3 +43,10 @@ def test_round_trip_and_observer_view():
     view = s.transcript_for_observer()
     assert view == [{"slot": 1, "kind": "spine", "question": "Q1", "answer": "x", "asked_at": 0, "answered_at": 1, "skipped": False}]
     assert "surfaced_tags" not in view[0]
+
+
+def test_language_defaults_to_english_and_round_trips():
+    s = make_session()
+    assert s.language == "en"
+    s.language = "de"
+    assert Session.from_dict(s.to_dict()).language == "de"
