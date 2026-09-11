@@ -1,0 +1,10 @@
+{
+  "action": "probe",
+  "candidate_id": null,
+  "probe_text": "You said \"I don't know how he does both.\"",
+  "surfaced_tags": [
+    "family",
+    "competition"
+  ],
+  "reason": "Short opening answer with an unfinished comparison to his brother; the silence pulls the real admission before moving to envy."
+}
