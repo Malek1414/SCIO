@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Iterable
 
 import yaml
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .constructs import CONSTRUCTS, CLUSTER_OF, TAGS, FRAMINGS
 
@@ -101,7 +101,8 @@ class Anchor(BaseModel):
 
 
 class RubricEntry(BaseModel):
-    construct: str
+    model_config = ConfigDict(populate_by_name=True)
+    construct_id: str = Field(alias="construct")   # 'construct' shadows BaseModel.construct()
     name: str
     inverse: bool = False
     anchors: list[Anchor] = Field(min_length=3, max_length=3)
@@ -109,7 +110,7 @@ class RubricEntry(BaseModel):
     @model_validator(mode="after")
     def _scores_complete(self) -> "RubricEntry":
         if {a.score for a in self.anchors} != {1, 4, 7}:
-            raise ValueError(f"{self.construct}: anchors must be exactly scores 1, 4, 7")
+            raise ValueError(f"{self.construct_id}: anchors must be exactly scores 1, 4, 7")
         return self
 
 
