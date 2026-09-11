@@ -1,0 +1,7 @@
+# The two craft measures (spec §10), one entry per pilot subject code.
+# immediate: asked right after the session — "Did you say anything you hadn't put into words before?"
+# day_after: asked ~24 h later by message — "Still thinking about the last question?"
+pilots: {}
+# example:
+# pilots:
+#   S01: {session_id: S01_2026-09-20T14-05-11, immediate: yes, day_after: no, notes: "long pause before G1"}

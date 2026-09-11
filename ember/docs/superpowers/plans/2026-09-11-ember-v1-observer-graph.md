@@ -1216,7 +1216,7 @@ git commit -m "feat: ember observe / export / calibrate commands" \
 **Interfaces:**
 - Produces: the written procedure for the five pilots (spec §10 craft measures, §6 calibration loop) and the go/no-go for the 40.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_docs.py`:
 ```python
@@ -1238,12 +1238,12 @@ def test_pilot_log_template_parses():
     assert data == {"pilots": {}}
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_docs.py -v`
 Expected: `FileNotFoundError` for `docs/pilot-protocol.md`.
 
-- [ ] **Step 3: Write the protocol and the log template**
+- [x] **Step 3: Write the protocol and the log template**
 
 `docs/pilot-protocol.md`:
 ```markdown
@@ -1301,12 +1301,12 @@ pilots: {}
 #   S01: {session_id: S01_2026-09-20T14-05-11, immediate: yes, day_after: no, notes: "long pause before G1"}
 ```
 
-- [ ] **Step 4: Run to verify pass, then the full suite**
+- [x] **Step 4: Run to verify pass, then the full suite**
 
 Run: `uv run pytest tests/test_docs.py -v && uv run pytest -q`
 Expected: `2 passed`; full suite green.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add docs/pilot-protocol.md calibration/pilot_log.yaml tests/test_docs.py
