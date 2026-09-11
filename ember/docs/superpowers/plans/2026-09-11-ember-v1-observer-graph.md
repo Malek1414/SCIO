@@ -684,7 +684,7 @@ git commit -m "feat: calibration harness — observer vs human-median agreement 
 - Consumes: `load_results` (Task 1); `Bank` (`ember.bank`); `CONSTRUCTS`, `CLUSTER_OF` (`ember.constructs`); `RUBRIC_VERSION` (`ember.store`).
 - Produces: `collect(sessions_root: Path, bank: Bank, *, now: float | None = None) -> dict` with keys `generated_at`, `rubric_version`, `constructs: [{id, cluster, name, inverse}]`, `subjects: [{subject_code, session_id, scored_at, rubric_version, scores: {cid: {score, signal, evidence, note}}, declined, flags, mirror, take_home}]`; `write_data_js(data: dict, out: Path) -> Path`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_export.py`:
 ```python
@@ -727,12 +727,12 @@ def test_write_data_js_is_a_global_assignment(tmp_path: Path):
     assert text.startswith("window.EMBER_DATA = {") and text.rstrip().endswith("};")
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_export.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.export'`
 
-- [ ] **Step 3: Implement and ignore the generated file**
+- [x] **Step 3: Implement and ignore the generated file**
 
 `ember/export.py`:
 ```python
@@ -778,12 +778,12 @@ Append to `.gitignore`:
 graph/data.js
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_export.py -v`
 Expected: `2 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/export.py tests/test_export.py .gitignore

@@ -5,3 +5,4 @@ sessions/
 ember.sqlite
 tests/fixtures/audio/
 .env
+graph/data.js
