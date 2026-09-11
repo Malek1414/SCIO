@@ -392,7 +392,7 @@ git commit -m "feat: per-language banks and yes/no prefixes (B2); move English b
 - Produces: `clean_disfluencies(text: str, language: str = "en") -> str`; `Transcriber` Protocol with `language: str`, `warm() -> float`, `transcribe(wav_path: Path, prime: str | None = None) -> str`; `WhisperTranscriber(language: str = "en", repo: str = …)`; `ParakeetTranscriber(language: str = "en", repo: str = "mlx-community/parakeet-tdt-0.6b-v3")`; `STT_CONFIG: dict[str, tuple[str, str]]`; `for_language(lang: str) -> Transcriber`; `MODEL_REPO` kept as the English whisper repo for back-compat.
 - Consumes: nothing from earlier tasks.
 
-- [ ] **Step 1: Write the failing disfluency test**
+- [x] **Step 1: Write the failing disfluency test**
 
 `tests/test_disfluency.py`:
 ```python
@@ -420,12 +420,12 @@ def test_does_not_eat_meaningful_repetition_across_a_boundary():
     assert clean_disfluencies("I had had enough") == "I had enough"                       # documented limitation
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_disfluency.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.disfluency'`.
 
-- [ ] **Step 3: Implement the cleaner**
+- [x] **Step 3: Implement the cleaner**
 
 `ember/disfluency.py`:
 ```python
@@ -439,34 +439,41 @@ FILLERS: dict[str, frozenset[str]] = {
 }
 
 _TOKEN = re.compile(r"\s+")
+_MAX_STUTTER = 3          # collapse repeats up to three words long: "I don't I don't", "das ist das ist"
+
+
+def _key(tok: str) -> str:
+    return tok.strip(".,!?;:—–\"'").lower()
 
 
 def clean_disfluencies(text: str, language: str = "en") -> str:
-    """Drop filler words and collapse immediately repeated words.
+    """Drop filler words and collapse immediately repeated 1–3 word runs.
 
     Known limitation: a genuine immediate repetition ("I had had enough") loses one copy.
     Acceptable because this runs only on Parakeet output, which is not a default backend.
     """
     fillers = FILLERS.get(language, FILLERS["en"])
+    toks = [t for t in _TOKEN.split(text.strip()) if t and _key(t) not in fillers]
     out: list[str] = []
-    for tok in _TOKEN.split(text.strip()):
-        if not tok:
-            continue
-        bare = tok.strip(".,!?;:").lower()
-        if bare in fillers:
-            continue
-        if out and out[-1].strip(".,!?;:").lower() == bare:
-            continue
-        out.append(tok)
+    i = 0
+    while i < len(toks):
+        for size in range(_MAX_STUTTER, 0, -1):
+            if len(out) >= size and i + size <= len(toks) \
+                    and [_key(x) for x in out[-size:]] == [_key(x) for x in toks[i:i + size]]:
+                i += size
+                break
+        else:
+            out.append(toks[i])
+            i += 1
     return " ".join(out)
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `uv run pytest tests/test_disfluency.py -v`
 Expected: `4 passed`.
 
-- [ ] **Step 5: Write the failing STT test**
+- [x] **Step 5: Write the failing STT test**
 
 Replace `tests/test_stt.py` entirely:
 ```python
@@ -542,12 +549,12 @@ class TestRealAudio:
         assert "ich" in primed.lower()                      # priming must not break the transcript
 ```
 
-- [ ] **Step 6: Run to verify failure**
+- [x] **Step 6: Run to verify failure**
 
 Run: `uv run pytest tests/test_stt.py -v`
 Expected: `ImportError: cannot import name 'STT_CONFIG' from 'ember.stt'`.
 
-- [ ] **Step 7: Add the dependency**
+- [x] **Step 7: Add the dependency**
 
 In `pyproject.toml`, add to `dependencies` after `"mlx-whisper>=0.4.3",`:
 ```toml
@@ -555,7 +562,7 @@ In `pyproject.toml`, add to `dependencies` after `"mlx-whisper>=0.4.3",`:
 ```
 Then: `uv sync`
 
-- [ ] **Step 8: Rewrite `ember/stt.py`**
+- [x] **Step 8: Rewrite `ember/stt.py`**
 
 ```python
 """Local speech-to-text. One transcriber per language; the model is loaded once and stays resident.
@@ -642,12 +649,12 @@ def for_language(lang: str) -> Transcriber:
     raise ValueError(f"unknown backend {backend!r} for {lang!r}")
 ```
 
-- [ ] **Step 9: Run the STT tests and record the numbers**
+- [x] **Step 9: Run the STT tests and record the numbers**
 
 Run: `uv run pytest tests/test_stt.py -v -s`
 Expected: `5 passed`, with printed German and English latencies. Note the German figure — it goes into the spec in Task 9.
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add ember/stt.py ember/disfluency.py tests/test_stt.py tests/test_disfluency.py pyproject.toml uv.lock
