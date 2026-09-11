@@ -57,19 +57,46 @@ def test_slot2_prerequisites_must_be_empty():
 
 def test_bank_requires_one_default_per_slot(tmp_path: Path):
     write_mini_bank(tmp_path)
-    q = yaml.safe_load((tmp_path / "questions.yaml").read_text())
+    q = yaml.safe_load((tmp_path / "en" / "questions.yaml").read_text())
     for c in q["candidates"]:
         if c["id"] == "S4-b":
             c["default"] = True
-    (tmp_path / "questions.yaml").write_text(yaml.safe_dump(q))
+    (tmp_path / "en" / "questions.yaml").write_text(yaml.safe_dump(q))
     with pytest.raises(ValidationError, match="slot 4"):
-        load_bank(tmp_path)
+        load_bank("en", tmp_path)
 
 
 def test_bank_requires_three_candidates_per_slot(tmp_path: Path):
     write_mini_bank(tmp_path)
-    q = yaml.safe_load((tmp_path / "questions.yaml").read_text())
+    q = yaml.safe_load((tmp_path / "en" / "questions.yaml").read_text())
     q["candidates"] = [c for c in q["candidates"] if c["id"] != "S6-c"]
-    (tmp_path / "questions.yaml").write_text(yaml.safe_dump(q))
+    (tmp_path / "en" / "questions.yaml").write_text(yaml.safe_dump(q))
     with pytest.raises(ValidationError, match="slot 6"):
-        load_bank(tmp_path)
+        load_bank("en", tmp_path)
+
+
+import pytest as _pytest
+from ember.bank import LANGUAGES, YES_NO_STARTS
+
+
+def test_languages_and_prefix_tables():
+    assert LANGUAGES == ("en", "de")
+    assert set(YES_NO_STARTS) == {"en", "de"}
+    assert "do " in YES_NO_STARTS["en"] and "hast du " in YES_NO_STARTS["de"]
+
+
+def test_german_yes_no_questions_are_rejected():
+    base = dict(id="X", slot=3, cluster="fire", targets=["F2"], threat=5, framing="cost-already-paid",
+                prerequisites=[], default=False, language="de")
+    with _pytest.raises(ValidationError, match="yes/no"):
+        Candidate(**base, text="Hast du jemals etwas aufgegeben?", rephrase="Was hast du aufgegeben?")
+    with _pytest.raises(ValidationError, match="yes/no"):
+        Candidate(**base, text="Würdest du das nochmal machen?", rephrase="Was würdest du nochmal machen?")
+    ok = Candidate(**base, text="Was hast du dafür schon aufgegeben?", rephrase="Was hat es dich gekostet?")
+    assert ok.language == "de"
+
+
+def test_english_candidate_unaffected_by_german_prefixes():
+    c = Candidate(id="Y", slot=3, cluster="fire", targets=["F2"], threat=5, framing="cost-already-paid",
+                  prerequisites=[], default=False, text="What did it cost you?", rephrase="What was the cost?")
+    assert c.language == "en"

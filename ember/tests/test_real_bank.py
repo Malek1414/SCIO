@@ -16,3 +16,10 @@ def test_fire_threat_monotonicity_is_satisfiable():
     for s in (2, 3):
         for c in bank.for_slot(s):
             assert any(n.threat >= c.threat for n in bank.for_slot(s + 1)), f"{c.id} strands slot {s + 1}"
+
+
+def test_english_bank_loads_from_the_language_dir():
+    bank = load_bank("en")
+    assert bank.language == "en" and len(bank.candidates) == 21
+    assert load_bank().candidates[0].id == bank.candidates[0].id       # default arg is still English
+    assert set(bank.rubric) == {"F1", "F2", "F3", "C1", "C2", "C3", "G1", "G2", "G3"}

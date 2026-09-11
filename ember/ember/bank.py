@@ -9,13 +9,21 @@ from .constructs import CONSTRUCTS, CLUSTER_OF, TAGS, FRAMINGS
 
 BANK_DIR = Path(__file__).parent / "bank"
 
-YES_NO_STARTS = ("do ", "does ", "did ", "are ", "is ", "was ", "were ", "have ", "has ", "had ",
-                 "can ", "could ", "will ", "would ", "should ")
+LANGUAGES = ("en", "de")
+
+YES_NO_STARTS: dict[str, tuple[str, ...]] = {
+    "en": ("do ", "does ", "did ", "are ", "is ", "was ", "were ", "have ", "has ", "had ",
+           "can ", "could ", "will ", "would ", "should "),
+    # German inverts verb and subject to form a yes/no question, so the verb leads.
+    "de": ("hast ", "hast du ", "hat ", "hattest ", "hattet ", "bist ", "ist ", "war ", "warst ",
+           "kannst ", "kann ", "könntest ", "willst ", "wirst ", "würdest ", "möchtest ",
+           "hältst ", "glaubst ", "denkst ", "fühlst ", "gibt es ", "bereust ", "machst ", "gehst "),
+}
 
 
-def _open_question(text: str) -> str:
-    if text.strip().lower().startswith(YES_NO_STARTS):
-        raise ValueError(f"yes/no question not allowed: {text[:50]!r}")
+def _open_question(text: str, language: str = "en") -> str:
+    if text.strip().lower().startswith(YES_NO_STARTS[language]):
+        raise ValueError(f"yes/no question not allowed in {language}: {text[:50]!r}")
     return text
 
 
@@ -28,6 +36,7 @@ class Candidate(BaseModel):
     framing: str
     prerequisites: list[str] = Field(default_factory=list)
     default: bool = False
+    language: str = "en"
     text: str
     rephrase: str
 
@@ -54,13 +63,17 @@ class Candidate(BaseModel):
             raise ValueError(f"unknown framing {v!r}")
         return v
 
-    @field_validator("text", "rephrase")
+    @field_validator("language")
     @classmethod
-    def _open(cls, v: str) -> str:
-        return _open_question(v)
+    def _lang_known(cls, v: str) -> str:
+        if v not in LANGUAGES:
+            raise ValueError(f"unknown language {v!r}")
+        return v
 
     @model_validator(mode="after")
     def _consistency(self) -> "Candidate":
+        _open_question(self.text, self.language)
+        _open_question(self.rephrase, self.language)
         for t in self.targets:
             if CLUSTER_OF[t] != self.cluster:
                 raise ValueError(f"{self.id}: target {t} is not in cluster {self.cluster}")
@@ -70,14 +83,16 @@ class Candidate(BaseModel):
 
 
 class Opener(BaseModel):
+    language: str = "en"
     text: str
     rephrase: str
     fallback_take_home: str
 
-    @field_validator("text", "rephrase")
-    @classmethod
-    def _open(cls, v: str) -> str:
-        return _open_question(v)
+    @model_validator(mode="after")
+    def _open_questions(self) -> "Opener":
+        _open_question(self.text, self.language)
+        _open_question(self.rephrase, self.language)
+        return self
 
     @field_validator("fallback_take_home")
     @classmethod
@@ -115,6 +130,7 @@ class RubricEntry(BaseModel):
 
 
 class Bank(BaseModel):
+    language: str = "en"
     opener: Opener
     candidates: list[Candidate]
     rubric: dict[str, RubricEntry]
@@ -154,8 +170,14 @@ class Bank(BaseModel):
         return next(c for c in self.candidates if c.id == cid)
 
 
-def load_bank(dir: Path = BANK_DIR) -> Bank:
-    opener = yaml.safe_load((dir / "opener.yaml").read_text(encoding="utf-8"))
-    qs = yaml.safe_load((dir / "questions.yaml").read_text(encoding="utf-8"))
-    rub = yaml.safe_load((dir / "rubric.yaml").read_text(encoding="utf-8"))
-    return Bank(opener=opener, candidates=qs["candidates"], rubric={r["construct"]: r for r in rub["rubric"]})
+def load_bank(lang: str = "en", root: Path = BANK_DIR) -> Bank:
+    if lang not in LANGUAGES:
+        raise ValueError(f"unknown language {lang!r}")
+    d = root / lang
+    opener = yaml.safe_load((d / "opener.yaml").read_text(encoding="utf-8"))
+    qs = yaml.safe_load((d / "questions.yaml").read_text(encoding="utf-8"))
+    rub = yaml.safe_load((root / "rubric.yaml").read_text(encoding="utf-8"))   # shared, English
+    return Bank(language=lang,
+                opener={**opener, "language": lang},
+                candidates=[{**c, "language": lang} for c in qs["candidates"]],
+                rubric={r["construct"]: r for r in rub["rubric"]})

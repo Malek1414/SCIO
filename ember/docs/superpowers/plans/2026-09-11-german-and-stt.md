@@ -197,7 +197,7 @@ git commit -m "fix: derive skipped from declined so signal cannot desync (B6)" \
 **Interfaces:**
 - Produces: `LANGUAGES = ("en", "de")`; `YES_NO_STARTS: dict[str, tuple[str, ...]]`; `Bank.language: str`; `load_bank(lang: str = "en", root: Path = BANK_DIR) -> Bank` reading `root/<lang>/opener.yaml`, `root/<lang>/questions.yaml` and the shared `root/rubric.yaml`. Every existing no-arg `load_bank()` call keeps working.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `tests/test_bank.py`:
 ```python
@@ -241,12 +241,12 @@ def test_english_bank_loads_from_the_language_dir():
     assert set(bank.rubric) == {"F1", "F2", "F3", "C1", "C2", "C3", "G1", "G2", "G3"}
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_bank.py tests/test_real_bank.py -v`
 Expected: `ImportError: cannot import name 'LANGUAGES' from 'ember.bank'`.
 
-- [ ] **Step 3: Move the English bank files**
+- [x] **Step 3: Move the English bank files**
 
 ```bash
 cd ~/Desktop/SCIO/ember
@@ -257,7 +257,7 @@ git mv ember/bank/questions.yaml ember/bank/en/questions.yaml
 ls ember/bank ember/bank/en
 ```
 
-- [ ] **Step 4: Make the language a first-class field**
+- [x] **Step 4: Make the language a first-class field**
 
 In `ember/bank.py`, replace the module-level constant block:
 ```python
@@ -346,7 +346,7 @@ def load_bank(lang: str = "en", root: Path = BANK_DIR) -> Bank:
                 rubric={r["construct"]: r for r in rub["rubric"]})
 ```
 
-- [ ] **Step 5: Update the test fixture to the new layout**
+- [x] **Step 5: Update the test fixture to the new layout**
 
 In `tests/conftest.py`, `write_mini_bank(d)` currently writes three files into `d`. Change its last three lines from:
 ```python
@@ -365,12 +365,12 @@ and change the `mini_bank` fixture's body from `return load_bank(mini_bank_dir)`
 
 In `tests/test_bank.py`, the two structural tests call `load_bank(tmp_path)` and edit `tmp_path / "questions.yaml"`. Update both: the edited file is now `tmp_path / "en" / "questions.yaml"`, and the call is `load_bank("en", tmp_path)`.
 
-- [ ] **Step 6: Run the full suite**
+- [x] **Step 6: Run the full suite**
 
 Run: `uv run pytest -q`
 Expected: all pass. If `test_real_bank.py` fails on a missing file, the `git mv` in Step 3 did not run.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add ember/bank.py ember/bank/ tests/conftest.py tests/test_bank.py tests/test_real_bank.py

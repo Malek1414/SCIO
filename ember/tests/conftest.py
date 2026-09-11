@@ -30,8 +30,9 @@ def write_mini_bank(d: Path) -> None:
         "construct": c, "name": f"Construct {c}", "inverse": c == "F3",
         "anchors": [{"score": s, "description": f"{c} level {s}", "exemplar": f"{c} example {s}"} for s in (1, 4, 7)],
     } for c in CONSTRUCTS]
-    (d / "opener.yaml").write_text(yaml.safe_dump(opener, sort_keys=False))
-    (d / "questions.yaml").write_text(yaml.safe_dump({"candidates": cands}, sort_keys=False))
+    (d / "en").mkdir(parents=True, exist_ok=True)
+    (d / "en" / "opener.yaml").write_text(yaml.safe_dump(opener, sort_keys=False))
+    (d / "en" / "questions.yaml").write_text(yaml.safe_dump({"candidates": cands}, sort_keys=False))
     (d / "rubric.yaml").write_text(yaml.safe_dump({"rubric": rubric}, sort_keys=False))
 
 
@@ -46,7 +47,7 @@ def mini_bank_dir(tmp_path: Path) -> Path:
 @pytest.fixture
 def mini_bank(mini_bank_dir):
     from ember.bank import load_bank
-    return load_bank(mini_bank_dir)
+    return load_bank("en", mini_bank_dir)
 
 
 def make_session(now: float = 1000.0):
