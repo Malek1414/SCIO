@@ -2735,7 +2735,7 @@ git commit -m "feat: FastAPI session, answer, rephrase, state routes with retry 
 - Consumes: routes from Task 13.
 - Produces: the two pages. Subject page: consent → opener → hold-space recording → "…" → next question → close screen. Operator page polls `/api/session/{sid}/state` every 2 s.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_static.py`:
 ```python
@@ -2761,12 +2761,12 @@ def test_pages_served_and_wired(tmp_path, mini_bank):
     assert 'id="transcript"' not in subj and "last_answer" not in subj   # subject never sees their transcript
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_static.py -v`
 Expected: `RuntimeError: File at path … subject.html does not exist` (or 404 assertion).
 
-- [ ] **Step 3: Write the subject page**
+- [x] **Step 3: Write the subject page**
 
 `ember/static/subject.html`:
 ```html
@@ -2863,7 +2863,7 @@ async function send(){
 </script>
 ```
 
-- [ ] **Step 4: Write the operator page**
+- [x] **Step 4: Write the operator page**
 
 `ember/static/operator.html`:
 ```html
@@ -2907,12 +2907,12 @@ setInterval(tick, 2000);
 </script>
 ```
 
-- [ ] **Step 5: Run to verify pass**
+- [x] **Step 5: Run to verify pass**
 
 Run: `uv run pytest tests/test_static.py -v`
 Expected: `1 passed`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add ember/static/ tests/test_static.py

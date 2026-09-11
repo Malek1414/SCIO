@@ -1,0 +1,38 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>ember · operator</title>
+<style>
+  body{margin:0;background:#111;color:#ddd;font:14px/1.5 ui-monospace,Menlo,monospace;padding:24px}
+  input{font:inherit;background:#222;color:#ddd;border:1px solid #444;padding:.3em .5em}
+  dl{display:grid;grid-template-columns:140px 1fr;gap:.3em 1em}dt{color:#888}
+  .big{font-size:2rem}.warn{color:#ff9a3c}
+</style>
+<p><label>session id <input id="sid" size="40"></label> <span id="err" class="warn"></span></p>
+<dl>
+  <dt>elapsed</dt><dd id="elapsed" class="big">–</dd>
+  <dt>slot</dt><dd id="slot"></dd>
+  <dt>pending</dt><dd id="pending"></dd>
+  <dt>probes used</dt><dd id="probes"></dd>
+  <dt>tags</dt><dd id="tags"></dd>
+  <dt>retries</dt><dd id="retries"></dd>
+  <dt>last answer</dt><dd id="last"></dd>
+  <dt>closed</dt><dd id="closed"></dd>
+  <dt>mirror</dt><dd id="mirror"></dd>
+  <dt>take-home</dt><dd id="takehome"></dd>
+</dl>
+<script>
+const $ = id => document.getElementById(id);
+const mmss = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+async function tick(){
+  const sid = $('sid').value.trim(); if (!sid) return;
+  const r = await fetch(`/api/session/${sid}/state`);
+  if (!r.ok){ $('err').textContent = 'unknown session'; return; } $('err').textContent = '';
+  const s = await r.json();
+  $('elapsed').textContent = mmss(s.elapsed); $('elapsed').className = 'big' + (s.elapsed > 270 ? ' warn' : '');
+  $('slot').textContent = s.slot; $('probes').textContent = s.probes_used; $('retries').textContent = s.retries;
+  $('pending').textContent = s.pending ? `${s.pending.kind} ${s.pending.question_id || '(opener/probe)'} — ${s.pending.question}` : '—';
+  $('tags').textContent = s.surfaced_tags.join(', ') || '—'; $('last').textContent = s.last_answer || '—';
+  $('closed').textContent = s.closed; $('mirror').textContent = s.mirror || '—'; $('takehome').textContent = s.take_home || '—';
+}
+setInterval(tick, 2000);
+</script>
