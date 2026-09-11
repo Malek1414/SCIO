@@ -75,7 +75,7 @@ Each module has one responsibility and is testable without the ones below it. De
 **Interfaces:**
 - Produces: a `uv`-managed venv in which `uv run pytest` works and `import ember`, `import claude_agent_sdk`, `import mlx_whisper` all succeed.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_scaffold.py`:
 ```python
@@ -87,12 +87,12 @@ def test_project_imports():
         importlib.import_module(mod)
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `cd ~/Desktop/ember && uv run pytest tests/test_scaffold.py -v`
 Expected: fails — `uv` has no `pyproject.toml` to resolve, or `ModuleNotFoundError: ember`.
 
-- [ ] **Step 3: Create the project files**
+- [x] **Step 3: Create the project files**
 
 `pyproject.toml`:
 ```toml
@@ -157,17 +157,17 @@ __version__ = "0.1.0"
 
 `tests/__init__.py`: empty file.
 
-- [ ] **Step 4: Sync and run the test**
+- [x] **Step 4: Sync and run the test**
 
 Run: `cd ~/Desktop/ember && uv python pin 3.12 && uv sync && uv run pytest tests/test_scaffold.py -v`
 Expected: `1 passed`. (First `uv sync` downloads mlx-whisper and the 82 MB claude-agent-sdk; allow a minute.)
 
-- [ ] **Step 5: Confirm the venv is on 3.12**
+- [x] **Step 5: Confirm the venv is on 3.12**
 
 Run: `uv run python --version`
 Expected: `Python 3.12.x`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add pyproject.toml .python-version .gitignore uv.lock ember/__init__.py tests/__init__.py tests/test_scaffold.py
