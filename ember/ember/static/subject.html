@@ -1,0 +1,91 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>ember</title>
+<style>
+  html,body{height:100%;margin:0;background:#0f0f10;color:#ececec;font:400 20px/1.4 -apple-system,system-ui,sans-serif}
+  main{max-width:820px;margin:0 auto;padding:12vh 6vw;display:flex;flex-direction:column;min-height:100%;box-sizing:border-box}
+  section{display:none}section.on{display:block}
+  h1{font-size:2.4rem;line-height:1.25;font-weight:500;margin:0 0 1.2em}
+  p{color:#bdbdbd}button{font:inherit;padding:.7em 1.3em;border:0;border-radius:10px;background:#ececec;color:#111;cursor:pointer}
+  .hint{margin-top:auto;color:#7a7a7a;font-size:.9rem}
+  .rec{color:#ff5a5a}.wait{color:#7a7a7a}
+  #mirror{font-size:1.6rem;color:#ececec;margin:0 0 1.5em}#takehome{font-size:2rem;font-weight:500}
+</style>
+<main>
+  <section id="consent" class="on">
+    <h1>Before we start</h1>
+    <p>1. This is a ~7-minute psychological interview. It's recorded and transcribed.</p>
+    <p>2. Transcript text goes to Anthropic, through Malek's Claude subscription, to pick questions and score. Audio stays on this laptop.</p>
+    <p>3. Your session goes into a graph Malek reads. Ask him and he'll delete it.</p>
+    <p><label>Subject code <input id="code" placeholder="S01" style="font:inherit;padding:.4em"></label></p>
+    <p><button id="accept">I understand — start</button></p>
+  </section>
+  <section id="question">
+    <h1 id="qtext"></h1>
+    <p id="status" class="hint">Hold <b>space</b> to speak. Release when you're done.</p>
+  </section>
+  <section id="close">
+    <p id="mirror"></p>
+    <p id="takehome"></p>
+    <p class="hint">That's the interview.</p>
+  </section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+let sid = null, rec = null, chunks = [], busy = false, silenceTimer = null, rephrased = false;
+const SILENCE_MS = 25000;
+
+function show(id){ for (const s of document.querySelectorAll('section')) s.classList.toggle('on', s.id === id); }
+function setStatus(t, cls){ $('status').textContent = t; $('status').className = 'hint ' + (cls||''); }
+
+function armSilence(){
+  clearTimeout(silenceTimer); rephrased = false;
+  silenceTimer = setTimeout(async () => {
+    if (busy || rephrased) return;
+    const r = await fetch(`/api/session/${sid}/rephrase`, {method:'POST'}).then(r=>r.json());
+    $('qtext').textContent = r.question; rephrased = true;
+  }, SILENCE_MS);
+}
+
+function showQuestion(body){
+  if (body.kind === 'close'){ $('mirror').textContent = '“' + body.mirror + '”'; $('takehome').textContent = body.take_home; show('close'); return; }
+  $('qtext').textContent = body.question; setStatus('Hold space to speak. Release when you\'re done.'); show('question'); armSilence();
+}
+
+$('accept').onclick = async () => {
+  const code = $('code').value.trim() || 'S00';
+  const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+  rec = new MediaRecorder(stream, {mimeType:'audio/webm'});
+  rec.ondataavailable = e => chunks.push(e.data);
+  rec.onstop = send;
+  const body = await fetch('/api/session', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({subject_code: code})}).then(r=>r.json());
+  sid = body.session_id; showQuestion(body);
+};
+
+(async () => {                       // crash recovery: open /?sid=<session id> to resume at the pending question
+  const sid0 = new URLSearchParams(location.search).get('sid');
+  if (!sid0) return;
+  const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+  rec = new MediaRecorder(stream, {mimeType:'audio/webm'}); rec.ondataavailable = e => chunks.push(e.data); rec.onstop = send;
+  sid = sid0; showQuestion(await fetch(`/api/session/${sid}/resume`, {method:'POST'}).then(r=>r.json()));
+})();
+
+window.addEventListener('keydown', e => {
+  if (e.code !== 'Space' || busy || !rec || rec.state === 'recording' || !$('question').classList.contains('on')) return;
+  e.preventDefault(); clearTimeout(silenceTimer); chunks = []; rec.start(); setStatus('● recording — release space when done', 'rec');
+});
+window.addEventListener('keyup', e => {
+  if (e.code !== 'Space' || !rec || rec.state !== 'recording') return;
+  e.preventDefault(); rec.stop();
+});
+
+async function send(){
+  busy = true; setStatus('…', 'wait');
+  const blob = new Blob(chunks, {type:'audio/webm'});
+  const fd = new FormData(); fd.append('audio', blob, 'answer.webm');
+  const body = await fetch(`/api/session/${sid}/answer`, {method:'POST', body: fd}).then(r=>r.json());
+  busy = false;
+  if (body.retry){ setStatus(body.message + '  Hold space to speak.'); armSilence(); return; }
+  showQuestion(body);
+}
+</script>

@@ -1,0 +1,210 @@
+candidates:
+  # ── Slot 2 · Fire · threat 4–5 · no prerequisites allowed ──────────────────
+  - id: F1-a
+    slot: 2
+    cluster: fire
+    targets: [F1]
+    threat: 4
+    framing: counterfactual-removal
+    default: true
+    text: >-
+      Money's solved. Rent, food, family — handled, forever. It's a Tuesday.
+      What are you doing at two in the afternoon?
+    rephrase: >-
+      If money were never a problem again — what would you actually be doing
+      on an ordinary afternoon?
+  - id: F1-b
+    slot: 2
+    cluster: fire
+    targets: [F1]
+    threat: 5
+    framing: envy-locator
+    text: Whose life makes you jealous in a way you'd rather not admit?
+    rephrase: Whose life do you look at and feel something you don't love feeling?
+  - id: F3-c
+    slot: 2
+    cluster: fire
+    targets: [F3]
+    threat: 4
+    framing: third-person-projection
+    text: >-
+      Think of the most talented person you know who isn't going anywhere.
+      What's the thing they won't do?
+    rephrase: The most gifted person you know who's stuck — what do they refuse to do?
+
+  # ── Slot 3 · Fire · threat 5–6 ──────────────────────────────────────────────
+  - id: F2-a
+    slot: 3
+    cluster: fire
+    targets: [F2]
+    threat: 5
+    framing: cost-already-paid
+    default: true
+    text: >-
+      What's something you've already given up for this that the people around
+      you didn't understand?
+    rephrase: >-
+      What has it cost you — time, people, money — to go after something you
+      cared about?
+  - id: F2-b
+    slot: 3
+    cluster: fire
+    targets: [F2]
+    threat: 6
+    framing: cost-already-paid
+    prerequisites: [relationship]
+    text: You brought up someone close to you. What has what you're chasing cost you with them?
+    rephrase: The person you mentioned — where has your ambition gotten in the way with them?
+  - id: F3-a
+    slot: 3
+    cluster: fire
+    targets: [F3]
+    threat: 5
+    framing: settled-person-read
+    text: >-
+      Think of someone you know who settled. Comfortable life, stopped pushing.
+      How is it, being around them?
+    rephrase: Someone who stopped trying — what's it like spending an evening with them?
+  - id: F1-d
+    slot: 3
+    cluster: fire
+    targets: [F1]
+    threat: 5
+    framing: discrepancy
+    prerequisites: [money]
+    text: You mentioned money earlier. If the thing you want turned out to make none — what changes?
+    rephrase: Take money out of it entirely. What's left of the wanting?
+  - id: F1-c
+    slot: 3
+    cluster: fire
+    targets: [F1, F3]
+    threat: 5
+    framing: third-person-projection
+    prerequisites: [named-project]
+    text: >-
+      You mentioned something you're building. When it's working — what does
+      that actually feel like, physically?
+    rephrase: The thing you're working on — what's the feeling when it clicks?
+
+  # ── Slot 4 · Fire deep · threat 6–7 ─────────────────────────────────────────
+  - id: F2-c
+    slot: 4
+    cluster: fire
+    targets: [F2, F3]
+    threat: 7
+    framing: cost-already-paid
+    default: true
+    text: >-
+      Say it works. You get exactly what you described. What did you have to
+      become, to get there, that you're not sure you want to be?
+    rephrase: If you get everything you're after — what will it have cost you as a person?
+  - id: F3-b
+    slot: 4
+    cluster: fire
+    targets: [F3]
+    threat: 6
+    framing: forking
+    prerequisites: [failure]
+    text: You mentioned something that didn't work. Was that the failure — or was it that you stopped?
+    rephrase: That thing that failed — what actually ended it, the failing or the stopping?
+  - id: F1-e
+    slot: 4
+    cluster: fire
+    targets: [F1]
+    threat: 7
+    framing: aftermath-not-event
+    prerequisites: [quit]
+    text: You said you quit something. What were you actually leaving?
+    rephrase: When you stopped — what were you really walking away from?
+
+  # ── Slot 5 · Compass ────────────────────────────────────────────────────────
+  - id: C1-a
+    slot: 5
+    cluster: compass
+    targets: [C1]
+    threat: 6
+    framing: pressure-decision
+    default: true
+    text: >-
+      Last time you had to decide something fast and it cost someone something.
+      What did you pick?
+    rephrase: A fast decision that cost something — which way did you go, and why that way?
+  - id: C2-a
+    slot: 5
+    cluster: compass
+    targets: [C2]
+    threat: 5
+    framing: scale-of-things
+    text: What's the biggest thing you're a small part of?
+    rephrase: What do you belong to that's bigger than your own life?
+  - id: C2-b
+    slot: 5
+    cluster: compass
+    targets: [C2]
+    threat: 6
+    framing: forking
+    prerequisites: [faith]
+    text: You mentioned faith. When it and what you want point different ways — which one moves?
+    rephrase: When belief and ambition disagree — which one gives?
+  - id: C3-a
+    slot: 5
+    cluster: compass
+    targets: [C3]
+    threat: 6
+    framing: fear-of-self
+    text: What kind of person are you afraid of turning into?
+    rephrase: What version of yourself are you trying not to become?
+  - id: C1-b
+    slot: 5
+    cluster: compass
+    targets: [C1]
+    threat: 6
+    framing: discrepancy
+    prerequisites: [family]
+    text: Your family came up. What's a rule you live by that they'd say you break?
+    rephrase: Something you believe about how to live — that your family would say you don't actually do?
+
+  # ── Slot 6 · Ground ─────────────────────────────────────────────────────────
+  - id: G1-a
+    slot: 6
+    cluster: ground
+    targets: [G1]
+    threat: 5
+    framing: empty-room
+    default: true
+    text: Phone's dead. Nobody's coming for six hours. You're forty minutes in. What's happening?
+    rephrase: Six hours alone, no phone. What does the middle of it look like?
+  - id: G2-a
+    slot: 6
+    cluster: ground
+    targets: [G2]
+    threat: 6
+    framing: aftermath-not-event
+    text: Something knocked you sideways once. Not the thing itself — what did you build afterwards?
+    rephrase: After the worst thing that happened to you — what did you start doing differently?
+  - id: G2-b
+    slot: 6
+    cluster: ground
+    targets: [G2]
+    threat: 7
+    framing: aftermath-not-event
+    prerequisites: [loss]
+    text: You mentioned losing something. What did you decide, after, that you've never said out loud?
+    rephrase: After that loss — what did you quietly decide?
+  - id: G3-a
+    slot: 6
+    cluster: ground
+    targets: [G3]
+    threat: 5
+    framing: people-as
+    text: When you're at your best, what are the people closest to you doing?
+    rephrase: On your best day — where are the people you love, and what are they doing?
+  - id: G3-b
+    slot: 6
+    cluster: ground
+    targets: [G3]
+    threat: 6
+    framing: people-as
+    prerequisites: [solitude]
+    text: You said you spend a lot of time alone. Who knows that?
+    rephrase: Being alone that much — who actually knows that about you?
