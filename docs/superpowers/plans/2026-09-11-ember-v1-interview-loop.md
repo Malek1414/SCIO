@@ -186,7 +186,7 @@ git commit -m "chore: scaffold ember project on Python 3.12 with uv" \
 **Interfaces:**
 - Produces: `CLUSTERS: dict[str, tuple[str, ...]]`, `CONSTRUCTS: tuple[str, ...]`, `CLUSTER_OF: dict[str, str]`, `TAGS: frozenset[str]`, `FRAMINGS: frozenset[str]`, `signal_for(n_quotes: int, n_distinct_answers: int, skipped: bool) -> str`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_constructs.py`:
 ```python
@@ -213,12 +213,12 @@ def test_signal_thresholds():
     assert signal_for(5, 3, True) == "low"         # skipped always low
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_constructs.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.constructs'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/constructs.py`:
 ```python
@@ -270,12 +270,12 @@ def signal_for(n_quotes: int, n_distinct_answers: int, skipped: bool) -> str:
     return "med"
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_constructs.py -v`
 Expected: `3 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/constructs.py tests/test_constructs.py
