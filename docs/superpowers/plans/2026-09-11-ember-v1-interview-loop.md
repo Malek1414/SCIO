@@ -2312,7 +2312,7 @@ git commit -m "feat: in-process whisper transcriber with warm-up; record measure
 - Consumes: `Session`, `Turn`, `new_session_id` (Task 6).
 - Produces: `class SessionStore(root: Path)` with `create(subject_code: str, consent_at: float, now: float) -> Session`, `dir_for(session_id: str) -> Path`, `save(session: Session) -> None` (writes `session.json` + `transcript.json` + updates SQLite), `load(session_id: str) -> Session`, `append_engine_log(session_id: str, entry: dict) -> None`, `list_sessions() -> list[dict]`. SQLite file at `root.parent / "ember.sqlite"` (i.e. repo root when root is `./sessions`).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_store.py`:
 ```python
@@ -2355,12 +2355,12 @@ def test_engine_log_appends(tmp_path: Path):
 
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_store.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.store'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/store.py`:
 ```python
@@ -2433,12 +2433,12 @@ class SessionStore:
             return [dict(r) for r in db.execute("SELECT * FROM sessions ORDER BY started_at DESC")]
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_store.py -v`
 Expected: `3 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/store.py tests/test_store.py
