@@ -2235,7 +2235,7 @@ def test_transcribe_after_warm(clip, tmp_path):
     text = t.transcribe(wav)
     dt = time.perf_counter() - t0
     print(f"\nwarm={warm_s:.1f}s  transcribe={dt:.2f}s  text={text!r}")
-    assert "backend" in text.lower() and "wasting my time" in text.lower()   # whisper writes numbers as digits
+    assert "wasting my time" in text.lower() and "nobody asked me" in text.lower()   # whisper writes digits and splits compounds
     assert dt < 6.0
 ```
 
