@@ -803,7 +803,7 @@ git commit -m "feat: export observer results to graph/data.js (git-ignored)" \
 - Consumes: `graph/data.js` (Task 5's shape).
 - Produces: a static page. Element ids used by the test: `cohort`, `subject`, `x-select`, `y-select`, `c-select`, `scatter`, `cohort-table`, `radar`, `evidence`, `tooltip`, `back`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_graph_static.py`:
 ```python
@@ -823,12 +823,12 @@ def test_graph_page_is_wired_and_theme_aware():
     assert "<table" in src and 'class="legend"' in src
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_graph_static.py -v`
 Expected: `FileNotFoundError` for `graph/index.html`.
 
-- [ ] **Step 3: Write the page**
+- [x] **Step 3: Write the page**
 
 `graph/index.html`:
 ```html
@@ -1026,18 +1026,18 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { dr
 </script>
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_graph_static.py -v`
 Expected: `1 passed`
 
-- [ ] **Step 5: Render it and look at it (dataviz step 7)**
+- [x] **Step 5: Render it and look at it (dataviz step 7)**
 
 Run: `uv run python -c "from pathlib import Path; from ember.bank import load_bank; from ember.export import collect, write_data_js; import json, tempfile; d=Path(tempfile.mkdtemp()); [ (d/f'S0{i}_x').mkdir() or (d/f'S0{i}_x'/'observer.json').write_text(json.dumps({'subject_id':f'S0{i}','session_id':f'S0{i}_x','scored_at':'t','rubric_version':'1.0.0','constructs':{c:{'score':(i*3+j)%7+1,'signal':['low','med','high'][(i+j)%3],'evidence':[f'{c} sample quote'],'note':'note'} for j,c in enumerate(['F1','F2','F3','C1','C2','C3','G1','G2','G3'])},'declined':['G2'],'flags':['read G2 by hand']})) for i in range(1,7)]; write_data_js(collect(d, load_bank()), Path('graph/data.js')); print('graph/data.js written with 6 synthetic subjects')" && open graph/index.html`
 
 Check in the browser: six dots with a 2 px ring, hover shows the tooltip, the table lists six rows, click a dot → radar with nine spokes, hollow markers where signal is low, evidence beside it, back returns. Toggle the OS to dark mode: colours swap, ramp flips. If a label collides or overflows, fix it in the HTML before committing.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add graph/index.html tests/test_graph_static.py
