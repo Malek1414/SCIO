@@ -22,6 +22,7 @@ Message the subject: **"Still thinking about the last question?"** Record yes/no
 ## After the five pilots
 1. Score each transcript by hand **before** running the observer: read `sessions/<id>/transcript.json` against `ember/bank/rubric.yaml`, one 1–7 per construct, into `calibration/human_scores.yaml` (one map per rater — operator, and a second rater if available).
 2. `uv run ember observe sessions/<id>` for each pilot.
+   - Run it **twice** on at least one pilot. Scoring at effort `high` is not deterministic run to run (observed: a construct moving 4 → 2 between runs on the same transcript). A ≥ 2-point swing means that construct's anchors are ambiguous — tighten them before trusting the calibration number.
 3. `uv run ember calibrate` — target **80 %** of construct scores within 1 point of the human median.
 4. Every ≥ 2-point disagreement names a construct: tighten that construct's anchors in `rubric.yaml` (sharper description, a better exemplar), bump `RUBRIC_VERSION` in `ember/store.py`, re-run `ember observe` on the five, re-run `calibrate`. Repeat until it passes.
 5. `uv run ember export` and open `graph/index.html` — read the five as people, not as scores. If the take-homes felt earned in the room but the radar shape looks wrong, the rubric is the problem, not the session.
