@@ -400,7 +400,7 @@ git commit -m "feat: verbatim matcher, quote extraction, sentence helper" \
 - Produces: pydantic models `Candidate`, `Opener`, `Anchor`, `RubricEntry`, `Bank`; `Bank.for_slot(slot: int, used: set[str] = frozenset()) -> list[Candidate]`, `Bank.default_for(slot: int, used: set[str] = frozenset()) -> Candidate | None`, `Bank.by_id(cid: str) -> Candidate`; `load_bank(dir: Path) -> Bank`; `BANK_DIR: Path`.
 - Test fixtures: `mini_bank_dir` (tmp path with valid YAMLs), `mini_bank`.
 
-- [ ] **Step 1: Write the shared fixtures**
+- [x] **Step 1: Write the shared fixtures**
 
 `tests/conftest.py`:
 ```python
@@ -455,7 +455,7 @@ def mini_bank(mini_bank_dir):
     return load_bank(mini_bank_dir)
 ```
 
-- [ ] **Step 2: Write the failing tests**
+- [x] **Step 2: Write the failing tests**
 
 `tests/test_bank.py`:
 ```python
@@ -536,12 +536,12 @@ def test_bank_requires_three_candidates_per_slot(tmp_path: Path):
         load_bank(tmp_path)
 ```
 
-- [ ] **Step 3: Run to verify failure**
+- [x] **Step 3: Run to verify failure**
 
 Run: `uv run pytest tests/test_bank.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.bank'`
 
-- [ ] **Step 4: Implement**
+- [x] **Step 4: Implement**
 
 `ember/bank.py`:
 ```python
@@ -707,12 +707,12 @@ def load_bank(dir: Path = BANK_DIR) -> Bank:
     return Bank(opener=opener, candidates=qs["candidates"], rubric={r["construct"]: r for r in rub["rubric"]})
 ```
 
-- [ ] **Step 5: Run to verify pass**
+- [x] **Step 5: Run to verify pass**
 
 Run: `uv run pytest tests/test_bank.py -v`
 Expected: `9 passed`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add ember/bank.py tests/conftest.py tests/test_bank.py
