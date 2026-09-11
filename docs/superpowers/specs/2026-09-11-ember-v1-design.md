@@ -36,7 +36,9 @@ So: the mentalist is the **aesthetic** (confidence, indirection, the reveal). MI
 | Clusters in v1 | Fire (anchor), Compass, Ground. **Engine cluster out** (ceiling, back-against-the-wall effort, interest-vs-competence gap). |
 | Close | Mirror (verbatim) + one take-home question |
 | Consent | Subjects know it is a psychological interview and that it is recorded and scored |
-| Stack | Python |
+| Stack | Python 3.12 via `uv` |
+| LLM backend | **Claude Agent SDK** (`claude-agent-sdk`) on the operator's Claude subscription, authenticated by the existing Claude Code login. No API key, no API-key code path. |
+| Subscription | Max 5x → Opus 5 for engine and observer, Sonnet 5 as `fallback_model`. Sessions spread over 2–3 days to stay clear of 5-hour usage windows. |
 
 ---
 
@@ -185,9 +187,10 @@ Bank size: 1 opener + ~10 Fire + ~5 Compass + ~5 Ground ≈ **21 spine questions
   slot: 3                    # 1–7
   cluster: fire              # fire | compass | ground
   targets: [F2]              # construct ids
-  threat: 5                  # 1–7, must be ≥ previous slot's pick
+  threat: 5                  # 1–7; within Fire (slots 2–4) must be ≥ previous Fire pick
   framing: cost-already-paid
-  prerequisites: []          # tags that must be in session.surfaced_tags; empty = always eligible
+  prerequisites: []          # tags that must be in session.surfaced_tags; empty = always eligible.
+                             # Slot-2 candidates must have none: tags are emitted with the slot-2 pick, so nothing is known yet.
   default: false             # exactly one default per slot; used on API failure
   text: "…"
   rephrase: "…"              # shown after 25 s silence
@@ -221,7 +224,7 @@ Validation before the screen updates: `candidate_id` must be in the offered list
 |---|---|
 | Opener | Q1 is fixed; no engine call. |
 | Prerequisites | Hard filter before the LLM sees candidates. |
-| Threat monotonic | A candidate with `threat` below the previous pick is filtered out. |
+| Threat monotonic (Fire only) | Within slots 2–4, a candidate with `threat` below the previous Fire pick is filtered out. Compass and Ground candidates are not constrained by the Fire pick. |
 | Probe gate | Only if last answer ≥ 15 words **and** elapsed < 4:00 **and** budget > 0. |
 | Fire guard | Elapsed > **4:30** and slot ≤ 4 → skip remaining Fire, go to Q5. Guarantees Compass and Ground ~1 min each. |
 | Q7 gate | Only if elapsed < 5:45 after Q6 completes. |
@@ -318,9 +321,9 @@ browser (localhost)                   python backend (FastAPI)
 
 **STT.** `mlx_whisper`, model `mlx-community/whisper-large-v3-turbo`, loaded once at server start and held in memory. Measured 2026-09-11: 41 s of speech → 5.2 s via the CLI including model load per call; in-process expected ~2–3 s. Confirm in implementation and record the number.
 
-**Engine.** Claude Opus 5 via the Anthropic Python SDK. Adaptive thinking. Effort `low` for the per-turn pick (constrained choice; latency matters). Structured output (`output_config.format`) against the §5.4 schema. System prompt + full question bank + rubric of framings form the cached prefix; transcript is appended after the cache breakpoint. Effort `high` for the close call. Server-side fallbacks enabled so a refusal cannot stall a live session.
+**Engine.** Claude Opus 5 via the **Claude Agent SDK** (`claude-agent-sdk`), authenticated by the operator's existing Claude Code login — no API key. Each call is a one-shot `query()` with `system_prompt` (plain string, replaces the Claude Code preset), `model="opus"`, `fallback_model="sonnet"`, `thinking={"type": "adaptive"}`, `output_format={"type": "json_schema", …}` against the §5.4 schema, `tools=[]`, `max_turns=2`, and **mandatory isolation**: `setting_sources=[]`, `mcp_servers={}`, `strict_mcp_config=True`, so the child process loads none of the operator's skills, memory, or MCP tools (measured 2026-09-11: without isolation a trivial call consumed ~80K tokens; with it, 956). Effort `low` for the per-turn pick, `high` for the close. The system prompt (bank + rules) is a stable prefix and is served from Anthropic's prompt cache across calls (1-hour TTL, observed across separate processes). The parsed result is `ResultMessage.structured_output`; `ResultMessage.usage` is logged per turn. The ember process **refuses to start if `ANTHROPIC_API_KEY` is set** (Claude Code would silently bill the API instead of the subscription) and strips inherited `CLAUDE*` environment variables so it behaves identically whether launched from a plain terminal or from inside a Claude Code session.
 
-**Observer.** Same SDK, Opus 5, effort `high`, structured output against §6.
+**Observer.** Same backend and isolation, Opus 5, effort `high`, `output_format` against §6. `ember observe <session_dir>`. Re-runnable.
 
 **Storage.** One folder per session under `sessions/` (git-ignored):
 
@@ -335,9 +338,9 @@ sessions/S17_2026-09-20T14-05-11/
 
 `ember.sqlite` indexes sessions for the graph; `ember export` writes `graph/data.json`.
 
-**Latency per turn.** STT ~2–3 s + engine ~2–4 s → **~5–7 s** from release to next question. v1 accepts this behind the "…" indicator. v1.1 option: chunked STT during speech.
+**Latency per turn.** STT ~2–3 s + engine **2.6–2.9 s measured** (≈1.1 s process spawn + ≈1.6 s model) → **~5–6 s** from release to next question. v1 accepts this behind the "…" indicator. v1.1 options: chunked STT during speech; a persistent `ClaudeSDKClient` to remove the spawn.
 
-**Cost.** ~7 engine calls + 1 close + 1 observer per session, mostly cache reads. Estimated **≈ $0.20 per session, < $10 for all 40** at Opus 5 list prices.
+**Cost.** Draws on the operator's Max 5x subscription, not an API bill. API-equivalent as reported by the SDK: $0.016 for a first call, $0.007 cached. With a ~5K-token bank, **≈ $0.10 API-equivalent per session** — negligible against subscription limits. Spread the 40 sessions over two or three days.
 
 **Layout.**
 
@@ -369,11 +372,11 @@ ember/
 | Silent > 25 s after question shown | Pre-written gentler rephrase appears. Same slot. |
 | Subject declines to answer | Engine moves on. Observer records `declined`. Declining is data. |
 | Probe quotes a mis-transcription | Probes quote 3–6 words max and are framed "you said," never "you claimed." A correction is logged as the answer. |
-| API error / timeout | One retry at 8 s, then the slot's `default` candidate — deterministic, no LLM. Session continues; turn flagged in `engine_log`. |
-| Model refusal | Server-side fallback, transparent. Logged. |
+| API error / timeout | 15 s timeout per attempt, one retry, then the slot's `default` candidate — deterministic, no LLM. Session continues; turn flagged in `engine_log`. |
+| Model refusal or Opus unavailable | `fallback_model="sonnet"` retries on Sonnet inside the same call. If that also fails → slot default candidate. Logged. |
 | Engine output fails validation | Slot default candidate. No second call. Logged. |
 | Time guards | Fire guard 4:30 · probe window closes 4:00 · Q7 gate 5:45 · hard close 6:30. |
-| Browser / laptop crash | Session folder written per turn. Restart resumes at the last completed slot. |
+| Browser / laptop crash | Session folder written per turn. Reopen the subject page as `/?sid=<session id>` — it resumes at the pending question. |
 
 ---
 
@@ -396,7 +399,7 @@ Target: ≥ 3/5 on both before the 40 begin. The five transcripts also drive obs
 Three lines on screen before Q1; tap to accept; timestamp stored in `meta.json`:
 
 1. This is a ~7-minute psychological interview. It's recorded and transcribed.
-2. Transcript text goes to Anthropic's API to pick questions and score. Audio stays on this laptop.
+2. Transcript text goes to Anthropic, through Malek's Claude subscription, to pick questions and score. Audio stays on this laptop.
 3. Your session goes into a graph Malek reads. Ask him and he'll delete it.
 
 No names collected. Subject code `S01`–`S40` assigned by the operator. The SQLite index carries no names by default.
@@ -442,6 +445,8 @@ Nothing in the architecture blocks any of them. Longitudinal is the most valuabl
 | 13 | Stack | Python |
 | 14 | Project name | ember |
 | 15 | The Mentalist clips | Not needed; tone reference only |
+| 16 | LLM backend | Claude Agent SDK on the operator's subscription; no API-key path |
+| 17 | Subscription plan | Max 5x → Opus 5, Sonnet fallback, sessions spread over 2–3 days |
 
 ---
 
@@ -466,3 +471,14 @@ Nothing in the architecture blocks any of them. Longitudinal is the most valuabl
 
 `mlx_whisper` · `whisper-large-v3-turbo` · Apple Silicon · 40.9 s synthetic speech (macOS `say`), 16 kHz mono WAV.
 CLI including model load: **6.95 s cold, 5.15 s warm.** One substitution error in ~140 words. In-process with the model resident is expected to be substantially faster; to be measured in build step 3.
+
+## Appendix C — Agent SDK measurement, 2026-09-11
+
+`claude-agent-sdk 0.2.152` · Opus 5 · effort `low` · adaptive thinking · JSON-schema output · `tools=[]` · one-shot `query()`.
+
+| Configuration | Latency | Prompt tokens | Output tokens | API-equivalent |
+|---|---|---|---|---|
+| No isolation, launched inside a Claude Code session | 8.3 s cold / 3.5 s warm | ~80K (operator's skills + MCP tools loaded) | ~210 | $0.46 |
+| `setting_sources=[]`, `mcp_servers={}`, `strict_mcp_config=True`, `CLAUDE*` env stripped | **2.62 s / 2.85 s** | **956** (cache write, then cache read) | 205–228 | **$0.016 / $0.007** |
+
+Auth resolved from the existing Claude Code login with no configuration. Second call hit the 1-hour prompt cache across a separate process.
