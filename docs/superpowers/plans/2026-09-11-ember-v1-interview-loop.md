@@ -294,7 +294,7 @@ git commit -m "feat: construct model, tag and framing vocab, signal rule" \
 **Interfaces:**
 - Produces: `normalize(s: str) -> list[str]`, `word_count(s: str) -> int`, `contains_verbatim(haystack: str, needle: str, *, min_words: int, max_words: int | None = None) -> bool`, `extract_quote(text: str) -> str | None`, `longest_sentence(text: str) -> str`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_text.py`:
 ```python
@@ -331,12 +331,12 @@ def test_longest_sentence():
     assert longest_sentence("") == ""
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_text.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.text'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/text.py`:
 ```python
@@ -374,12 +374,12 @@ def longest_sentence(text: str) -> str:
     return max(parts, key=word_count) if parts else ""
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_text.py -v`
 Expected: `5 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/text.py tests/test_text.py
