@@ -59,7 +59,7 @@ Dependency direction: `observer ← calibrate`, `observer ← export ← cli`. `
 - Consumes: `Bank`, `RubricEntry`, `load_bank` (`ember.bank`); `CONSTRUCTS`, `signal_for` (`ember.constructs`); `contains_verbatim` (`ember.text`); `RUBRIC_VERSION` (`ember.store`).
 - Produces: `OPENER_TARGETS = ("F1", "F3")`; `MIN_QUOTE_WORDS = 3`; `OBSERVER_SCHEMA: dict`; pydantic `ConstructScore(score: int, signal: str, evidence: list[str], note: str)`; `ObserverResult(subject_id, session_id, scored_at, rubric_version, constructs: dict[str, ConstructScore], declined: list[str], flags: list[str])`; `coverage(transcript: dict, bank: Bank) -> dict[str, bool]`; `validate(raw: dict, transcript: dict, bank: Bank, *, subject_id: str, session_id: str, scored_at: str, rubric_version: str) -> ObserverResult`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_observer.py`:
 ```python
@@ -142,12 +142,12 @@ def test_validate_declined_bad_score_and_clamp(bank):
     assert isinstance(out, ObserverResult) and out.rubric_version == "1.0.0"
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `cd ~/Desktop/SCIO/ember && uv run pytest tests/test_observer.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.observer'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/observer.py`:
 ```python
@@ -319,12 +319,12 @@ def load_results(sessions_root: Path) -> dict[str, dict]:
     return {p.parent.name: json.loads(p.read_text(encoding="utf-8")) for p in sorted(Path(sessions_root).glob("*/observer.json"))}
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_observer.py -v`
 Expected: `4 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/observer.py tests/test_observer.py
@@ -344,7 +344,7 @@ git commit -m "feat: observer contract, coverage, and deterministic validation" 
 - Consumes: everything in Task 1; `FakeLLM` from `tests/conftest.py`.
 - Produces: verified behaviour of `score()`, `observe_session()`, `load_results()`.
 
-- [ ] **Step 1: Append the failing tests**
+- [x] **Step 1: Append the failing tests**
 
 Append to `tests/test_observer.py`:
 ```python
@@ -384,12 +384,12 @@ def test_import_wall():
         assert forbidden not in src, forbidden
 ```
 
-- [ ] **Step 2: Run to verify the new tests pass against Task 1's implementation**
+- [x] **Step 2: Run to verify the new tests pass against Task 1's implementation**
 
 Run: `uv run pytest tests/test_observer.py -v`
 Expected: `7 passed`. (Task 1 implemented these entry points; this task pins their behaviour. If any fail, fix `ember/observer.py` — do not weaken the test.)
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add tests/test_observer.py
@@ -408,7 +408,7 @@ git commit -m "test: observer scoring, file I/O, and import wall" \
 **Interfaces:**
 - Consumes: `score` (Task 1); `RecordingLLM` (`tests/recording.py`, Plan A); `LLM`, `guard_environment` (`ember.llm`).
 
-- [ ] **Step 1: Write the test with a synthetic seven-turn session**
+- [x] **Step 1: Write the test with a synthetic seven-turn session**
 
 `tests/test_observer_recorded.py`:
 ```python
@@ -459,7 +459,7 @@ def full_transcript(bank):
 @pytest.fixture(scope="module")
 def llm():
     guard_environment()
-    return RecordingLLM(inner=LLM())
+    return RecordingLLM(inner=LLM(timeout_s=120.0))
 
 
 def test_observer_scores_full_session(llm):
@@ -476,18 +476,18 @@ def test_observer_scores_full_session(llm):
     assert all(out.constructs[c].note for c in ("F1", "F2", "F3", "C3", "G1", "G3"))   # covered constructs carry a note
 ```
 
-- [ ] **Step 2: Record — needs the operator's Claude Code login**
+- [x] **Step 2: Record — needs the operator's Claude Code login**
 
 Run: `EMBER_RECORD=1 uv run pytest tests/test_observer_recorded.py -v`
 Expected: `1 passed` (one live call at effort `high`, ~10–20 s) and one new file in `tests/fixtures/recorded/`.
 If the assertion on `signal != "low"` fails, the model is returning too few verbatim quotes: read the recording, tighten the evidence wording in `build_observer_system`, delete the new recording, re-record. Do not loosen the validator.
 
-- [ ] **Step 3: Replay**
+- [x] **Step 3: Replay**
 
 Run: `uv run pytest tests/test_observer_recorded.py -v`
 Expected: `1 passed`, no network.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add tests/test_observer_recorded.py tests/fixtures/recorded/
@@ -507,7 +507,7 @@ git commit -m "test: recorded observer run on a synthetic seven-turn session" \
 - Consumes: `CONSTRUCTS` (`ember.constructs`).
 - Produces: `TARGET_AGREEMENT = 0.8`, `DISAGREE_AT = 2`; `load_human_scores(path: Path) -> dict[str, dict[str, dict[str, int]]]` (session → rater → construct → score); `median_scores(raters: dict[str, dict[str, int]]) -> dict[str, float]`; dataclasses `Disagreement(session_id, construct, observer, human_median, delta)` and `Report(n_scores, n_within_1, disagreements, missing)` with properties `agreement: float`, `passed: bool`; `agreement(observer: dict[str, dict], human: dict) -> Report`; `render(report: Report) -> str`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_calibrate.py`:
 ```python
@@ -553,12 +553,12 @@ def test_render_names_pass_fail_and_anchors():
     assert "0/0" in empty and "FAIL" in empty
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_calibrate.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.calibrate'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/calibrate.py`:
 ```python
@@ -658,12 +658,12 @@ sessions: {}
 #     claude: {F1: 5, F2: 5, F3: 6, C1: 3, C2: 3, C3: 5, G1: 4, G2: 2, G3: 5}
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_calibrate.py -v`
 Expected: `3 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/calibrate.py calibration/human_scores.yaml tests/test_calibrate.py
@@ -684,7 +684,7 @@ git commit -m "feat: calibration harness — observer vs human-median agreement 
 - Consumes: `load_results` (Task 1); `Bank` (`ember.bank`); `CONSTRUCTS`, `CLUSTER_OF` (`ember.constructs`); `RUBRIC_VERSION` (`ember.store`).
 - Produces: `collect(sessions_root: Path, bank: Bank, *, now: float | None = None) -> dict` with keys `generated_at`, `rubric_version`, `constructs: [{id, cluster, name, inverse}]`, `subjects: [{subject_code, session_id, scored_at, rubric_version, scores: {cid: {score, signal, evidence, note}}, declined, flags, mirror, take_home}]`; `write_data_js(data: dict, out: Path) -> Path`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_export.py`:
 ```python
@@ -727,12 +727,12 @@ def test_write_data_js_is_a_global_assignment(tmp_path: Path):
     assert text.startswith("window.EMBER_DATA = {") and text.rstrip().endswith("};")
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_export.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.export'`
 
-- [ ] **Step 3: Implement and ignore the generated file**
+- [x] **Step 3: Implement and ignore the generated file**
 
 `ember/export.py`:
 ```python
@@ -778,12 +778,12 @@ Append to `.gitignore`:
 graph/data.js
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_export.py -v`
 Expected: `2 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/export.py tests/test_export.py .gitignore
@@ -803,7 +803,7 @@ git commit -m "feat: export observer results to graph/data.js (git-ignored)" \
 - Consumes: `graph/data.js` (Task 5's shape).
 - Produces: a static page. Element ids used by the test: `cohort`, `subject`, `x-select`, `y-select`, `c-select`, `scatter`, `cohort-table`, `radar`, `evidence`, `tooltip`, `back`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_graph_static.py`:
 ```python
@@ -823,12 +823,12 @@ def test_graph_page_is_wired_and_theme_aware():
     assert "<table" in src and 'class="legend"' in src
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_graph_static.py -v`
 Expected: `FileNotFoundError` for `graph/index.html`.
 
-- [ ] **Step 3: Write the page**
+- [x] **Step 3: Write the page**
 
 `graph/index.html`:
 ```html
@@ -1026,18 +1026,18 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { dr
 </script>
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_graph_static.py -v`
 Expected: `1 passed`
 
-- [ ] **Step 5: Render it and look at it (dataviz step 7)**
+- [x] **Step 5: Render it and look at it (dataviz step 7)**
 
 Run: `uv run python -c "from pathlib import Path; from ember.bank import load_bank; from ember.export import collect, write_data_js; import json, tempfile; d=Path(tempfile.mkdtemp()); [ (d/f'S0{i}_x').mkdir() or (d/f'S0{i}_x'/'observer.json').write_text(json.dumps({'subject_id':f'S0{i}','session_id':f'S0{i}_x','scored_at':'t','rubric_version':'1.0.0','constructs':{c:{'score':(i*3+j)%7+1,'signal':['low','med','high'][(i+j)%3],'evidence':[f'{c} sample quote'],'note':'note'} for j,c in enumerate(['F1','F2','F3','C1','C2','C3','G1','G2','G3'])},'declined':['G2'],'flags':['read G2 by hand']})) for i in range(1,7)]; write_data_js(collect(d, load_bank()), Path('graph/data.js')); print('graph/data.js written with 6 synthetic subjects')" && open graph/index.html`
 
 Check in the browser: six dots with a 2 px ring, hover shows the tooltip, the table lists six rows, click a dot → radar with nine spokes, hollow markers where signal is low, evidence beside it, back returns. Toggle the OS to dark mode: colours swap, ramp flips. If a label collides or overflows, fix it in the HTML before committing.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add graph/index.html tests/test_graph_static.py
@@ -1102,6 +1102,8 @@ from pathlib import Path
 
 from .llm import guard_environment
 
+OBSERVER_TIMEOUT_S = 120.0   # offline scoring at effort high takes 20–40 s; §9's 15 s bound is for the live engine only
+
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="ember")
@@ -1152,7 +1154,7 @@ def main(argv: list[str] | None = None) -> int:
         from .llm import LLM
         from .observer import observe_session
 
-        out = observe_session(args.session_dir, load_bank(), LLM())
+        out = observe_session(args.session_dir, load_bank(), LLM(timeout_s=OBSERVER_TIMEOUT_S))
         r = json.loads(out.read_text(encoding="utf-8"))
         print(f"wrote {out}")
         for cid, cs in r["constructs"].items():
@@ -1216,7 +1218,7 @@ git commit -m "feat: ember observe / export / calibrate commands" \
 **Interfaces:**
 - Produces: the written procedure for the five pilots (spec §10 craft measures, §6 calibration loop) and the go/no-go for the 40.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_docs.py`:
 ```python
@@ -1238,12 +1240,12 @@ def test_pilot_log_template_parses():
     assert data == {"pilots": {}}
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_docs.py -v`
 Expected: `FileNotFoundError` for `docs/pilot-protocol.md`.
 
-- [ ] **Step 3: Write the protocol and the log template**
+- [x] **Step 3: Write the protocol and the log template**
 
 `docs/pilot-protocol.md`:
 ```markdown
@@ -1301,12 +1303,12 @@ pilots: {}
 #   S01: {session_id: S01_2026-09-20T14-05-11, immediate: yes, day_after: no, notes: "long pause before G1"}
 ```
 
-- [ ] **Step 4: Run to verify pass, then the full suite**
+- [x] **Step 4: Run to verify pass, then the full suite**
 
 Run: `uv run pytest tests/test_docs.py -v && uv run pytest -q`
 Expected: `2 passed`; full suite green.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add docs/pilot-protocol.md calibration/pilot_log.yaml tests/test_docs.py
