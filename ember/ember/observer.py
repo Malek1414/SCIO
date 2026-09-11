@@ -136,7 +136,7 @@ def validate(raw: dict, transcript: dict, bank: Bank, *, subject_id: str, sessio
             flags.append(f"{cid}: {len(proposed) - len(kept)} evidence quote(s) not verbatim, dropped")
         if not cov[cid]:
             declined.add(cid)
-        skipped = (not cov[cid]) or (cid in declined_raw)
+        skipped = cid in declined          # one source of truth: §6 says declined ⇒ low signal
         constructs[cid] = ConstructScore(score=score, signal=signal_for(len(kept), len(hit_turns), skipped),
                                          evidence=kept[:3], note=str(entry.get("note") or "")[:200])
     return ObserverResult(subject_id=subject_id, session_id=session_id, scored_at=scored_at,

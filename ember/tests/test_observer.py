@@ -109,3 +109,13 @@ def test_import_wall():
     src = (Path(__file__).parent.parent / "ember" / "observer.py").read_text()
     for forbidden in ("from .engine", "from .guards", "from .session", "from .server", "from .llm", "import ember.engine"):
         assert forbidden not in src, forbidden
+
+
+def test_every_declined_construct_has_low_signal(bank):
+    """Spec §6 invariant. The two must never be derived separately."""
+    r = raw(F1={"score": 6, "evidence": ["never wait to feel ready", "work a lot more", "they just work"], "note": "x"})
+    r["declined"] = ["F1"]                    # model declines a construct that HAS three verbatim quotes
+    out = _validate(bank, r, transcript(bank))
+    assert "F1" in out.declined
+    assert out.constructs["F1"].signal == "low"
+    assert all(out.constructs[c].signal == "low" for c in out.declined)

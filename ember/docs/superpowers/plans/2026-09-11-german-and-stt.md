@@ -139,7 +139,7 @@ git commit -m "fix: Unicode-correct word tokeniser (B1 — umlauts split words, 
 - Consumes: `validate` from `ember.observer`, unchanged signature.
 - Produces: the §6 invariant — every id in `declined` carries `signal == "low"` — enforced by construction.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Append to `tests/test_observer.py`:
 ```python
@@ -155,12 +155,12 @@ def test_every_declined_construct_has_low_signal(bank):
     assert all(out.constructs[c].signal == "low" for c in out.declined)
 ```
 
-- [ ] **Step 2: Run to verify it passes today but for the wrong reason, then make the coupling explicit**
+- [x] **Step 2: Run to verify it passes today but for the wrong reason, then make the coupling explicit**
 
 Run: `uv run pytest tests/test_observer.py -v`
 Expected: PASSES — today's expression happens to agree. The test pins the invariant so the refactor in Step 3 is safe and any future third decline-reason keeps it.
 
-- [ ] **Step 3: Derive `skipped` from `declined`**
+- [x] **Step 3: Derive `skipped` from `declined`**
 
 In `ember/observer.py`, replace:
 ```python
@@ -171,12 +171,12 @@ with:
         skipped = cid in declined          # one source of truth: §6 says declined ⇒ low signal
 ```
 
-- [ ] **Step 4: Run to verify it still passes**
+- [x] **Step 4: Run to verify it still passes**
 
 Run: `uv run pytest tests/test_observer.py -v`
 Expected: all pass, including the four original validate tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/observer.py tests/test_observer.py
