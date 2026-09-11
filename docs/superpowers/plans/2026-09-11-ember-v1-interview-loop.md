@@ -1317,7 +1317,7 @@ git commit -m "feat: session state with observer-safe transcript view" \
 - Consumes: `Candidate` from Task 4.
 - Produces: constants `PROBE_WINDOW_S = 240.0`, `FIRE_GUARD_S = 270.0`, `Q7_GATE_S = 345.0`, `HARD_CLOSE_S = 390.0`, `SILENCE_S = 25.0`, `PROBE_MIN_WORDS = 15`, `MAX_PROBES = 2`, `STT_MIN_WORDS = 5`, `MAX_RETRIES = 2`; functions `filter_candidates(cands: list[Candidate], surfaced_tags: set[str], min_threat: int) -> list[Candidate]`, `probe_allowed(elapsed_s: float, probes_used: int, last_answer_words: int) -> bool`, `resolve_slot(session_slot: int, elapsed_s: float) -> int`, `q7_allowed(elapsed_s: float) -> bool`, `should_hard_close(elapsed_s: float) -> bool`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_guards.py`:
 ```python
@@ -1354,12 +1354,12 @@ def test_q7_and_hard_close():
     assert not should_hard_close(HARD_CLOSE_S - 1) and should_hard_close(HARD_CLOSE_S)
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_guards.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.guards'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/guards.py`:
 ```python
@@ -1400,12 +1400,12 @@ def should_hard_close(elapsed_s: float) -> bool:
     return elapsed_s >= HARD_CLOSE_S
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_guards.py -v`
 Expected: `4 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/guards.py tests/test_guards.py
