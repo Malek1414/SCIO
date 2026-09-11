@@ -1,7 +1,7 @@
 """Verbatim-quote matching and small text helpers (spec §5.4, §5.6, §9)."""
 import re
 
-_WORD = re.compile(r"[a-z0-9']+")
+_WORD = re.compile(r"[\w']+", re.UNICODE)      # \w covers umlauts, ß, accents — ASCII-only silently split them
 _QUOTE = re.compile(r'["“]([^"”]+)["”]')
 _SENT = re.compile(r"[.!?]+")
 

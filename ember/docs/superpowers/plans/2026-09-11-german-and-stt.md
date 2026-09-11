@@ -69,7 +69,7 @@ Dependency direction unchanged: `text ← bank`, `stt ← server`, `copy ← ser
 **Interfaces:**
 - Produces: `normalize`, `word_count`, `contains_verbatim`, `longest_sentence` unchanged in signature, correct for non-ASCII letters.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Append to `tests/test_text.py`:
 ```python
@@ -97,12 +97,12 @@ def test_longest_sentence_picks_by_real_word_count():
     assert longest_sentence(text) == "Mein Größenwahn stand mir wirklich im Weg"
 ```
 
-- [ ] **Step 2: Run to verify it fails**
+- [x] **Step 2: Run to verify it fails**
 
 Run: `cd ~/Desktop/SCIO/ember && uv run pytest tests/test_text.py -v`
 Expected: `test_umlauts_and_eszett_count_as_one_word_each` FAILS — `normalize` returns `['ich', 'm', 'chte', 'gr', 'er', 'tr', 'umen']`.
 
-- [ ] **Step 3: Fix the regex**
+- [x] **Step 3: Fix the regex**
 
 In `ember/text.py`, replace line 4:
 ```python
@@ -113,12 +113,12 @@ with:
 _WORD = re.compile(r"[\w']+", re.UNICODE)      # \w covers umlauts, ß, accents — ASCII-only silently split them
 ```
 
-- [ ] **Step 4: Run the whole text suite and the engine suite**
+- [x] **Step 4: Run the whole text suite and the engine suite**
 
 Run: `uv run pytest tests/test_text.py tests/test_engine.py -v`
 Expected: all pass. (`normalize` lowercases first, so `\w` never sees uppercase; the English assertions are unaffected because `\w` also matches `[a-z0-9]` plus `_`.)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/text.py tests/test_text.py

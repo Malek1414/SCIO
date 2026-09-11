@@ -29,3 +29,25 @@ def test_extract_quote_double_and_curly():
 def test_longest_sentence():
     assert longest_sentence(ANSWER) == "I rebuilt the whole backend three times — nobody asked me to"
     assert longest_sentence("") == ""
+
+
+GERMAN = "Ich hätte es schön gefunden, aber mein Größenwahn stand im Weg."
+
+
+def test_umlauts_and_eszett_count_as_one_word_each():
+    assert normalize("Ich möchte größer träumen") == ["ich", "möchte", "größer", "träumen"]
+    assert word_count("Ich möchte größer träumen") == 4
+    assert word_count("hätte es schön") == 3
+    assert word_count("Straße") == 1
+
+
+def test_verbatim_bounds_hold_for_german():
+    assert contains_verbatim(GERMAN, "hätte es schön", min_words=3, max_words=6)
+    assert not contains_verbatim(GERMAN, "es schön", min_words=3, max_words=6)          # 2 words, too short
+    assert contains_verbatim(GERMAN, "mein Größenwahn stand im Weg", min_words=3, max_words=6)
+    assert not contains_verbatim(GERMAN, "hatte es schon", min_words=3, max_words=6)    # umlauts are not optional
+
+
+def test_longest_sentence_picks_by_real_word_count():
+    text = "Ich weiß nicht. Mein Größenwahn stand mir wirklich im Weg."
+    assert longest_sentence(text) == "Mein Größenwahn stand mir wirklich im Weg"
