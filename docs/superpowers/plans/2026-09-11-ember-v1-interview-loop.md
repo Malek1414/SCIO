@@ -2567,6 +2567,15 @@ def test_resume_returns_pending_question(tmp_path, mini_bank):
     sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
     r = client.post(f"/api/session/{sid}/resume").json()
     assert r["kind"] == "spine" and r["slot"] == 1 and r["question"] == mini_bank.opener.text
+
+
+def test_next_question_asked_at_is_after_answer(tmp_path, mini_bank):
+    client, store = _client(tmp_path, mini_bank,
+                            [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}], [LONG])
+    sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
+    _post_audio(client, sid)
+    s = store.load(sid)
+    assert s.pending.asked_at > s.turns[-1].answered_at      # speaking time must not include processing time
 ```
 
 - [x] **Step 2: Run to verify failure**
@@ -2663,10 +2672,11 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
         store.save(session)
 
         nxt = await asyncio.to_thread(engine.next, session, now)
+        shown_at = time.time()                       # the question is on screen from here, not from request start
         if nxt.kind == "close":
-            store.append_engine_log(sid, {"at": now, "kind": "close-decision", **nxt.log})
-            return await asyncio.to_thread(_close, session, now)
-        return _ask(session, nxt, now)
+            store.append_engine_log(sid, {"at": shown_at, "kind": "close-decision", **nxt.log})
+            return await asyncio.to_thread(_close, session, shown_at)
+        return _ask(session, nxt, shown_at)
 
     @app.post("/api/session/{sid}/rephrase")
     def rephrase(sid: str):
@@ -2713,7 +2723,7 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
 - [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_server.py -v`
-Expected: `7 passed`
+Expected: `8 passed`
 
 - [x] **Step 5: Commit**
 

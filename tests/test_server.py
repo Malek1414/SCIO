@@ -98,3 +98,12 @@ def test_resume_returns_pending_question(tmp_path, mini_bank):
     sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
     r = client.post(f"/api/session/{sid}/resume").json()
     assert r["kind"] == "spine" and r["slot"] == 1 and r["question"] == mini_bank.opener.text
+
+
+def test_next_question_asked_at_is_after_answer(tmp_path, mini_bank):
+    client, store = _client(tmp_path, mini_bank,
+                            [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}], [LONG])
+    sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
+    _post_audio(client, sid)
+    s = store.load(sid)
+    assert s.pending.asked_at > s.turns[-1].answered_at      # speaking time must not include processing time

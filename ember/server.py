@@ -83,10 +83,11 @@ def create_app(store: SessionStore, engine: Engine, transcriber) -> FastAPI:
         store.save(session)
 
         nxt = await asyncio.to_thread(engine.next, session, now)
+        shown_at = time.time()                       # the question is on screen from here, not from request start
         if nxt.kind == "close":
-            store.append_engine_log(sid, {"at": now, "kind": "close-decision", **nxt.log})
-            return await asyncio.to_thread(_close, session, now)
-        return _ask(session, nxt, now)
+            store.append_engine_log(sid, {"at": shown_at, "kind": "close-decision", **nxt.log})
+            return await asyncio.to_thread(_close, session, shown_at)
+        return _ask(session, nxt, shown_at)
 
     @app.post("/api/session/{sid}/rephrase")
     def rephrase(sid: str):
