@@ -1,0 +1,89 @@
+{
+  "constructs": {
+    "F1": {
+      "score": 6,
+      "evidence": [
+        "There's a half-finished synth on my desk I haven't touched in two months because of the internship",
+        "Two in the afternoon I'd have the soldering iron out and nobody would be able to reach me",
+        "Not travelling, not resting. Building the thing nobody asked for."
+      ],
+      "note": "Concrete object, concrete act, unprompted rejection of the soft alternatives; stops just short of naming the sensation or mechanism that makes the building addictive."
+    },
+    "F2": {
+      "score": 7,
+      "evidence": [
+        "I gave up the graduate scheme",
+        "Safe money and a title and I walked away to keep working on this",
+        "That's the real cost. Not the money. The explaining."
+      ],
+      "note": "Cost already paid, stated flatly, and he relocates the real cost to something unglamorous rather than bidding for admiration."
+    },
+    "F3": {
+      "score": 5,
+      "evidence": [
+        "Everyone in our year talks about starting something and he just starts",
+        "I keep waiting to feel ready and he treats it like a Tuesday",
+        "Ten years on, same story, better excuses"
+      ],
+      "note": "Clear restlessness about stagnation, but it is aimed at himself and at talkers rather than at settled people; no warmth-or-envy test was directly put to him."
+    },
+    "C1": {
+      "score": 7,
+      "evidence": [
+        "I'd have to become someone who doesn't pick up the phone. I already see it a bit.",
+        "My sister called three times last month and I let it ring because I was in the middle of something",
+        "I'm not sure I want normal to look like that"
+      ],
+      "note": "Names the drift between stated relational values and current behaviour himself, with a dated example, before any probe."
+    },
+    "C2": {
+      "score": 2,
+      "evidence": [
+        "Building the thing nobody asked for",
+        "I can't fully explain it to them and I've stopped trying"
+      ],
+      "note": "Nothing beyond self surfaces anywhere; family appears only as cost or audience, never as a frame that governs a decision. No slot directly targeted this."
+    },
+    "C3": {
+      "score": 7,
+      "evidence": [
+        "The guy at the reunion who is still talking about the thing he was going to build",
+        "Ten years on, same story, better excuses. I can picture him exactly.",
+        "Sometimes I catch myself using his sentences."
+      ],
+      "note": "A feared self, not a feared outcome, plus present-tense evidence he is already partway there."
+    },
+    "G1": {
+      "score": 7,
+      "evidence": [
+        "Forty minutes in I've stopped pretending to read",
+        "That's when the synth shows up in my head, and the calls I didn't return, in that order",
+        "I'd probably start sketching something just to not sit with the second one"
+      ],
+      "note": "Knows the sequence, the order, and names the avoidance move itself rather than performing stillness."
+    },
+    "G2": {
+      "score": 4,
+      "evidence": [
+        "Safe money and a title and I walked away to keep working on this",
+        "I can't fully explain it to them and I've stopped trying"
+      ],
+      "note": "No disruption question was asked; scored off the nearest material. He owns a decision and a subsequent behaviour change, but there is no rupture event and no account of what it rebuilt."
+    },
+    "G3": {
+      "score": 7,
+      "evidence": [
+        "they're doing their own thing and they know I'll surface",
+        "My sister sends photos and doesn't expect a reply until Sunday",
+        "That's the version I want. The version I've got is them waiting."
+      ],
+      "note": "Describes people as anchors and then names the gap between that and the current pattern, where they are held in a waiting posture around him."
+    }
+  },
+  "declined": [],
+  "flags": [
+    "No slot targeted G2 (disruption) or C2 (transcendence); both scores are inferred from adjacent answers and should be treated as low-confidence.",
+    "Cross-slot consistency worth a manual read: the unreturned sister calls appear in slot 4 as a feared future self, in slot 6 as what surfaces in silence, and in slot 7 as the current relational pattern. Either unusually coherent self-knowledge or a single rehearsed anecdote carrying three constructs.",
+    "C1 and C3 both rest on the subject pre-empting the gap himself ('I already see it a bit', 'I catch myself using his sentences'). High scores, but verify this is insight rather than a fluent self-critical register."
+  ]
+}

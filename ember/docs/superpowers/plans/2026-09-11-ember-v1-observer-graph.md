@@ -408,7 +408,7 @@ git commit -m "test: observer scoring, file I/O, and import wall" \
 **Interfaces:**
 - Consumes: `score` (Task 1); `RecordingLLM` (`tests/recording.py`, Plan A); `LLM`, `guard_environment` (`ember.llm`).
 
-- [ ] **Step 1: Write the test with a synthetic seven-turn session**
+- [x] **Step 1: Write the test with a synthetic seven-turn session**
 
 `tests/test_observer_recorded.py`:
 ```python
@@ -476,18 +476,18 @@ def test_observer_scores_full_session(llm):
     assert all(out.constructs[c].note for c in ("F1", "F2", "F3", "C3", "G1", "G3"))   # covered constructs carry a note
 ```
 
-- [ ] **Step 2: Record — needs the operator's Claude Code login**
+- [x] **Step 2: Record — needs the operator's Claude Code login**
 
 Run: `EMBER_RECORD=1 uv run pytest tests/test_observer_recorded.py -v`
 Expected: `1 passed` (one live call at effort `high`, ~10–20 s) and one new file in `tests/fixtures/recorded/`.
 If the assertion on `signal != "low"` fails, the model is returning too few verbatim quotes: read the recording, tighten the evidence wording in `build_observer_system`, delete the new recording, re-record. Do not loosen the validator.
 
-- [ ] **Step 3: Replay**
+- [x] **Step 3: Replay**
 
 Run: `uv run pytest tests/test_observer_recorded.py -v`
 Expected: `1 passed`, no network.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add tests/test_observer_recorded.py tests/fixtures/recorded/
