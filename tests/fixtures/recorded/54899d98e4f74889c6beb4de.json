@@ -1,0 +1,12 @@
+{
+  "action": "probe",
+  "candidate_id": null,
+  "probe_text": "You said \"no one needing anything\" — right after loyalty first.",
+  "surfaced_tags": [
+    "family",
+    "money",
+    "solitude",
+    "relationship"
+  ],
+  "reason": "The two answers contradict; holding them side by side without a question lets him name it."
+}

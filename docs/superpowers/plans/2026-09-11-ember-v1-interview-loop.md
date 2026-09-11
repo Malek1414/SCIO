@@ -2036,7 +2036,7 @@ git commit -m "feat: engine — prompts, pick/probe/close contract, validation, 
 - Consumes: `LLM` (Task 8), `Engine` (Task 9), real bank (Task 5).
 - Produces: `RecordingLLM(inner: LLM, dir: Path)` — same `call_json` signature; keys recordings by SHA-256 of (system, user, schema, effort); replays if present; records if `EMBER_RECORD=1`; otherwise raises `pytest.skip`.
 
-- [ ] **Step 1: Write the recording shim**
+- [x] **Step 1: Write the recording shim**
 
 `tests/recording.py`:
 ```python
@@ -2071,7 +2071,7 @@ class RecordingLLM:
         return out
 ```
 
-- [ ] **Step 2: Write six fixture transcripts**
+- [x] **Step 2: Write six fixture transcripts**
 
 Each file is a list of `{"slot", "question_id", "answer"}` for completed spine turns; the test builds the session from it. `tests/fixtures/transcripts/vague.json`:
 ```json
@@ -2100,7 +2100,7 @@ Each file is a list of `{"slot", "question_id", "answer"}` for completed spine t
 [{"slot": 1, "question_id": null, "answer": "My older brother. My parents put everything into his education and he never once complained, he just took it and built a company out of it. He calls my mum every day. I don't know how he does both."}]
 ```
 
-- [ ] **Step 3: Write the failing tests**
+- [x] **Step 3: Write the failing tests**
 
 `tests/test_engine_recorded.py`:
 ```python
@@ -2110,7 +2110,7 @@ import pytest
 
 from ember.bank import load_bank
 from ember.engine import Engine
-from ember.llm import LLM
+from ember.llm import LLM, guard_environment
 from ember.session import Turn
 from ember.text import extract_quote, contains_verbatim
 from tests.conftest import make_session
@@ -2132,6 +2132,7 @@ def _session_from(name: str):
 
 @pytest.fixture(scope="module")
 def engine():
+    guard_environment()          # strip nested Claude Code vars when run from inside a session
     return Engine(load_bank(), RecordingLLM(inner=LLM()))
 
 
@@ -2162,18 +2163,18 @@ def test_close_on_talker_is_verbatim(engine):
     assert out.take_home.endswith("?")
 ```
 
-- [ ] **Step 4: Record — requires the operator's Claude Code login on this machine**
+- [x] **Step 4: Record — requires the operator's Claude Code login on this machine**
 
 Run: `cd ~/Desktop/ember && EMBER_RECORD=1 uv run pytest tests/test_engine_recorded.py -v`
 Expected: `8 passed` and new files under `tests/fixtures/recorded/`. Roughly 8 subscription calls, ~30 s.
 If a test fails on a real model response (e.g. an over-long probe), that is a prompt-craft problem: adjust `build_system_prompt` wording in `ember/engine.py`, delete `tests/fixtures/recorded/*.json`, and re-record. Do not loosen the validators.
 
-- [ ] **Step 5: Replay without the flag**
+- [x] **Step 5: Replay without the flag**
 
 Run: `uv run pytest tests/test_engine_recorded.py -v`
 Expected: `8 passed`, zero network calls.
 
-- [ ] **Step 6: Commit (recordings included)**
+- [x] **Step 6: Commit (recordings included)**
 
 ```bash
 git add tests/recording.py tests/test_engine_recorded.py tests/fixtures/

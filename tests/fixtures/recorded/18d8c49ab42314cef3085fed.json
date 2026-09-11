@@ -1,0 +1,9 @@
+{
+  "action": "pick",
+  "candidate_id": "F3-c",
+  "probe_text": null,
+  "surfaced_tags": [
+    "quit"
+  ],
+  "reason": "Answer was terse and about quitting/persistence; F3-c mirrors that frame in third person and invites a concrete person rather than abstraction."
+}
