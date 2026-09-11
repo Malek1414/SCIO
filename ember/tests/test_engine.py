@@ -121,3 +121,11 @@ def test_close_fallback_uses_longest_fire_sentence(mini_bank):
     out = Engine(mini_bank, llm).close(s)
     assert out.mirror == LONG
     assert out.take_home == mini_bank.opener.fallback_take_home
+
+
+def test_german_bank_puts_a_german_instruction_in_the_system_prompt(mini_bank):
+    from ember.engine import build_system_prompt
+    assert "German" not in build_system_prompt(mini_bank)
+    german = mini_bank.model_copy(update={"language": "de"})
+    sp = build_system_prompt(german)
+    assert "German" in sp and "du" in sp

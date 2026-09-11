@@ -65,6 +65,9 @@ def build_system_prompt(bank: Bank) -> str:
         f"{c.framing} | needs {','.join(c.prerequisites) or '-'}\n  {c.text}"
         for c in bank.candidates)
     tags = "\n".join(f"- {t}: {TAG_HINTS[t]}" for t in sorted(TAGS))
+    lang_note = ("\nThe subject speaks German. Every probe you write and the close must be in German, "
+                 "addressing them as du. The candidate questions below are already German — pick by id as usual.\n"
+                 if bank.language == "de" else "")
     return f"""You choose the next question in a short spoken interview. The subject is a young builder. \
 The goal is for them to say something true about themselves they had not put into words. \
 You never diagnose, never explain what a question is for, never praise, never summarise.
@@ -81,6 +84,7 @@ Then the subject fills the silence. No yes/no phrasing anywhere. Do not probe if
 - If the last answer is a refusal or a deflection ("I'd rather not"), never probe it — pick the next candidate.
 - "close": only if told the session is closing.
 
+{lang_note}
 surfaced_tags: list every tag below whose topic appears anywhere in the transcript so far (empty list if none):
 {tags}
 

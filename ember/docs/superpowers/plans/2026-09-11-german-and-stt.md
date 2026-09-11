@@ -832,7 +832,7 @@ git commit -m "feat: record session language end to end and tell the observer (B
 - Consumes: `LANGUAGES` from `ember.bank` (Task 3).
 - Produces: `COPY: dict[str, dict[str, str]]` with identical key sets per language; `copy_for(lang: str) -> dict[str, str]`; `Engine(bank, llm)` unchanged in signature but its system prompt carries a German line when `bank.language == "de"`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_copy.py`:
 ```python
@@ -873,12 +873,12 @@ def test_german_bank_puts_a_german_instruction_in_the_system_prompt(mini_bank):
     assert "German" in sp and "du" in sp
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_copy.py tests/test_engine.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.copy'` and the engine test failing on a missing German line.
 
-- [ ] **Step 3: Write the copy module**
+- [x] **Step 3: Write the copy module**
 
 `ember/copy.py`:
 ```python
@@ -919,7 +919,7 @@ def copy_for(lang: str) -> dict[str, str]:
     return COPY.get(lang, COPY["en"])
 ```
 
-- [ ] **Step 4: Tell the engine the language**
+- [x] **Step 4: Tell the engine the language**
 
 In `ember/engine.py`, inside `build_system_prompt(bank)`, add before the `return`:
 ```python
@@ -929,12 +929,12 @@ In `ember/engine.py`, inside `build_system_prompt(bank)`, add before the `return
 ```
 and insert `{lang_note}` into the returned f-string immediately after the `Actions:` block and before the `surfaced_tags:` line.
 
-- [ ] **Step 5: Run to verify both pass**
+- [x] **Step 5: Run to verify both pass**
 
 Run: `uv run pytest tests/test_copy.py tests/test_engine.py -v`
 Expected: `3 passed` and `14 passed`.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add ember/copy.py ember/engine.py tests/test_copy.py tests/test_engine.py
