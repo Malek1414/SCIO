@@ -84,8 +84,7 @@ Then the subject fills the silence. No yes/no phrasing anywhere. Do not probe if
 - If the last answer is a refusal or a deflection ("I'd rather not"), never probe it — pick the next candidate.
 - "close": only if told the session is closing.
 
-{lang_note}
-surfaced_tags: list every tag below whose topic appears anywhere in the transcript so far (empty list if none):
+{lang_note}surfaced_tags: list every tag below whose topic appears anywhere in the transcript so far (empty list if none):
 {tags}
 
 Candidates (you may only pick ids that appear in the turn's offered list):
