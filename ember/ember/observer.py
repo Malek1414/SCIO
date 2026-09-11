@@ -63,7 +63,11 @@ def build_observer_system(rubric: dict[str, RubricEntry], language: str = "en") 
         inv = " (inverse: a high score means LOW tolerance)" if r.inverse else ""
         blocks.append(f"- {cid} — {r.name}{inv}\n{anchors}")
     joined = "\n".join(blocks)
-    note = ("\nThe transcript is in German. Score against the English rubric above; quote evidence verbatim "\n            "in German, exactly as the subject said it. Write every note and flag in English — the operator reads them.\n"\n            if language == "de" else "")
+    note = (
+        "\nThe transcript is in German. Score against the English rubric above; quote evidence verbatim "
+        "in German, exactly as the subject said it. Write every note and flag in English — the operator reads them.\n"
+        if language == "de" else ""
+    )
     return f"""You score an interview transcript against a fixed rubric. You are not the interviewer. You never advise, \
 praise, or diagnose — you place each construct on a 1–7 scale using the anchors below and you cite evidence.
 
