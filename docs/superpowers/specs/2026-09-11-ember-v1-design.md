@@ -471,6 +471,7 @@ Nothing in the architecture blocks any of them. Longitudinal is the most valuabl
 
 `mlx_whisper` · `whisper-large-v3-turbo` · Apple Silicon · 40.9 s synthetic speech (macOS `say`), 16 kHz mono WAV.
 CLI including model load: **6.95 s cold, 5.15 s warm.** One substitution error in ~140 words. In-process with the model resident is expected to be substantially faster; to be measured in build step 3.
+In-process, model resident: **1.14s** for the ~12 s test clip (build step 3, 2026-09-11).
 
 ## Appendix C — Agent SDK measurement, 2026-09-11
 

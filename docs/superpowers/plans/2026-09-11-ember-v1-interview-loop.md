@@ -2192,7 +2192,7 @@ git commit -m "test: recorded engine behaviour suite across six subject archetyp
 **Interfaces:**
 - Produces: `ember.audio.to_wav(src: Path, dst: Path) -> Path` (ffmpeg only, no mlx import); `ember.stt.MODEL_REPO = "mlx-community/whisper-large-v3-turbo"`; `class Transcriber(repo: str = MODEL_REPO)` with `warm() -> float` (seconds) and `transcribe(wav_path: Path) -> str`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_stt.py`:
 ```python
@@ -2234,16 +2234,16 @@ def test_transcribe_after_warm(clip, tmp_path):
     text = t.transcribe(wav)
     dt = time.perf_counter() - t0
     print(f"\nwarm={warm_s:.1f}s  transcribe={dt:.2f}s  text={text!r}")
-    assert "backend" in text.lower() and "three times" in text.lower()
+    assert "backend" in text.lower() and "wasting my time" in text.lower()   # whisper writes numbers as digits
     assert dt < 6.0
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_stt.py -v -s`
 Expected: `ModuleNotFoundError: No module named 'ember.stt'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/audio.py` — ffmpeg only, no mlx import, so store and server can use it cheaply:
 ```python
@@ -2286,12 +2286,12 @@ class Transcriber:
         return out["text"].strip()
 ```
 
-- [ ] **Step 4: Run to verify pass and record the number**
+- [x] **Step 4: Run to verify pass and record the number**
 
 Run: `uv run pytest tests/test_stt.py -v -s`
 Expected: `2 passed`, and a printed line like `warm=4.1s  transcribe=1.9s`. Append the measured `transcribe=` figure to spec Appendix B as a new line: `In-process, model resident: <N> s for the ~12 s test clip (build step 3, <date>).`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/audio.py ember/stt.py tests/test_stt.py docs/superpowers/specs/2026-09-11-ember-v1-design.md
