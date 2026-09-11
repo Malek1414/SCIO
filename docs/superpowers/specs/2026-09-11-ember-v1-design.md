@@ -472,7 +472,7 @@ Nothing in the architecture blocks any of them. Longitudinal is the most valuabl
 `mlx_whisper` · `whisper-large-v3-turbo` · Apple Silicon · 40.9 s synthetic speech (macOS `say`), 16 kHz mono WAV.
 CLI including model load: **6.95 s cold, 5.15 s warm.** One substitution error in ~140 words. In-process with the model resident is expected to be substantially faster; to be measured in build step 3.
 In-process, model resident: **1.14s** for the ~12 s test clip (build step 3, 2026-09-11).
-First browser run, S00, 7 turns, 2026-09-11: engine wall **2.9 s mean / 3.6 s max** (model ≈1.6 s, spawn ≈1.3 s); ffmpeg + whisper ≈1.5 s (from a server-side smoke session with 60-word answers). Expected perceived release→next-question ≈ **4.4 s**; operator reported "over 8 s" — the gap between the two is client-side (MediaRecorder stop → upload) or the first cold process spawn, to be watched in the pilots.
+First browser run, S00, 7 turns, 2026-09-11: engine wall **2.9 s mean / 3.6 s max** (model ≈1.6 s, spawn ≈1.3 s); whisper on the seven real recordings (31 s mean speech, 47 s max) **1.8 s mean / 2.6 s max** + ≈0.3 s ffmpeg. Server-side release→next-question ≈ **4.9 s mean, 5.7 s worst**. Operator perceived "over 8 s"; the 2–3 s remainder is client-side (recorder finalisation, upload) or perception — watch in the pilots. Chunked STT during speech (v1.1, §8) is the lever if it matters.
 
 ## Appendix C — Agent SDK measurement, 2026-09-11
 
