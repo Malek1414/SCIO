@@ -954,7 +954,7 @@ git commit -m "feat: per-language UI copy and a German instruction for the engin
 - Consumes: `load_bank("de")` (Task 3).
 - Produces: the shipped German bank — same ids, slots, targets, prerequisites and threat values as `bank/en/questions.yaml`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_german_bank.py`:
 ```python
@@ -988,12 +988,12 @@ def test_fire_threat_monotonicity_is_satisfiable_in_german():
             assert any(n.threat >= c.threat for n in de.for_slot(s + 1)), f"{c.id} strands slot {s + 1}"
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_german_bank.py -v`
 Expected: `FileNotFoundError: … ember/bank/de/opener.yaml`.
 
-- [ ] **Step 3: Write the German opener**
+- [x] **Step 3: Write the German opener**
 
 `ember/bank/de/opener.yaml`:
 ```yaml
@@ -1007,7 +1007,7 @@ fallback_take_home: >-
   Was müsstest du aufhören zu tun, um die Person zu werden, die du zuerst beschrieben hast?
 ```
 
-- [ ] **Step 4: Write the German spine questions**
+- [x] **Step 4: Write the German spine questions**
 
 `ember/bank/de/questions.yaml`:
 ```yaml
@@ -1222,12 +1222,12 @@ candidates:
     rephrase: So viel allein zu sein — wer weiß das eigentlich von dir?
 ```
 
-- [ ] **Step 5: Run to verify it passes**
+- [x] **Step 5: Run to verify it passes**
 
 Run: `uv run pytest tests/test_german_bank.py tests/test_bank.py -v`
 Expected: `3 passed` and `12 passed`. If a German question trips the yes/no validator, rewrite the question — never weaken the validator.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add ember/bank/de/ tests/test_german_bank.py

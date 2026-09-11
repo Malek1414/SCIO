@@ -1,0 +1,209 @@
+candidates:
+  # ── Slot 2 · Fire · threat 4–5 · keine Voraussetzungen erlaubt ──────────────
+  - id: F1-a
+    slot: 2
+    cluster: fire
+    targets: [F1]
+    threat: 4
+    framing: counterfactual-removal
+    default: true
+    text: >-
+      Geld ist gelöst. Miete, Essen, Familie — für immer geregelt. Es ist ein Dienstag.
+      Was machst du um zwei Uhr nachmittags?
+    rephrase: >-
+      Wenn Geld nie wieder ein Problem wäre — was würdest du an einem ganz normalen
+      Nachmittag tatsächlich tun?
+  - id: F1-b
+    slot: 2
+    cluster: fire
+    targets: [F1]
+    threat: 5
+    framing: envy-locator
+    text: Wessen Leben macht dich neidisch, auf eine Art, die du dir ungern eingestehst?
+    rephrase: Auf wessen Leben schaust du und spürst etwas, das du nicht gerne spürst?
+  - id: F3-c
+    slot: 2
+    cluster: fire
+    targets: [F3]
+    threat: 4
+    framing: third-person-projection
+    text: >-
+      Denk an die talentierteste Person, die du kennst und die trotzdem nicht vorankommt.
+      Was ist die eine Sache, die sie nicht tut?
+    rephrase: Die begabteste Person, die du kennst und die feststeckt — wovor drückt sie sich?
+
+  # ── Slot 3 · Fire · threat 5–6 ──────────────────────────────────────────────
+  - id: F2-a
+    slot: 3
+    cluster: fire
+    targets: [F2]
+    threat: 5
+    framing: cost-already-paid
+    default: true
+    text: >-
+      Was hast du dafür schon aufgegeben, das die Leute um dich herum nicht verstanden haben?
+    rephrase: >-
+      Was hat es dich gekostet — Zeit, Menschen, Geld — etwas zu verfolgen, das dir
+      wichtig war?
+  - id: F2-b
+    slot: 3
+    cluster: fire
+    targets: [F2]
+    threat: 6
+    framing: cost-already-paid
+    prerequisites: [relationship]
+    text: Du hast jemanden erwähnt, der dir nahesteht. Was hat das, was du verfolgst, dich bei dieser Person gekostet?
+    rephrase: Die Person, die du erwähnt hast — wo ist dir dein Ehrgeiz dort in die Quere gekommen?
+  - id: F3-a
+    slot: 3
+    cluster: fire
+    targets: [F3]
+    threat: 5
+    framing: settled-person-read
+    text: >-
+      Denk an jemanden, der sich eingerichtet hat. Bequemes Leben, hat aufgehört zu drücken.
+      Wie ist es, mit dieser Person Zeit zu verbringen?
+    rephrase: Jemand, der aufgehört hat, es zu versuchen — wie fühlt sich ein Abend mit ihm an?
+  - id: F1-d
+    slot: 3
+    cluster: fire
+    targets: [F1]
+    threat: 5
+    framing: discrepancy
+    prerequisites: [money]
+    text: Du hast vorhin Geld erwähnt. Wenn die Sache, die du willst, damit nichts einbringen würde — was ändert sich?
+    rephrase: Nimm Geld komplett raus. Was bleibt von dem Wollen übrig?
+  - id: F1-c
+    slot: 3
+    cluster: fire
+    targets: [F1, F3]
+    threat: 5
+    framing: third-person-projection
+    prerequisites: [named-project]
+    text: >-
+      Du hast etwas erwähnt, das du baust. Wenn es funktioniert — wie fühlt sich das
+      körperlich an?
+    rephrase: Das, woran du arbeitest — was ist das Gefühl, wenn es klickt?
+
+  # ── Slot 4 · Fire tief · threat 6–7 ─────────────────────────────────────────
+  - id: F2-c
+    slot: 4
+    cluster: fire
+    targets: [F2, F3]
+    threat: 7
+    framing: cost-already-paid
+    default: true
+    text: >-
+      Sagen wir, es klappt. Du bekommst genau das, was du beschrieben hast. Wozu musstest du
+      dafür werden, von dem du nicht sicher bist, dass du es sein willst?
+    rephrase: Wenn du alles bekommst, was du willst — was wird es dich als Mensch gekostet haben?
+  - id: F3-b
+    slot: 4
+    cluster: fire
+    targets: [F3]
+    threat: 6
+    framing: forking
+    prerequisites: [failure]
+    text: Du hast etwas erwähnt, das nicht funktioniert hat. War das das Scheitern — oder war es, dass du aufgehört hast?
+    rephrase: Diese Sache, die gescheitert ist — was hat sie wirklich beendet, das Scheitern oder das Aufhören?
+  - id: F1-e
+    slot: 4
+    cluster: fire
+    targets: [F1]
+    threat: 7
+    framing: aftermath-not-event
+    prerequisites: [quit]
+    text: Du hast gesagt, du hast etwas hingeschmissen. Was hast du eigentlich verlassen?
+    rephrase: Als du aufgehört hast — wovon bist du in Wirklichkeit weggegangen?
+
+  # ── Slot 5 · Compass ────────────────────────────────────────────────────────
+  - id: C1-a
+    slot: 5
+    cluster: compass
+    targets: [C1]
+    threat: 6
+    framing: pressure-decision
+    default: true
+    text: >-
+      Das letzte Mal, als du dich schnell entscheiden musstest und es jemanden etwas gekostet hat.
+      Wofür hast du dich entschieden?
+    rephrase: Eine schnelle Entscheidung, die etwas gekostet hat — wie hast du entschieden, und warum so?
+  - id: C2-a
+    slot: 5
+    cluster: compass
+    targets: [C2]
+    threat: 5
+    framing: scale-of-things
+    text: Was ist das Größte, von dem du ein kleiner Teil bist?
+    rephrase: Wozu gehörst du, das größer ist als dein eigenes Leben?
+  - id: C2-b
+    slot: 5
+    cluster: compass
+    targets: [C2]
+    threat: 6
+    framing: forking
+    prerequisites: [faith]
+    text: Du hast Glauben erwähnt. Wenn er und das, was du willst, in verschiedene Richtungen zeigen — was gibt nach?
+    rephrase: Wenn Glaube und Ehrgeiz sich widersprechen — welcher von beiden weicht?
+  - id: C3-a
+    slot: 5
+    cluster: compass
+    targets: [C3]
+    threat: 6
+    framing: fear-of-self
+    text: Was für ein Mensch hast du Angst zu werden?
+    rephrase: Welche Version von dir selbst versuchst du zu vermeiden?
+  - id: C1-b
+    slot: 5
+    cluster: compass
+    targets: [C1]
+    threat: 6
+    framing: discrepancy
+    prerequisites: [family]
+    text: Deine Familie kam vorhin vor. Was ist eine Regel, nach der du lebst, von der sie sagen würden, dass du sie brichst?
+    rephrase: Etwas, das du übers Leben glaubst — von dem deine Familie sagen würde, dass du dich nicht daran hältst?
+
+  # ── Slot 6 · Ground ─────────────────────────────────────────────────────────
+  - id: G1-a
+    slot: 6
+    cluster: ground
+    targets: [G1]
+    threat: 5
+    framing: empty-room
+    default: true
+    text: Handy ist leer. Sechs Stunden kommt niemand. Du bist vierzig Minuten drin. Was passiert?
+    rephrase: Sechs Stunden allein, kein Handy. Wie sieht die Mitte davon aus?
+  - id: G2-a
+    slot: 6
+    cluster: ground
+    targets: [G2]
+    threat: 6
+    framing: aftermath-not-event
+    text: Etwas hat dich mal aus der Bahn geworfen. Nicht die Sache selbst — was hast du danach aufgebaut?
+    rephrase: Nach dem Schlimmsten, das dir passiert ist — was hast du danach anders gemacht?
+  - id: G2-b
+    slot: 6
+    cluster: ground
+    targets: [G2]
+    threat: 7
+    framing: aftermath-not-event
+    prerequisites: [loss]
+    text: Du hast erwähnt, dass du etwas verloren hast. Was hast du danach entschieden, das du nie laut gesagt hast?
+    rephrase: Nach diesem Verlust — was hast du still für dich beschlossen?
+  - id: G3-a
+    slot: 6
+    cluster: ground
+    targets: [G3]
+    threat: 5
+    framing: people-as
+    text: Wenn du am besten bist — was machen die Menschen, die dir am nächsten stehen?
+    rephrase: An deinem besten Tag — wo sind die Menschen, die du liebst, und was tun sie?
+  - id: G3-b
+    slot: 6
+    cluster: ground
+    targets: [G3]
+    threat: 6
+    framing: people-as
+    prerequisites: [solitude]
+    text: Du hast gesagt, du verbringst viel Zeit allein. Wer weiß das?
+    rephrase: So viel allein zu sein — wer weiß das eigentlich von dir?
