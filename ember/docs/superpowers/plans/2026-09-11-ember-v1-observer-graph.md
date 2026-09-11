@@ -59,7 +59,7 @@ Dependency direction: `observer ← calibrate`, `observer ← export ← cli`. `
 - Consumes: `Bank`, `RubricEntry`, `load_bank` (`ember.bank`); `CONSTRUCTS`, `signal_for` (`ember.constructs`); `contains_verbatim` (`ember.text`); `RUBRIC_VERSION` (`ember.store`).
 - Produces: `OPENER_TARGETS = ("F1", "F3")`; `MIN_QUOTE_WORDS = 3`; `OBSERVER_SCHEMA: dict`; pydantic `ConstructScore(score: int, signal: str, evidence: list[str], note: str)`; `ObserverResult(subject_id, session_id, scored_at, rubric_version, constructs: dict[str, ConstructScore], declined: list[str], flags: list[str])`; `coverage(transcript: dict, bank: Bank) -> dict[str, bool]`; `validate(raw: dict, transcript: dict, bank: Bank, *, subject_id: str, session_id: str, scored_at: str, rubric_version: str) -> ObserverResult`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_observer.py`:
 ```python
@@ -142,12 +142,12 @@ def test_validate_declined_bad_score_and_clamp(bank):
     assert isinstance(out, ObserverResult) and out.rubric_version == "1.0.0"
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `cd ~/Desktop/SCIO/ember && uv run pytest tests/test_observer.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.observer'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/observer.py`:
 ```python
@@ -319,12 +319,12 @@ def load_results(sessions_root: Path) -> dict[str, dict]:
     return {p.parent.name: json.loads(p.read_text(encoding="utf-8")) for p in sorted(Path(sessions_root).glob("*/observer.json"))}
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_observer.py -v`
 Expected: `4 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/observer.py tests/test_observer.py
