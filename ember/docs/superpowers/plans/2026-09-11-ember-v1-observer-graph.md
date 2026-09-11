@@ -507,7 +507,7 @@ git commit -m "test: recorded observer run on a synthetic seven-turn session" \
 - Consumes: `CONSTRUCTS` (`ember.constructs`).
 - Produces: `TARGET_AGREEMENT = 0.8`, `DISAGREE_AT = 2`; `load_human_scores(path: Path) -> dict[str, dict[str, dict[str, int]]]` (session → rater → construct → score); `median_scores(raters: dict[str, dict[str, int]]) -> dict[str, float]`; dataclasses `Disagreement(session_id, construct, observer, human_median, delta)` and `Report(n_scores, n_within_1, disagreements, missing)` with properties `agreement: float`, `passed: bool`; `agreement(observer: dict[str, dict], human: dict) -> Report`; `render(report: Report) -> str`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_calibrate.py`:
 ```python
@@ -553,12 +553,12 @@ def test_render_names_pass_fail_and_anchors():
     assert "0/0" in empty and "FAIL" in empty
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `uv run pytest tests/test_calibrate.py -v`
 Expected: `ModuleNotFoundError: No module named 'ember.calibrate'`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `ember/calibrate.py`:
 ```python
@@ -658,12 +658,12 @@ sessions: {}
 #     claude: {F1: 5, F2: 5, F3: 6, C1: 3, C2: 3, C3: 5, G1: 4, G2: 2, G3: 5}
 ```
 
-- [ ] **Step 4: Run to verify pass**
+- [x] **Step 4: Run to verify pass**
 
 Run: `uv run pytest tests/test_calibrate.py -v`
 Expected: `3 passed`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add ember/calibrate.py calibration/human_scores.yaml tests/test_calibrate.py

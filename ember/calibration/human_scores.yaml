@@ -1,0 +1,9 @@
+# Hand scores for calibration (spec §6). Score each pilot transcript against ember/bank/rubric.yaml
+# BEFORE looking at its observer.json. One block per session id, one map per rater, every construct 1–7.
+# Then: uv run ember calibrate
+sessions: {}
+# example:
+# sessions:
+#   S01_2026-09-20T14-05-11:
+#     malek:  {F1: 5, F2: 4, F3: 6, C1: 3, C2: 2, C3: 5, G1: 4, G2: 3, G3: 5}
+#     claude: {F1: 5, F2: 5, F3: 6, C1: 3, C2: 3, C3: 5, G1: 4, G2: 2, G3: 5}
