@@ -213,7 +213,7 @@ A controlled vocabulary the engine emits with every turn, accumulated in session
 }
 ```
 
-Validation before the screen updates: `candidate_id` must be in the offered list; `probe_text` must contain a **verbatim ≥ 3-consecutive-word substring** of the last answer (case-insensitive, punctuation-stripped) and be ≤ 12 words; `action: probe` rejected if budget is 0 or window is closed. A validation failure falls back to the slot's default candidate — no retry, no second LLM call.
+Validation before the screen updates: `candidate_id` must be in the offered list; `probe_text` must contain a **verbatim 3–6-consecutive-word substring** of the last answer (case-insensitive, punctuation-stripped) and be ≤ 12 words total; `action: probe` rejected if budget is 0 or window is closed. A validation failure falls back to the slot's default candidate — no retry, no second LLM call.
 
 ### 5.5 Deterministic guards (no LLM involved)
 
@@ -236,7 +236,7 @@ Separate call, its own schema:
   "take_home": "one question, ≤ 20 words, must reference the mirror" }
 ```
 
-Validation: mirror must be a verbatim substring of the transcript (same matching rule as probes). Failure → the engine selects the longest single sentence the subject said about their Fire answer as the mirror, and uses a slot-independent fallback take-home from the bank. The screen holds the close until the operator ends the session.
+Validation: mirror must be a verbatim substring of the transcript (same matching rule as probes). Failure → the engine selects the longest single sentence from any Fire-slot answer as the mirror, and uses a slot-independent fallback take-home from the bank. The screen holds the close until the operator ends the session.
 
 ### 5.7 Why the LLM chooses spine questions but writes probes and the close
 
