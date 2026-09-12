@@ -57,17 +57,30 @@ def test_answer_advances_and_persists(tmp_path, mini_bank):
     assert (store.dir_for(sid) / "audio" / "q1.wav").exists()
 
 
-def test_short_answer_retries_then_skips(tmp_path, mini_bank):
+def test_short_answers_keep_re_asking_and_never_skip(tmp_path, mini_bank):
+    """A question is never given up on: short audio is re-asked, not marked skipped."""
     client, store = _client(tmp_path, mini_bank,
                             [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}],
-                            ["uh", "hmm", "no"])
+                            ["uh", "hmm", "no", "eh", "ok", "mm"])
     sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
-    assert _post_audio(client, sid).json()["retry"] is True
-    assert _post_audio(client, sid).json()["retry"] is True
+    for _ in range(6):
+        assert _post_audio(client, sid).json()["retry"] is True      # well past the old 2-retry ceiling
+    s = store.load(sid)
+    assert s.turns == [] and s.retries == 6
+    assert s.pending is not None and s.pending.skipped is False      # still the same question, still unskipped
+
+
+def test_a_real_answer_after_many_retries_still_advances(tmp_path, mini_bank):
+    client, store = _client(tmp_path, mini_bank,
+                            [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}],
+                            ["uh", "hmm", "no", LONG])
+    sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
+    for _ in range(3):
+        assert _post_audio(client, sid).json()["retry"] is True
     body = _post_audio(client, sid).json()
     assert body["kind"] == "spine" and body["slot"] == 2
     s = store.load(sid)
-    assert s.turns[0].skipped is True and s.retries == 0
+    assert s.turns[0].answer == LONG and s.turns[0].skipped is False and s.retries == 0
 
 
 def test_rephrase_returns_gentler_text(tmp_path, mini_bank):
@@ -195,3 +208,29 @@ def test_the_close_response_is_unchanged_when_no_hook_is_installed(tmp_path, min
     store.save(s)
     body = _post_audio(client, sid).json()
     assert body["kind"] == "close" and body["mirror"] == CLOSE["mirror"]
+
+
+def test_short_audio_past_the_hard_close_ends_the_interview_without_a_skip(tmp_path, mini_bank):
+    """Out of time we close rather than loop forever — but still never record a skip."""
+    scored = []
+    client, store = _client(tmp_path, mini_bank, [CLOSE], ["uh"], on_close=scored.append)
+    sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
+    s = store.load(sid)
+    s.started_at -= 1000                                  # past HARD_CLOSE_S
+    store.save(s)
+    assert _post_audio(client, sid).json()["kind"] == "close"
+    s = store.load(sid)
+    assert s.closed is True and not any(t.skipped for t in s.turns)
+    assert scored == [sid]                                # a timed-out session still gets scored
+
+
+def test_no_language_can_produce_a_skipped_turn(tmp_path, mini_bank):
+    """Same contract in German as in English."""
+    for lang in ("en", "de"):
+        client, store = _client(tmp_path, mini_bank,
+                                [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}],
+                                ["uh", "hmm", "no", "eh"])
+        sid = client.post("/api/session", json={"subject_code": "S01", "language": lang}).json()["session_id"]
+        for _ in range(4):
+            assert _post_audio(client, sid).json()["retry"] is True, lang
+        assert not any(t.skipped for t in store.load(sid).turns), lang
