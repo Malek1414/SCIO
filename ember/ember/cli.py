@@ -56,10 +56,18 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--scores", type=Path, default=Path("calibration/human_scores.yaml"))
     c.add_argument("--sessions", type=Path, default=Path("sessions"))
 
-    n = sub.add_parser("contribute", help="package a scored session and open a pull request with it")
+    n = sub.add_parser("contribute", help="package a scored session into one file to send to the study")
     n.add_argument("session_dir", type=Path)
-    n.add_argument("--results", type=Path, default=Path("results"))
-    n.add_argument("--no-pr", action="store_true", help="write the result file only; print the git commands")
+    n.add_argument("--out", type=Path, default=Path("outbox"), help="where to write the file you send")
+    n.add_argument("--pr", action="store_true",
+                   help="also open a pull request (only works if you have write access to the study repo)")
+
+    g = sub.add_parser("ingest", help="file result(s) an interviewer sent you, then rebuild the cohort page")
+    g.add_argument("files", type=Path, nargs="+")
+    g.add_argument("--results", type=Path, default=Path("results"))
+    g.add_argument("--sessions", type=Path, default=Path("sessions"))
+    g.add_argument("--graph", type=Path, default=Path("graph/data.js"))
+    g.add_argument("--no-export", action="store_true", help="file the result but do not rebuild the page")
 
     v = sub.add_parser("stt-eval", help="measure STT backends against reference clips")
     v.add_argument("--clips", type=Path, default=Path("calibration/stt_clips.yaml"))
@@ -132,24 +140,45 @@ def main(argv: list[str] | None = None) -> int:
 
         try:
             result = build_result(args.session_dir)
-            out = write_result(result, args.results)
+            out = write_result(result, args.out)
         except ContributeError as e:
             print(e)
             return 1
-        print(f"wrote {out}  ({result['subject_code']} · {result['language']})")
-        if args.no_pr:
-            print("\nnext, by hand:\n"
-                  f"  git checkout -b contribution/{result['session_id']}\n"
-                  f"  git add {out}\n"
-                  f"  git commit -m 'Contribute scored interview {result['session_id']}'\n"
-                  "  git push -u origin HEAD && gh pr create --fill")
+        n_quotes = sum(len(c.get("evidence", [])) for c in result["scores"].values())
+        print(f"wrote {out}  ({result['subject_code']} · {result['language']} · "
+              f"{len(result['scores'])} scores · {n_quotes} quoted answers)")
+        print("send that one file to whoever runs the study. The audio and the full transcript "
+              f"stay here in {args.session_dir}.")
+        if not args.pr:
             return 0
         try:
             url = open_pull_request(out, result["session_id"], repo_root=repo_root_for(out))
         except ContributeError as e:
-            print(f"{e}\n\nthe result file is written — open the pull request by hand, or rerun with --no-pr")
+            print(f"\n{e}\n\nthe file is written either way — send it instead.")
             return 1
         print(f"pull request: {url}")
+        return 0
+
+    if args.cmd == "ingest":
+        from .bank import load_bank
+        from .contribute import ContributeError, ingest
+        from .export import collect, write_data_js
+
+        filed = []
+        for f in args.files:
+            try:
+                filed.append(ingest(f, args.results))
+            except ContributeError as e:
+                print(f"refused {f}: {e}")
+        for out in filed:
+            print(f"filed {out.name}")
+        if not filed:
+            return 1
+        if args.no_export:
+            return 0
+        data = collect(args.sessions, load_bank(), results_root=args.results)
+        dest = write_data_js(data, args.graph)
+        print(f"{len(data['subjects'])} subject(s) → {dest}   (open graph/index.html)")
         return 0
 
     if args.cmd == "stt-eval":

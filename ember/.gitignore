@@ -6,3 +6,4 @@ ember.sqlite
 tests/fixtures/audio/
 .env
 graph/data.js
+outbox/

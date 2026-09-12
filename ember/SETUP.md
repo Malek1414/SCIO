@@ -1,8 +1,8 @@
 # Running an ember interview on your own machine
 
 You run the interview locally, on your own hardware and your own Claude subscription.
-The recording never leaves your laptop. When you're done you send back one small JSON
-file — the scores — as a pull request.
+The recording never leaves your laptop. When you're done you send one small JSON
+file — the scores — to whoever runs the study.
 
 ## What you need
 
@@ -12,8 +12,10 @@ file — the scores — as a pull request.
   SDK, so your interviews run on your subscription, not anyone else's.
 - **ffmpeg** — `brew install ffmpeg`
 - **uv** — `curl -LsSf https://astral.sh/uv/install.sh | sh`
-- **gh**, signed in — `brew install gh && gh auth login`
-- Access to the study repository (it's private — ask for an invite).
+
+You do **not** need access to the study's own repository, and you won't be given any. You
+run interviews; you send back one file per interview. You never see anyone else's answers,
+and nobody sees yours except whoever runs the study.
 
 ## Setup
 
@@ -55,22 +57,32 @@ writes `graph/data.js`. Open `graph/index.html` in a browser to see the result.
 uv run ember contribute sessions/<SUBJECT>_<timestamp>
 ```
 
-That writes `results/<session id>.json`, branches, commits, pushes and opens the pull
-request. Add `--no-pr` if you'd rather do the git part yourself — it prints the commands.
+That writes one file into `outbox/`. Send that file to whoever runs the study, however you
+normally send things. That's the whole handover — there's no git, no pull request, no
+account to set up.
 
-**What's in that file:** the nine construct scores, the observer's notes and flags, the
-closing mirror and take-home question, and short verbatim quotes from the subject's
-answers as evidence for each score.
+It prints exactly what's in the file before you send it, e.g.
 
-**What is not:** the audio, and the full transcript. Those stay in `sessions/` on your
-machine, which is gitignored and never uploaded.
+```
+wrote outbox/KAI_2026-09-12T10-00-00.json  (KAI · de · 9 scores · 6 quoted answers)
+```
+
+**What's in it:** the nine construct scores, the observer's notes and flags, the closing
+mirror and take-home question, and short verbatim quotes from the subject's answers as
+the evidence behind each score.
+
+**What is not:** the audio, and the full transcript. Both stay in `sessions/` on your
+machine. `sessions/` and `outbox/` are both gitignored, so nothing leaves by accident.
+
+Read the file before you send it if you like — it's plain JSON, and the quotes in it are
+the part your subject agreed to share.
 
 ## Before you interview anyone
 
 The consent screen tells the subject that their scores and quoted answers may go to the
 study's private repository. Let them actually read it. If they want their session gone
-afterwards, delete the `sessions/<id>/` directory and say so on the pull request — or
-close the PR if it hasn't been merged.
+afterwards, delete the `sessions/<id>/` directory on your machine. If you already sent the
+file, say so — it can be pulled before it ever reaches the dashboard.
 
 ## When something breaks
 
@@ -80,4 +92,4 @@ close the PR if it hasn't been merged.
 | `address already in use` | an ember is already running — `pkill -f "ember serve"` |
 | `no observer.json` from `contribute` | the session wasn't scored: `uv run ember observe sessions/<id>` |
 | Microphone does nothing | the browser needs mic permission for `127.0.0.1`, and the page must be the one ember served |
-| `gh pr create failed` | `gh auth login`, and check you have access to the repo |
+| The server dies mid-interview | macOS can kill it under memory pressure. Restart it, then reopen `http://127.0.0.1:8765/?sid=<session id>` to resume at the pending question — nothing is lost, every answer is written to disk as it happens. |

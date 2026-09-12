@@ -75,3 +75,55 @@ def test_a_broken_contribution_is_skipped_not_fatal(tmp_path, mini_bank, capsys)
     assert data["subjects"] == []
     out = capsys.readouterr().out
     assert "skipping bad.json" in out and "skipping thin.json" in out
+
+
+# ── ingest: the receiving end. Everything here arrives from someone else's machine ──────────
+
+from ember.contribute import ingest
+
+
+def _sent(tmp_path: Path, payload: dict, name="sent.json") -> Path:
+    f = tmp_path / name
+    f.write_text(json.dumps(payload), encoding="utf-8")
+    return f
+
+
+def test_ingest_files_a_result_under_its_session_id(tmp_path):
+    out = ingest(_sent(tmp_path, build_result(_session(tmp_path))), tmp_path / "results")
+    assert out.name == f"{OBS['session_id']}.json"
+    assert json.loads(out.read_text(encoding="utf-8"))["subject_code"] == "KAI"
+
+
+def test_ingest_names_the_file_from_the_payload_not_the_sender(tmp_path):
+    """A sender cannot choose where their file lands."""
+    out = ingest(_sent(tmp_path, build_result(_session(tmp_path)), name="anything-at-all.json"),
+                 tmp_path / "results")
+    assert out.name == f"{OBS['session_id']}.json"
+
+
+def test_ingest_refuses_a_session_id_that_would_escape_the_results_dir(tmp_path):
+    bad = {**build_result(_session(tmp_path)), "session_id": "../../etc/passwd"}
+    with pytest.raises(ContributeError, match="unusable session_id"):
+        ingest(_sent(tmp_path, bad), tmp_path / "results")
+    assert not (tmp_path / "results").exists() or list((tmp_path / "results").glob("*")) == []
+
+
+def test_ingest_refuses_junk(tmp_path):
+    (tmp_path / "junk.json").write_text("{not json", encoding="utf-8")
+    with pytest.raises(ContributeError, match="not valid JSON"):
+        ingest(tmp_path / "junk.json", tmp_path / "results")
+
+    with pytest.raises(ContributeError, match="missing"):
+        ingest(_sent(tmp_path, {"subject_code": "X"}, name="thin.json"), tmp_path / "results")
+
+    with pytest.raises(ContributeError, match="not a file"):
+        ingest(tmp_path / "nope.json", tmp_path / "results")
+
+
+def test_an_ingested_result_reaches_the_cohort_page(tmp_path, mini_bank):
+    ingest(_sent(tmp_path, build_result(_session(tmp_path))), tmp_path / "results")
+    elsewhere = tmp_path / "no-sessions-here"
+    elsewhere.mkdir()
+    data = collect(elsewhere, mini_bank, results_root=tmp_path / "results")
+    assert [s["session_id"] for s in data["subjects"]] == [OBS["session_id"]]
+    assert data["subjects"][0]["scores"]["F1"]["evidence"] == ["ich baue etwas"]

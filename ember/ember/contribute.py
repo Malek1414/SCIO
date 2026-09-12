@@ -1,14 +1,21 @@
-"""Package a scored interview for someone else's dashboard and open the pull request (§7).
+"""Package a scored interview for the study's dashboard, and take one in at the other end (§7).
 
 Audio never leaves the machine that recorded it. What travels is one JSON file in the exact
-per-subject shape `export.collect` emits, so the receiving side needs no translation — merge
-the PR, run `ember export`, and the session appears on the cohort page.
+per-subject shape `export.collect` emits, so the receiving side needs no translation.
+
+Interviewers do not get access to the study repository — they send the file, and whoever runs
+the study ingests it. That is the whole reason `contribute` writes a file by default and only
+opens a pull request when asked: an interviewer who cannot read the repository cannot read
+anybody else's answers either.
 """
 import json
+import re
+import shutil
 import subprocess
 from pathlib import Path
 
 BRANCH_PREFIX = "contribution/"
+SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
 
 
 class ContributeError(RuntimeError):
@@ -66,3 +73,34 @@ def open_pull_request(result_file: Path, session_id: str, *, repo_root: Path) ->
 
 def repo_root_for(path: Path) -> Path:
     return Path(_git("rev-parse", "--show-toplevel", cwd=Path(path).resolve()))
+
+
+def ingest(incoming: Path, results_root: Path) -> Path:
+    """Take a result file sent by an interviewer and file it under results/.
+
+    The file came from another machine, so nothing in it is trusted: the destination name is
+    built from the validated session_id in the payload, never from the name on disk.
+    """
+    incoming = Path(incoming)
+    if not incoming.is_file():
+        raise ContributeError(f"{incoming} is not a file")
+    try:
+        d = json.loads(incoming.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise ContributeError(f"{incoming.name} is not valid JSON: {e}") from e
+    if not isinstance(d, dict):
+        raise ContributeError(f"{incoming.name} is not a result object")
+
+    from .export import REQUIRED
+    missing = [k for k in REQUIRED if k not in d]
+    if missing:
+        raise ContributeError(f"{incoming.name} is missing {', '.join(missing)} — is it an ember result?")
+    sid = str(d["session_id"])
+    if not SAFE_ID.match(sid):
+        raise ContributeError(f"{incoming.name} has an unusable session_id {sid!r}")
+
+    results_root = Path(results_root)
+    results_root.mkdir(parents=True, exist_ok=True)
+    out = results_root / f"{sid}.json"                  # name from the payload, not from the sender
+    shutil.copyfile(incoming, out)
+    return out
