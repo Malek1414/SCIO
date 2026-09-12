@@ -1,12 +1,17 @@
 """Every user-facing string on the subject screen, per language (spec §4.3).
-German is du throughout — the register the bank uses."""
+German is du throughout — the register the bank uses.
+
+The consent lines describe the widest thing that can happen to a session, not the narrowest:
+a scored result carries verbatim quotes and may be contributed to the study repository by
+pull request (see ember/contribute.py), so the subject is told that before they start.
+"""
 
 COPY: dict[str, dict[str, str]] = {
     "en": {
         "consent_title": "Before we start",
         "consent_1": "1. This is a ~7-minute psychological interview. It's recorded and transcribed.",
-        "consent_2": "2. Transcript text goes to Anthropic, through Malek's Claude subscription, to pick questions and score. Audio stays on this laptop.",
-        "consent_3": "3. Your session goes into a graph Malek reads. Ask him and he'll delete it.",
+        "consent_2": "2. Transcript text goes to Anthropic, through the interviewer's Claude subscription, to pick questions and score. The recording itself stays on this laptop and is never uploaded.",
+        "consent_3": "3. Your scores, and short quotes from your own answers, may be shared with the study's private repository, where its collaborators can read them. Ask the interviewer and your session gets deleted.",
         "code_label": "Subject code",
         "start": "I understand — start",
         "hint_idle": "Hold space to speak. Release when you're done.",
@@ -18,8 +23,8 @@ COPY: dict[str, dict[str, str]] = {
     "de": {
         "consent_title": "Bevor wir anfangen",
         "consent_1": "1. Das ist ein etwa 7-minütiges psychologisches Interview. Es wird aufgenommen und transkribiert.",
-        "consent_2": "2. Der transkribierte Text geht über Maleks Claude-Abo an Anthropic, um Fragen auszuwählen und auszuwerten. Die Audioaufnahme bleibt auf diesem Laptop.",
-        "consent_3": "3. Deine Sitzung landet in einer Auswertung, die Malek liest. Sag ihm Bescheid, dann löscht er sie.",
+        "consent_2": "2. Der transkribierte Text geht über das Claude-Abo des Interviewers an Anthropic, um Fragen auszuwählen und auszuwerten. Die Aufnahme selbst bleibt auf diesem Laptop und wird nicht hochgeladen.",
+        "consent_3": "3. Deine Werte und kurze wörtliche Zitate aus deinen Antworten können in das private Repository der Studie hochgeladen werden, wo die Beteiligten sie lesen können. Sag dem Interviewer Bescheid, dann wird deine Sitzung gelöscht.",
         "code_label": "Teilnehmer-Code",
         "start": "Verstanden — los",
         "hint_idle": "Halte die Leertaste gedrückt, um zu sprechen. Loslassen, wenn du fertig bist.",
