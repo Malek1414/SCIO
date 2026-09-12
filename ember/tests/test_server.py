@@ -20,12 +20,12 @@ class FakeTranscriber:
         return self.texts.pop(0)
 
 
-def _client(tmp_path, mini_bank, llm_responses, stt_texts, language="en"):
+def _client(tmp_path, mini_bank, llm_responses, stt_texts, language="en", on_close=None):
     store = SessionStore(tmp_path / "sessions")
     engines = {"en": Engine(mini_bank, FakeLLM(llm_responses)),
                "de": Engine(mini_bank.model_copy(update={"language": "de"}), FakeLLM(list(llm_responses)))}
     transcribers = {"en": FakeTranscriber(stt_texts), "de": FakeTranscriber(list(stt_texts))}
-    app = create_app(store, engines, transcribers)
+    app = create_app(store, engines, transcribers, on_close=on_close)
 
     def _fake_wav(src, dst):                                  # skip ffmpeg in tests
         dst.write_bytes(b"RIFF")
@@ -160,3 +160,38 @@ def test_rephrasing_changes_what_the_next_answer_is_primed_with(tmp_path, mini_b
     reworded = client.post(f"/api/session/{sid}/rephrase").json()["question"]
     _post_audio(client, sid)
     assert client.app.state.transcribers["en"].primes == [reworded]
+
+
+CLOSE = {"mirror": "nobody asked me to do any of it", "take_home": "What would it take to stop?"}
+
+
+def test_closing_an_interview_fires_the_autoscore_hook(tmp_path, mini_bank):
+    """A finished interview scores itself; the hook carries the session id it should score."""
+    scored = []
+    client, store = _client(tmp_path, mini_bank, [CLOSE], [LONG], on_close=scored.append)
+    sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
+    s = store.load(sid)
+    s.started_at -= 1000                                  # force the hard-close guard
+    store.save(s)
+    assert _post_audio(client, sid).json()["kind"] == "close"
+    assert scored == [sid]
+
+
+def test_an_answer_that_does_not_close_leaves_the_hook_alone(tmp_path, mini_bank):
+    scored = []
+    client, _ = _client(tmp_path, mini_bank,
+                        [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}],
+                        [LONG], on_close=scored.append)
+    sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
+    assert _post_audio(client, sid).json()["kind"] == "spine"
+    assert scored == []
+
+
+def test_the_close_response_is_unchanged_when_no_hook_is_installed(tmp_path, mini_bank):
+    client, store = _client(tmp_path, mini_bank, [CLOSE], [LONG])
+    sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
+    s = store.load(sid)
+    s.started_at -= 1000
+    store.save(s)
+    body = _post_audio(client, sid).json()
+    assert body["kind"] == "close" and body["mirror"] == CLOSE["mirror"]

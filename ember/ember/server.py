@@ -4,7 +4,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import BackgroundTasks, FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -24,7 +24,9 @@ class NewSession(BaseModel):
     language: str = "en"
 
 
-def create_app(store: SessionStore, engines: dict, transcribers: dict) -> FastAPI:
+def create_app(store: SessionStore, engines: dict, transcribers: dict, *, on_close=None) -> FastAPI:
+    """`on_close(session_id)` runs after the closing screen is delivered — see cli.serve, which
+    passes the scorer so a finished interview lands on the graph without a second command."""
     app = FastAPI(title="ember")
     app.state.store, app.state.engines, app.state.transcribers = store, engines, transcribers
     app.state.to_wav = to_wav
@@ -67,7 +69,7 @@ def create_app(store: SessionStore, engines: dict, transcribers: dict) -> FastAP
         return {"session_id": session.session_id, "language": lang, **resp}
 
     @app.post("/api/session/{sid}/answer")
-    async def answer(sid: str, audio: UploadFile = File(...)):
+    async def answer(sid: str, background: BackgroundTasks, audio: UploadFile = File(...)):
         session = _load(sid)
         if session.closed or session.pending is None:
             raise HTTPException(409, "session is closed")
@@ -100,7 +102,10 @@ def create_app(store: SessionStore, engines: dict, transcribers: dict) -> FastAP
         shown_at = time.time()                       # the question is on screen from here, not from request start
         if nxt.kind == "close":
             store.append_engine_log(sid, {"at": shown_at, "kind": "close-decision", **nxt.log})
-            return await asyncio.to_thread(_close, session, shown_at)
+            out = await asyncio.to_thread(_close, session, shown_at)
+            if on_close is not None:
+                background.add_task(on_close, sid)     # scoring takes ~30 s; it must not hold the closing screen
+            return out
         return _ask(session, nxt, shown_at)
 
     @app.post("/api/session/{sid}/rephrase")

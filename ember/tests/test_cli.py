@@ -61,3 +61,12 @@ def test_cli_observe_uses_a_long_timeout(tmp_path, monkeypatch):
     assert main(["observe", str(d)]) == 0
     assert captured["timeout_s"] >= 60                     # offline scoring must not use the live engine's 15 s bound
     assert (d / "observer.json").exists()
+
+
+def test_autoscore_reports_and_swallows_a_bad_session(tmp_path, capsys):
+    """A scoring failure must not take the server down with it."""
+    from ember.cli import _autoscore
+
+    hook = _autoscore(tmp_path / "sessions", tmp_path / "graph" / "data.js")
+    hook("NO_SUCH_SESSION")                                   # must not raise
+    assert "autoscore failed for NO_SUCH_SESSION" in capsys.readouterr().out

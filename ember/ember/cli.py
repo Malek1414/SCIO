@@ -7,6 +7,30 @@ from .llm import guard_environment
 OBSERVER_TIMEOUT_S = 120.0   # offline scoring at effort high takes 20–40 s; §9's 15 s bound is for the live engine only
 
 
+def _autoscore(sessions: Path, graph_out: Path):
+    """Score a just-closed interview and fold every result back into the cohort page.
+
+    Runs on the server's background-task threadpool once the closing screen has gone out, so a
+    ~30 s observer call never makes the subject wait. Failures are reported and dropped: a
+    scoring problem must not take the interview down with it.
+    """
+    from .bank import load_bank
+    from .export import collect, write_data_js
+    from .llm import LLM
+    from .observer import observe_session
+
+    def run(session_id: str) -> None:
+        try:
+            bank = load_bank()                       # the rubric is shared; German sessions score against it too
+            observe_session(Path(sessions) / session_id, bank, LLM(timeout_s=OBSERVER_TIMEOUT_S))
+            out = write_data_js(collect(Path(sessions), bank), Path(graph_out))
+            print(f"scored {session_id} → {out}")
+        except Exception as e:                       # noqa: BLE001 - a bad session must not kill the server
+            print(f"autoscore failed for {session_id}: {type(e).__name__}: {e}")
+
+    return run
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="ember")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -15,6 +39,9 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--port", type=int, default=8765)
     s.add_argument("--sessions", type=Path, default=Path("sessions"))
     s.add_argument("--no-warm", action="store_true", help="skip loading the whisper model at start (tests)")
+    s.add_argument("--graph", type=Path, default=Path("graph/data.js"), help="where the cohort page reads its data")
+    s.add_argument("--no-autoscore", action="store_true",
+                   help="do not score and export automatically when an interview closes")
 
     o = sub.add_parser("observe", help="score a session's transcript.json → observer.json (uses your Claude subscription)")
     o.add_argument("session_dir", type=Path)
@@ -49,10 +76,12 @@ def main(argv: list[str] | None = None) -> int:
             for lang, t in transcribers.items():
                 print(f"loading {lang} speech model… {t.warm():.1f}s")
         engines = {lang: Engine(load_bank(lang), LLM()) for lang in LANGUAGES}
-        app = create_app(SessionStore(args.sessions), engines, transcribers)
+        on_close = None if args.no_autoscore else _autoscore(args.sessions, args.graph)
+        app = create_app(SessionStore(args.sessions), engines, transcribers, on_close=on_close)
         if args.port == 0:
             return 0
         print(f"subject:  http://127.0.0.1:{args.port}/\noperator: http://127.0.0.1:{args.port}/operator")
+        print("autoscore: off" if args.no_autoscore else f"autoscore: on — closing an interview scores it and rewrites {args.graph}")
         uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="warning")
         return 0
 
