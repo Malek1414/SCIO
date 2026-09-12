@@ -79,7 +79,9 @@ def create_app(store: SessionStore, engines: dict, transcribers: dict) -> FastAP
         wav = app.state.to_wav(src, store.dir_for(sid) / "audio" / f"q{idx}.wav")
         src.unlink(missing_ok=True)
         transcriber = app.state.transcribers.get(session.language, app.state.transcribers["en"])
-        text = await asyncio.to_thread(transcriber.transcribe, wav)
+        # prime the decoder with the question on screen: it fixes the spelling of words the answer
+        # is about to reuse, which is where German was losing the most (spec §3.2)
+        text = await asyncio.to_thread(transcriber.transcribe, wav, session.pending.question)
 
         if word_count(text) < STT_MIN_WORDS:
             session.retries += 1

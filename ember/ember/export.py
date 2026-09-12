@@ -21,7 +21,7 @@ def collect(sessions_root: Path, bank: Bank, *, now: float | None = None) -> dic
                          "language": tr.get("language", r.get("language", "en")),
                          "declined": r.get("declined", []), "flags": r.get("flags", []),
                          "mirror": tr.get("mirror"), "take_home": tr.get("take_home")})
-    subjects.sort(key=lambda s: s["subject_code"])
+    subjects.sort(key=lambda s: (s["subject_code"], s["session_id"]))   # repeat runs stay adjacent and ordered
     ts = datetime.fromtimestamp(now if now is not None else time.time(), tz=timezone.utc).isoformat()
     return {"generated_at": ts, "rubric_version": RUBRIC_VERSION,
             "constructs": [{"id": c, "cluster": CLUSTER_OF[c], "name": bank.rubric[c].name, "inverse": bank.rubric[c].inverse}

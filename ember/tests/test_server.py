@@ -13,8 +13,10 @@ LONG = "I rebuilt the whole backend three times because the first two felt wrong
 class FakeTranscriber:
     def __init__(self, texts):
         self.texts = list(texts)
+        self.primes: list[str | None] = []
 
-    def transcribe(self, wav_path: Path) -> str:
+    def transcribe(self, wav_path: Path, prime: str | None = None) -> str:
+        self.primes.append(prime)
         return self.texts.pop(0)
 
 
@@ -141,3 +143,20 @@ def test_answer_uses_the_session_language_transcriber(tmp_path, mini_bank):
     sid = client.post("/api/session", json={"subject_code": "S01", "language": "de"}).json()["session_id"]
     _post_audio(client, sid)
     assert store.load(sid).turns[0].answer == LONG          # the "de" transcriber was the one consulted
+
+
+def test_answer_primes_the_transcriber_with_the_question_on_screen(tmp_path, mini_bank):
+    """The decoder gets the pending question so it spells back the words the answer reuses."""
+    client, store = _client(tmp_path, mini_bank, [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}], [LONG])
+    r = client.post("/api/session", json={"subject_code": "S1"}).json()
+    sid, asked = r["session_id"], r["question"]
+    _post_audio(client, sid)
+    assert client.app.state.transcribers["en"].primes == [asked]
+
+
+def test_rephrasing_changes_what_the_next_answer_is_primed_with(tmp_path, mini_bank):
+    client, store = _client(tmp_path, mini_bank, [{"action": "pick", "candidate_id": "S2-a", "surfaced_tags": [], "reason": "r"}], [LONG])
+    sid = client.post("/api/session", json={"subject_code": "S1"}).json()["session_id"]
+    reworded = client.post(f"/api/session/{sid}/rephrase").json()["question"]
+    _post_audio(client, sid)
+    assert client.app.state.transcribers["en"].primes == [reworded]

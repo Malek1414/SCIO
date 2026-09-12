@@ -8,19 +8,19 @@ candidates:
     framing: counterfactual-removal
     default: true
     text: >-
-      Geld ist gelöst. Miete, Essen, Familie — für immer geregelt. Es ist ein Dienstag.
-      Was machst du um zwei Uhr nachmittags?
+      Stell dir vor, Geld ist für immer geregelt — Miete, Essen, Familie, alles.
+      Es ist ein ganz normaler Dienstag. Was machst du um zwei Uhr nachmittags?
     rephrase: >-
-      Wenn Geld nie wieder ein Problem wäre — was würdest du an einem ganz normalen
-      Nachmittag tatsächlich tun?
+      Wenn Geld nie wieder ein Problem wäre: Was würdest du an einem normalen
+      Nachmittag wirklich machen?
   - id: F1-b
     slot: 2
     cluster: fire
     targets: [F1]
     threat: 5
     framing: envy-locator
-    text: Wessen Leben macht dich neidisch, auf eine Art, die du dir ungern eingestehst?
-    rephrase: Auf wessen Leben schaust du und spürst etwas, das du nicht gerne spürst?
+    text: Wessen Leben würdest du gegen deins tauschen, wenn es niemand mitbekommt?
+    rephrase: "Wen kennst du, bei dem du dir denkst: So hätte ich es auch gern?"
   - id: F3-c
     slot: 2
     cluster: fire
@@ -29,8 +29,10 @@ candidates:
     framing: third-person-projection
     text: >-
       Denk an die talentierteste Person, die du kennst und die trotzdem nicht vorankommt.
-      Was ist die eine Sache, die sie nicht tut?
-    rephrase: Die begabteste Person, die du kennst und die feststeckt — wovor drückt sie sich?
+      Was ist die eine Sache, die sie nicht macht?
+    rephrase: >-
+      Die begabteste Person, die du kennst, kommt trotzdem nicht weiter.
+      Wovor drückt sie sich?
 
   # ── Slot 3 · Fire · threat 5–6 ──────────────────────────────────────────────
   - id: F2-a
@@ -41,10 +43,10 @@ candidates:
     framing: cost-already-paid
     default: true
     text: >-
-      Was hast du dafür schon aufgegeben, das die Leute um dich herum nicht verstanden haben?
+      Was hast du für die Sache, die dir wichtig ist, schon aufgegeben — etwas, das die
+      Leute um dich herum nicht verstanden haben?
     rephrase: >-
-      Was hat es dich gekostet — Zeit, Menschen, Geld — etwas zu verfolgen, das dir
-      wichtig war?
+      Was hat dich das, was du willst, bisher gekostet? Zeit, Geld, Menschen?
   - id: F2-b
     slot: 3
     cluster: fire
@@ -52,8 +54,11 @@ candidates:
     threat: 6
     framing: cost-already-paid
     prerequisites: [relationship]
-    text: Du hast jemanden erwähnt, der dir nahesteht. Was hat das, was du verfolgst, dich bei dieser Person gekostet?
-    rephrase: Die Person, die du erwähnt hast — wo ist dir dein Ehrgeiz dort in die Quere gekommen?
+    text: >-
+      Du hast jemanden erwähnt, der dir nahesteht. Was hat dich dein Ehrgeiz bei dieser
+      Person schon gekostet?
+    rephrase: >-
+      Die Person, die du erwähnt hast — wo ist dir dein Ehrgeiz dort in die Quere gekommen?
   - id: F3-a
     slot: 3
     cluster: fire
@@ -61,9 +66,11 @@ candidates:
     threat: 5
     framing: settled-person-read
     text: >-
-      Denk an jemanden, der sich eingerichtet hat. Bequemes Leben, hat aufgehört zu drücken.
-      Wie ist es, mit dieser Person Zeit zu verbringen?
-    rephrase: Jemand, der aufgehört hat, es zu versuchen — wie fühlt sich ein Abend mit ihm an?
+      Denk an jemanden, der es sich bequem gemacht hat und gar nicht mehr versucht,
+      weiterzukommen. Wie ist es, Zeit mit dieser Person zu verbringen?
+    rephrase: >-
+      Jemand, der aufgehört hat, es überhaupt zu versuchen: Wie fühlt sich ein Abend
+      mit dem an?
   - id: F1-d
     slot: 3
     cluster: fire
@@ -71,8 +78,10 @@ candidates:
     threat: 5
     framing: discrepancy
     prerequisites: [money]
-    text: Du hast vorhin Geld erwähnt. Wenn die Sache, die du willst, damit nichts einbringen würde — was ändert sich?
-    rephrase: Nimm Geld komplett raus. Was bleibt von dem Wollen übrig?
+    text: >-
+      Du hast vorhin Geld erwähnt. Angenommen, die Sache, die du willst, bringt nie Geld
+      ein — was ändert sich dann?
+    rephrase: Nimm das Geld komplett raus. Was bleibt von dem Wunsch übrig?
   - id: F1-c
     slot: 3
     cluster: fire
@@ -81,9 +90,9 @@ candidates:
     framing: third-person-projection
     prerequisites: [named-project]
     text: >-
-      Du hast etwas erwähnt, das du baust. Wenn es funktioniert — wie fühlt sich das
-      körperlich an?
-    rephrase: Das, woran du arbeitest — was ist das Gefühl, wenn es klickt?
+      Du hast etwas erwähnt, woran du arbeitest. Stell dir vor, es funktioniert wirklich —
+      was passiert in dem Moment in dir?
+    rephrase: Das, woran du arbeitest — was spürst du in dem Moment, in dem es klappt?
 
   # ── Slot 4 · Fire tief · threat 6–7 ─────────────────────────────────────────
   - id: F2-c
@@ -94,9 +103,10 @@ candidates:
     framing: cost-already-paid
     default: true
     text: >-
-      Sagen wir, es klappt. Du bekommst genau das, was du beschrieben hast. Wozu musstest du
-      dafür werden, von dem du nicht sicher bist, dass du es sein willst?
-    rephrase: Wenn du alles bekommst, was du willst — was wird es dich als Mensch gekostet haben?
+      Sagen wir, es klappt und du bekommst genau das, was du beschrieben hast.
+      Was für ein Mensch musstest du dafür werden — und willst du dieser Mensch sein?
+    rephrase: >-
+      Wenn du alles bekommst, was du willst: Was hat es dich als Mensch gekostet?
   - id: F3-b
     slot: 4
     cluster: fire
@@ -104,8 +114,12 @@ candidates:
     threat: 6
     framing: forking
     prerequisites: [failure]
-    text: Du hast etwas erwähnt, das nicht funktioniert hat. War das das Scheitern — oder war es, dass du aufgehört hast?
-    rephrase: Diese Sache, die gescheitert ist — was hat sie wirklich beendet, das Scheitern oder das Aufhören?
+    text: >-
+      Du hast etwas erwähnt, das nicht funktioniert hat. Lag es daran, dass es gescheitert
+      ist — oder daran, dass du aufgehört hast?
+    rephrase: >-
+      Diese Sache, die nicht geklappt hat: Was hat sie wirklich beendet — das Scheitern
+      oder dein Aufhören?
   - id: F1-e
     slot: 4
     cluster: fire
@@ -113,8 +127,10 @@ candidates:
     threat: 7
     framing: aftermath-not-event
     prerequisites: [quit]
-    text: Du hast gesagt, du hast etwas hingeschmissen. Was hast du eigentlich verlassen?
-    rephrase: Als du aufgehört hast — wovon bist du in Wirklichkeit weggegangen?
+    text: >-
+      Du hast gesagt, du hast etwas hingeschmissen. Wovon bist du damit in Wirklichkeit
+      weggegangen?
+    rephrase: Als du aufgehört hast — was hast du damit eigentlich hinter dir gelassen?
 
   # ── Slot 5 · Compass ────────────────────────────────────────────────────────
   - id: C1-a
@@ -125,16 +141,18 @@ candidates:
     framing: pressure-decision
     default: true
     text: >-
-      Das letzte Mal, als du dich schnell entscheiden musstest und es jemanden etwas gekostet hat.
-      Wofür hast du dich entschieden?
-    rephrase: Eine schnelle Entscheidung, die etwas gekostet hat — wie hast du entschieden, und warum so?
+      Denk an das letzte Mal, als du dich schnell entscheiden musstest und deine
+      Entscheidung jemand anderen etwas gekostet hat. Wie hast du dich entschieden?
+    rephrase: >-
+      Eine schnelle Entscheidung, die jemanden etwas gekostet hat: Wofür hast du dich
+      entschieden, und warum so?
   - id: C2-a
     slot: 5
     cluster: compass
     targets: [C2]
     threat: 5
     framing: scale-of-things
-    text: Was ist das Größte, von dem du ein kleiner Teil bist?
+    text: Wovon bist du ein kleiner Teil, das größer ist als du selbst?
     rephrase: Wozu gehörst du, das größer ist als dein eigenes Leben?
   - id: C2-b
     slot: 5
@@ -143,16 +161,21 @@ candidates:
     threat: 6
     framing: forking
     prerequisites: [faith]
-    text: Du hast Glauben erwähnt. Wenn er und das, was du willst, in verschiedene Richtungen zeigen — was gibt nach?
-    rephrase: Wenn Glaube und Ehrgeiz sich widersprechen — welcher von beiden weicht?
+    text: >-
+      Du hast deinen Glauben erwähnt. Wenn dein Glaube und das, was du willst, in
+      verschiedene Richtungen gehen — welches von beidem gibt nach?
+    rephrase: >-
+      Wenn Glaube und Ehrgeiz sich widersprechen: Welcher von beiden weicht bei dir zurück?
   - id: C3-a
     slot: 5
     cluster: compass
     targets: [C3]
     threat: 6
     framing: fear-of-self
-    text: Was für ein Mensch hast du Angst zu werden?
-    rephrase: Welche Version von dir selbst versuchst du zu vermeiden?
+    text: >-
+      Was für ein Mensch willst du auf keinen Fall werden — und warum macht dir genau
+      der Angst?
+    rephrase: Beschreib die Version von dir selbst, die du unbedingt vermeiden willst.
   - id: C1-b
     slot: 5
     cluster: compass
@@ -160,8 +183,12 @@ candidates:
     threat: 6
     framing: discrepancy
     prerequisites: [family]
-    text: Deine Familie kam vorhin vor. Was ist eine Regel, nach der du lebst, von der sie sagen würden, dass du sie brichst?
-    rephrase: Etwas, das du übers Leben glaubst — von dem deine Familie sagen würde, dass du dich nicht daran hältst?
+    text: >-
+      Du hast vorhin deine Familie erwähnt. Nach welcher Regel lebst du, von der deine
+      Familie sagen würde, dass du dich selbst nicht daran hältst?
+    rephrase: >-
+      Was glaubst du übers Leben, bei dem deine Familie sagen würde: Daran hältst du dich
+      selbst nicht?
 
   # ── Slot 6 · Ground ─────────────────────────────────────────────────────────
   - id: G1-a
@@ -171,16 +198,21 @@ candidates:
     threat: 5
     framing: empty-room
     default: true
-    text: Handy ist leer. Sechs Stunden kommt niemand. Du bist vierzig Minuten drin. Was passiert?
-    rephrase: Sechs Stunden allein, kein Handy. Wie sieht die Mitte davon aus?
+    text: >-
+      Du sitzt allein in einem Raum, das Handy ist leer, und sechs Stunden lang kommt
+      niemand. Nach vierzig Minuten — was machst du dann mit dir?
+    rephrase: Sechs Stunden allein, ohne Handy. Was passiert in dieser Zeit in deinem Kopf?
   - id: G2-a
     slot: 6
     cluster: ground
     targets: [G2]
     threat: 6
     framing: aftermath-not-event
-    text: Etwas hat dich mal aus der Bahn geworfen. Nicht die Sache selbst — was hast du danach aufgebaut?
-    rephrase: Nach dem Schlimmsten, das dir passiert ist — was hast du danach anders gemacht?
+    text: >-
+      Irgendetwas hat dich mal richtig aus der Bahn geworfen. Nicht das Ereignis selbst
+      interessiert mich, sondern: Was hast du dir danach wieder aufgebaut?
+    rephrase: >-
+      Nach dem Schlimmsten, das dir passiert ist: Was hast du danach anders gemacht?
   - id: G2-b
     slot: 6
     cluster: ground
@@ -188,7 +220,9 @@ candidates:
     threat: 7
     framing: aftermath-not-event
     prerequisites: [loss]
-    text: Du hast erwähnt, dass du etwas verloren hast. Was hast du danach entschieden, das du nie laut gesagt hast?
+    text: >-
+      Du hast erwähnt, dass du etwas verloren hast. Was hast du dir danach vorgenommen,
+      ohne es jemals jemandem zu sagen?
     rephrase: Nach diesem Verlust — was hast du still für dich beschlossen?
   - id: G3-a
     slot: 6
@@ -196,8 +230,11 @@ candidates:
     targets: [G3]
     threat: 5
     framing: people-as
-    text: Wenn du am besten bist — was machen die Menschen, die dir am nächsten stehen?
-    rephrase: An deinem besten Tag — wo sind die Menschen, die du liebst, und was tun sie?
+    text: >-
+      Denk an einen Tag, an dem du richtig in Bestform bist. Was machen an so einem Tag
+      die Menschen, die dir am nächsten stehen?
+    rephrase: >-
+      An deinem besten Tag: Wo sind die Menschen, die du liebst, und was tun sie gerade?
   - id: G3-b
     slot: 6
     cluster: ground
@@ -205,5 +242,5 @@ candidates:
     threat: 6
     framing: people-as
     prerequisites: [solitude]
-    text: Du hast gesagt, du verbringst viel Zeit allein. Wer weiß das?
-    rephrase: So viel allein zu sein — wer weiß das eigentlich von dir?
+    text: Du hast gesagt, du verbringst viel Zeit allein. Wer weiß das von dir?
+    rephrase: So viel Zeit allein — wer aus deinem Umfeld weiß das überhaupt?

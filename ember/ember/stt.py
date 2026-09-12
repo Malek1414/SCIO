@@ -3,6 +3,7 @@
 Backend choice per language lives in STT_CONFIG and is set by measurement — run `ember stt-eval`.
 Whisper is the default for both languages because it strips disfluencies natively (spec §3.2).
 """
+import difflib
 import time
 from pathlib import Path
 from typing import Protocol
@@ -20,6 +21,26 @@ STT_CONFIG: dict[str, tuple[str, str]] = {
     "en": ("whisper", MODEL_REPO),
     "de": ("whisper", MODEL_REPO),
 }
+
+
+PROMPT_ECHO_RUN = 6      # whisper occasionally transcribes its own initial_prompt back on thin or silent audio
+
+
+def _tokens(text: str) -> list[str]:
+    return [k for k in (t.strip(".,!?;:—–\"'").lower() for t in text.split()) if k]
+
+
+def echoes_prompt(text: str, prime: str, run: int = PROMPT_ECHO_RUN) -> bool:
+    """True when the transcript repeats a long verbatim stretch of the prompt back at us.
+
+    A real answer reuses a few words of the question ("um zwei Uhr nachmittags arbeite ich");
+    it does not reproduce `run` consecutive tokens of it. Short prompts are matched in full.
+    """
+    a, b = _tokens(text), _tokens(prime)
+    if not a or not b:
+        return False
+    m = difflib.SequenceMatcher(a=a, b=b, autojunk=False).find_longest_match(0, len(a), 0, len(b))
+    return m.size >= min(run, len(b))
 
 
 class Transcriber(Protocol):
@@ -40,10 +61,18 @@ class WhisperTranscriber:
         mlx_whisper.transcribe(np.zeros(16000, dtype=np.float32), path_or_hf_repo=self.repo, language=self.language)
         return time.perf_counter() - t0
 
-    def transcribe(self, wav_path: Path, prime: str | None = None) -> str:
+    def _decode(self, wav_path: Path, prime: str | None) -> str:
         out = mlx_whisper.transcribe(str(wav_path), path_or_hf_repo=self.repo, language=self.language,
                                      initial_prompt=prime)
         return out["text"].strip()
+
+    def transcribe(self, wav_path: Path, prime: str | None = None) -> str:
+        """`prime` is the question on screen. It conditions the decoder on the right spelling and
+        register — German loses far fewer words that way ('neidisch' rather than 'neulich')."""
+        text = self._decode(wav_path, prime)
+        if prime and echoes_prompt(text, prime):
+            text = self._decode(wav_path, None)      # the prompt came back as the answer; trust the unprimed read
+        return text
 
 
 class ParakeetTranscriber:

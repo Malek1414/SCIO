@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 
 from ember.audio import to_wav
-from ember.stt import STT_CONFIG, Transcriber, WhisperTranscriber, for_language
+from ember.stt import STT_CONFIG, Transcriber, WhisperTranscriber, echoes_prompt, for_language
 
 AUDIO = Path(__file__).parent / "fixtures" / "audio"
 
@@ -68,3 +68,31 @@ class TestRealAudio:
         print(f"\nde text={text!r}\nde primed={primed!r}")
         assert "backend" in text.lower() and "freunde" in text.lower()
         assert "ich" in primed.lower()                      # priming must not break the transcript
+
+
+class TestPromptEcho:
+    Q = "Wessen Leben würdest du gegen deins tauschen, wenn es niemand mitbekommt?"
+
+    def test_a_real_answer_reusing_a_few_question_words_is_not_an_echo(self):
+        assert not echoes_prompt("Ich würde mit niemandem tauschen, ehrlich gesagt.", self.Q)
+        assert not echoes_prompt("Um zwei Uhr nachmittags sitze ich am Schreibtisch.",
+                                 "Es ist ein Dienstag. Was machst du um zwei Uhr nachmittags?")
+
+    def test_the_prompt_read_back_verbatim_is_an_echo(self):
+        assert echoes_prompt(self.Q, self.Q)
+        assert echoes_prompt("Wessen Leben würdest du gegen deins tauschen, wenn es niemand", self.Q)
+
+    def test_empty_sides_are_never_echoes(self):
+        assert not echoes_prompt("", self.Q) and not echoes_prompt(self.Q, "")
+
+    def test_whisper_falls_back_to_the_unprimed_read_when_it_parrots(self, monkeypatch):
+        t = WhisperTranscriber("de")
+        seen: list[str | None] = []
+
+        def fake_decode(wav_path, prime):
+            seen.append(prime)
+            return TestPromptEcho.Q if prime else "Mit niemandem."
+
+        monkeypatch.setattr(t, "_decode", fake_decode)
+        assert t.transcribe(Path("x.wav"), prime=TestPromptEcho.Q) == "Mit niemandem."
+        assert seen == [TestPromptEcho.Q, None]        # primed first, then retried clean

@@ -99,6 +99,11 @@ const ramp = () => [1,2,3,4].map(i => css("--r" + i));
 const tier = v => v <= 2 ? 0 : v <= 4 ? 1 : v <= 6 ? 2 : 3;          // 1–2 · 3–4 · 5–6 · 7
 const el = (tag, attrs = {}, text) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (text != null) e.textContent = text; return e; };
 const jitter = (code, k) => { let h = 0; for (const ch of code + k) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return ((h % 1000) / 1000 - 0.5) * 0.3; };
+// A subject can sit for the interview more than once. Jitter on session_id so repeat runs do not
+// land on the same pixel, and label them by run so the two are tellable apart.
+const RUNS = {}; for (const s of D.subjects) RUNS[s.subject_code] = (RUNS[s.subject_code] || 0) + 1;
+const runOf = s => { const t = s.session_id.slice(s.session_id.indexOf("_") + 1), [d, hm] = t.split("T"); return `${d} ${(hm || "").slice(0, 5).replace("-", ":")}`; };
+const labelOf = s => RUNS[s.subject_code] > 1 ? `${s.subject_code} · ${runOf(s)}` : s.subject_code;
 const scoreOf = (s, c) => (s.scores[c] || {}).score || 1;
 const sigOf = (s, c) => (s.scores[c] || {}).signal || "low";
 
@@ -127,12 +132,12 @@ function drawCohort() {
   svg.appendChild(el("text", {x: 12, y: (P.t + H - P.b) / 2, transform: `rotate(-90 12 ${(P.t + H - P.b) / 2})`, "text-anchor": "middle"}, `${y} · ${NAME[y]}`));
   const rp = ramp(), surf = css("--surface");
   for (const s of D.subjects) {
-    const cx = sx(scoreOf(s, x) + jitter(s.subject_code, "x")), cy = sy(scoreOf(s, y) + jitter(s.subject_code, "y"));
+    const cx = sx(scoreOf(s, x) + jitter(s.session_id, "x")), cy = sy(scoreOf(s, y) + jitter(s.session_id, "y"));
     const sig = [sigOf(s, x), sigOf(s, y)].includes("low") ? "low" : ([sigOf(s, x), sigOf(s, y)].includes("med") ? "med" : "high");
-    const g = el("g", {tabindex: 0, role: "button", "aria-label": s.subject_code, style: "cursor:pointer"});
+    const g = el("g", {tabindex: 0, role: "button", "aria-label": labelOf(s), style: "cursor:pointer"});
     g.appendChild(el("circle", {cx, cy, r: R[sig], fill: rp[tier(scoreOf(s, c))], stroke: surf, "stroke-width": 2}));
     g.appendChild(el("circle", {cx, cy, r: 12, fill: "transparent"}));                     // ≥24px hit target
-    const show = ev => { const t = $("tooltip"); t.replaceChildren(); for (const line of [s.subject_code, `${x} ${scoreOf(s, x)} · ${y} ${scoreOf(s, y)} · ${c} ${scoreOf(s, c)}`, `signal ${sig}`]) { const d = document.createElement("div"); d.textContent = line; t.appendChild(d); } t.style.display = "block"; t.style.left = (ev.clientX + 12) + "px"; t.style.top = (ev.clientY + 12) + "px"; };
+    const show = ev => { const t = $("tooltip"); t.replaceChildren(); for (const line of [labelOf(s), `${x} ${scoreOf(s, x)} · ${y} ${scoreOf(s, y)} · ${c} ${scoreOf(s, c)}`, `signal ${sig}`]) { const d = document.createElement("div"); d.textContent = line; t.appendChild(d); } t.style.display = "block"; t.style.left = (ev.clientX + 12) + "px"; t.style.top = (ev.clientY + 12) + "px"; };
     g.addEventListener("pointermove", show); g.addEventListener("focus", () => { const b = g.getBoundingClientRect(); show({clientX: b.left, clientY: b.top}); });
     g.addEventListener("pointerleave", () => $("tooltip").style.display = "none"); g.addEventListener("blur", () => $("tooltip").style.display = "none");
     g.addEventListener("click", () => openSubject(s)); g.addEventListener("keydown", e => { if (e.key === "Enter") openSubject(s); });
@@ -144,7 +149,7 @@ function drawCohort() {
   const tb = $("cohort-table").querySelector("tbody"); tb.replaceChildren();
   for (const s of D.subjects) {
     const tr = document.createElement("tr"); tr.className = "row";
-    for (const v of [s.subject_code, `${scoreOf(s, x)} (${sigOf(s, x)})`, `${scoreOf(s, y)} (${sigOf(s, y)})`, `${scoreOf(s, c)} (${sigOf(s, c)})`, s.declined.join(" "), String(s.flags.length)]) {
+    for (const v of [labelOf(s), `${scoreOf(s, x)} (${sigOf(s, x)})`, `${scoreOf(s, y)} (${sigOf(s, y)})`, `${scoreOf(s, c)} (${sigOf(s, c)})`, s.declined.join(" "), String(s.flags.length)]) {
       const td = document.createElement("td"); td.textContent = v; tr.appendChild(td);
     }
     tr.addEventListener("click", () => openSubject(s)); tb.appendChild(tr);
@@ -153,7 +158,7 @@ function drawCohort() {
 
 function openSubject(s) {
   $("cohort").classList.remove("on"); $("subject").classList.add("on"); $("tooltip").style.display = "none";
-  $("s-title").textContent = s.subject_code; $("s-meta").textContent = `${s.session_id} · scored ${s.scored_at} · rubric ${s.rubric_version}`;
+  $("s-title").textContent = labelOf(s); $("s-meta").textContent = `${s.session_id} · scored ${s.scored_at} · rubric ${s.rubric_version}`;
   const svg = $("radar"); svg.replaceChildren();
   const C = 180, RAD = 130, n = ORDER.length, ang = i => -Math.PI / 2 + i * 2 * Math.PI / n;
   const pt = (i, v) => [C + Math.cos(ang(i)) * RAD * v / 7, C + Math.sin(ang(i)) * RAD * v / 7];
