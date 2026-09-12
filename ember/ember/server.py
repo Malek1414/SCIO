@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from .audio import to_wav
 from .copy import copy_for
 from .engine import Engine, Next
-from .guards import STT_MIN_WORDS, should_hard_close
+from .guards import STT_MIN_WORDS
 from .session import Session, Turn
 from .store import SessionStore
 from .text import word_count
@@ -86,21 +86,12 @@ def create_app(store: SessionStore, engines: dict, transcribers: dict, *, on_clo
         text = await asyncio.to_thread(transcriber.transcribe, wav, session.pending.question)
 
         if word_count(text) < STT_MIN_WORDS:
-            # No question is ever skipped, in either language: too-short audio is always asked again.
-            # The one bound is the 6:30 hard close, so a dead mic or a silent room cannot trap the
-            # subject on one question forever — out of time we end the interview instead of marking
-            # a skip, because a skip is a claim about the subject and a flat battery is not.
+            # No question is ever skipped, in either language, and no clock ends the wait:
+            # too-short audio is always asked again, for as long as it takes.
             session.retries += 1
-            if not should_hard_close(now - session.started_at):
-                store.save(session)
-                return {"retry": True, "question": session.pending.question,
-                        "message": copy_for(session.language)["retry"]}
-            session.pending, session.retries = None, 0
             store.save(session)
-            out = await asyncio.to_thread(_close, session, time.time())
-            if on_close is not None:
-                background.add_task(on_close, sid)
-            return out
+            return {"retry": True, "question": session.pending.question,
+                    "message": copy_for(session.language)["retry"]}
 
         session.pending.answer, session.pending.answered_at = text, now
         session.turns.append(session.pending)

@@ -3,7 +3,7 @@ import pytest
 from ember.engine import Engine, Next, ACTION_SCHEMA, CLOSE_SCHEMA, build_system_prompt
 from ember.llm import LLMError
 from ember.session import Turn
-from ember.guards import FIRE_GUARD_S, HARD_CLOSE_S, PROBE_WINDOW_S
+from ember.guards import PROBE_WINDOW_S
 from tests.conftest import FakeLLM, make_session
 
 LONG = "I rebuilt the whole backend three times because the first two felt wrong and nobody asked me to do any of it honestly"
@@ -89,20 +89,33 @@ def test_fire_threat_monotonic_filters_offered(mini_bank):
     assert "S3-a" not in llm.calls[0]["user"] and "S3-b" in llm.calls[0]["user"]
 
 
-def test_fire_guard_jumps_to_compass(mini_bank):
-    llm = FakeLLM([{"action": "pick", "candidate_id": "S5-b", "surfaced_tags": [], "reason": "r"}])
+def test_a_slow_fire_stretch_still_asks_slot_3(mini_bank):
+    """Running long used to jump Fire straight to Compass. The slot now follows answers, not the clock."""
+    llm = FakeLLM([{"action": "pick", "candidate_id": "S3-b", "surfaced_tags": [], "reason": "r"}])
     s = make_session(now=0.0)
     _answered(s, 1, None, LONG, 30.0)
-    _answered(s, 2, "S2-a", LONG, FIRE_GUARD_S + 5)
-    n = Engine(mini_bank, llm).next(s, now=FIRE_GUARD_S + 10)
-    assert n.slot == 5 and n.question_id == "S5-b"
+    _answered(s, 2, "S2-a", LONG, 3000.0)
+    n = Engine(mini_bank, llm).next(s, now=3100.0)
+    assert n.slot == 3 and n.question_id == "S3-b"
 
 
-def test_hard_close_returns_close_without_llm(mini_bank):
+def test_an_hour_in_the_interview_still_does_not_close_early(mini_bank):
+    """No elapsed time closes the interview; only running out of slots does."""
+    llm = FakeLLM([{"action": "pick", "candidate_id": "S2-b", "surfaced_tags": [], "reason": "r"}])
     s = make_session(now=0.0)
-    _answered(s, 1, None, LONG, HARD_CLOSE_S + 1)
-    n = Engine(mini_bank, FakeLLM()).next(s, now=HARD_CLOSE_S + 2)
-    assert n.kind == "close"
+    _answered(s, 1, None, LONG, 3600.0)
+    n = Engine(mini_bank, llm).next(s, now=7200.0)
+    assert n.kind == "spine" and n.slot == 2
+
+
+def test_close_comes_from_answering_all_seven_slots_not_from_the_clock(mini_bank):
+    """Seven answers close the interview — and only seven, so nothing here adds questions."""
+    s = make_session(now=0.0)
+    for slot in range(1, 8):
+        _answered(s, slot, None if slot == 1 else f"S{slot}-a", LONG, float(slot))
+    assert s.current_slot() == 8
+    n = Engine(mini_bank, FakeLLM()).next(s, now=99999.0)     # no LLM call: the slots are spent
+    assert n.kind == "close" and n.log["note"] == "slots exhausted"
 
 
 def test_close_validates_mirror_and_take_home(mini_bank):

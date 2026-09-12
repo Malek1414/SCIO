@@ -1,5 +1,5 @@
-from ember.guards import (filter_candidates, probe_allowed, resolve_slot, q7_allowed, should_hard_close,
-                          PROBE_WINDOW_S, FIRE_GUARD_S, Q7_GATE_S, HARD_CLOSE_S)
+import ember.guards as guards
+from ember.guards import filter_candidates, probe_allowed, PROBE_WINDOW_S
 
 
 def test_filter_prerequisites_and_threat(mini_bank):
@@ -18,14 +18,8 @@ def test_probe_gate():
     assert not probe_allowed(PROBE_WINDOW_S, 1, 40)
 
 
-def test_fire_guard_jumps_to_compass():
-    assert resolve_slot(3, FIRE_GUARD_S) == 3
-    assert resolve_slot(3, FIRE_GUARD_S + 1) == 5
-    assert resolve_slot(4, FIRE_GUARD_S + 1) == 5
-    assert resolve_slot(6, FIRE_GUARD_S + 1) == 6
-    assert resolve_slot(7, 0) == 7
-
-
-def test_q7_and_hard_close():
-    assert q7_allowed(Q7_GATE_S - 1) and not q7_allowed(Q7_GATE_S)
-    assert not should_hard_close(HARD_CLOSE_S - 1) and should_hard_close(HARD_CLOSE_S)
+def test_no_guard_truncates_the_spine_by_time():
+    """The clock may cap probes; it may never cut the interview short or move a slot on."""
+    for gone in ("resolve_slot", "q7_allowed", "should_hard_close",
+                 "FIRE_GUARD_S", "Q7_GATE_S", "HARD_CLOSE_S"):
+        assert not hasattr(guards, gone), f"{gone} still exists — time can still skip a question"

@@ -34,6 +34,16 @@ def _client(tmp_path, mini_bank, llm_responses, stt_texts, language="en", on_clo
     return TestClient(app), store
 
 
+def _spend_the_slots(store, sid):
+    """Fill six spine turns so the pending opener answer is the seventh — the only way to close now."""
+    from ember.session import Turn
+    sess = store.load(sid)
+    for slot in range(2, 8):
+        sess.turns.append(Turn(slot=slot, kind="spine", question_id=f"S{min(slot, 6)}-a", question=f"Q{slot}",
+                               asked_at=0.0, answer=LONG, answered_at=1.0))
+    store.save(sess)
+
+
 def _post_audio(client, sid):
     return client.post(f"/api/session/{sid}/answer", files={"audio": ("a.webm", io.BytesIO(b"\x00"), "audio/webm")})
 
@@ -96,9 +106,7 @@ def test_close_path_writes_mirror(tmp_path, mini_bank):
                             [{"mirror": "nobody asked me to do any of it", "take_home": "What would it take to stop?"}],
                             [LONG])
     sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
-    s = store.load(sid)
-    s.started_at -= 1000            # force the hard-close guard
-    store.save(s)
+    _spend_the_slots(store, sid)
     body = _post_audio(client, sid).json()
     assert body["kind"] == "close" and body["mirror"] == "nobody asked me to do any of it"
     assert store.load(sid).closed is True
@@ -183,9 +191,7 @@ def test_closing_an_interview_fires_the_autoscore_hook(tmp_path, mini_bank):
     scored = []
     client, store = _client(tmp_path, mini_bank, [CLOSE], [LONG], on_close=scored.append)
     sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
-    s = store.load(sid)
-    s.started_at -= 1000                                  # force the hard-close guard
-    store.save(s)
+    _spend_the_slots(store, sid)
     assert _post_audio(client, sid).json()["kind"] == "close"
     assert scored == [sid]
 
@@ -203,25 +209,23 @@ def test_an_answer_that_does_not_close_leaves_the_hook_alone(tmp_path, mini_bank
 def test_the_close_response_is_unchanged_when_no_hook_is_installed(tmp_path, mini_bank):
     client, store = _client(tmp_path, mini_bank, [CLOSE], [LONG])
     sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
-    s = store.load(sid)
-    s.started_at -= 1000
-    store.save(s)
+    _spend_the_slots(store, sid)
     body = _post_audio(client, sid).json()
     assert body["kind"] == "close" and body["mirror"] == CLOSE["mirror"]
 
 
-def test_short_audio_past_the_hard_close_ends_the_interview_without_a_skip(tmp_path, mini_bank):
-    """Out of time we close rather than loop forever — but still never record a skip."""
+def test_no_elapsed_time_ends_the_wait_on_a_question(tmp_path, mini_bank):
+    """An hour in, short audio is still re-asked: the clock never closes or skips anything."""
     scored = []
-    client, store = _client(tmp_path, mini_bank, [CLOSE], ["uh"], on_close=scored.append)
+    client, store = _client(tmp_path, mini_bank, [], ["uh", "hmm"], on_close=scored.append)
     sid = client.post("/api/session", json={"subject_code": "S01"}).json()["session_id"]
     s = store.load(sid)
-    s.started_at -= 1000                                  # past HARD_CLOSE_S
+    s.started_at -= 100_000                               # far past every guard the old build had
     store.save(s)
-    assert _post_audio(client, sid).json()["kind"] == "close"
+    assert _post_audio(client, sid).json()["retry"] is True
+    assert _post_audio(client, sid).json()["retry"] is True
     s = store.load(sid)
-    assert s.closed is True and not any(t.skipped for t in s.turns)
-    assert scored == [sid]                                # a timed-out session still gets scored
+    assert s.closed is False and s.turns == [] and scored == []
 
 
 def test_no_language_can_produce_a_skipped_turn(tmp_path, mini_bank):

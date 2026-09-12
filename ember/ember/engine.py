@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, ValidationError
 
 from .bank import Bank, Candidate
 from .constructs import TAGS, TAG_HINTS
-from .guards import filter_candidates, probe_allowed, resolve_slot, q7_allowed, should_hard_close
+from .guards import filter_candidates, probe_allowed
 from .llm import LLMError
 from .session import Session
 from .text import contains_verbatim, extract_quote, word_count, longest_sentence
@@ -130,14 +130,7 @@ class Engine:
 
     def next(self, session: Session, now: float) -> Next:
         elapsed = session.elapsed(now)
-        if should_hard_close(elapsed):
-            return Next(kind="close", slot=session.current_slot(), question_id=None, text="",
-                        fallback_used=False, log={"note": "hard close", "elapsed": elapsed})
-
-        slot = resolve_slot(session.current_slot(), elapsed)
-        if slot == 7 and not q7_allowed(elapsed):
-            return Next(kind="close", slot=7, question_id=None, text="", fallback_used=False,
-                        log={"note": "q7 gate", "elapsed": elapsed})
+        slot = session.current_slot()           # the clock never moves the slot on; only answers do
         if slot > 7:
             return Next(kind="close", slot=slot, question_id=None, text="", fallback_used=False,
                         log={"note": "slots exhausted", "elapsed": elapsed})
