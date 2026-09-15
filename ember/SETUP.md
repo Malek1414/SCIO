@@ -8,10 +8,14 @@ file — the scores — to whoever runs the study.
 
 - **An Apple Silicon Mac** (M1 or later). The speech model is built on MLX, which is
   Apple-only. Intel Macs, Windows and Linux can't run this yet.
-- **Claude Code**, signed in on a paid plan. The interview drives it through the Agent
-  SDK, so your interviews run on your subscription, not anyone else's.
+- **Claude Code**, signed in on a paid plan — `curl -fsSL https://claude.ai/install.sh | bash`
+  The interview drives it through the Agent SDK, so your interviews run on your
+  subscription, not anyone else's.
 - **ffmpeg** — `brew install ffmpeg`
 - **uv** — `curl -LsSf https://astral.sh/uv/install.sh | sh`
+
+`brew` comes from [Homebrew](https://brew.sh); if `brew --version` says nothing, install
+that first.
 
 You do **not** need access to the study's own repository, and you won't be given any. You
 run interviews; you send back one file per interview. You never see anyone else's answers,
@@ -19,10 +23,24 @@ and nobody sees yours except whoever runs the study.
 
 ## Setup
 
+Paste this once, top to bottom.
+
 ```sh
+brew install ffmpeg
+curl -LsSf https://astral.sh/uv/install.sh | sh
+curl -fsSL https://claude.ai/install.sh | bash
+export PATH="$HOME/.local/bin:$PATH"
+
 git clone https://github.com/Malek1414/SCIO.git
 cd SCIO/ember
 uv sync
+```
+
+Then sign in to Claude Code — run `claude`, follow the login, and quit it again with
+`/exit`. That part can't be scripted, and ember can't run until it's done.
+
+```sh
+claude
 ```
 
 Make sure `ANTHROPIC_API_KEY` is **not** set. ember refuses to start if it is — that
@@ -88,7 +106,9 @@ file, say so — it can be pulled before it ever reaches the dashboard.
 
 | Symptom | Fix |
 |---|---|
+| `command not found: claude` or `uv` | the installer didn't reach this shell — `export PATH="$HOME/.local/bin:$PATH"`, or just open a new terminal |
 | `ember runs on your Claude subscription` on startup | `unset ANTHROPIC_API_KEY` |
+| Claude Code asks you to log in mid-interview | you skipped the sign-in — quit, run `claude`, log in, `/exit`, start again |
 | `address already in use` | an ember is already running — `pkill -f "ember serve"` |
 | `no observer.json` from `contribute` | the session wasn't scored: `uv run ember observe sessions/<id>` |
 | Microphone does nothing | the browser needs mic permission for `127.0.0.1`, and the page must be the one ember served |
