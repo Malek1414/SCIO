@@ -1,0 +1,99 @@
+{
+  "subject_code": "S09",
+  "session_id": "S09_2026-09-16T12-54-37",
+  "scored_at": "2026-09-16T13:03:29.346323+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Ein extrem ambitionierter Mensch",
+        "Du machst ja kein Enterprise mit dem Hack-Up-Bug."
+      ],
+      "note": "Driver stays at the level of character traits (ambition) and a garbled gesture at building an 'Enterprise'; no domain, no moment, nothing about the doing."
+    },
+    "F2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No cost of any kind surfaced — not even hypothetical sacrifice; the trade-off question was never reached."
+    },
+    "F3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Es ist alles ziemlich eintönig.",
+        "hat keine Perspektive"
+      ],
+      "note": "Clear distaste for the settled person — monotony, no perspective — but delivered flatly, without the restlessness or fear the top anchor requires."
+    },
+    "C1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Ja, ich denke schon, dass ich eine Perspektive habe."
+      ],
+      "note": "No code stated and no pressure decision recounted; the one self-referential moment is a bare assertion under probe, unexamined."
+    },
+    "C2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Ein extrem ambitionierter Mensch"
+      ],
+      "note": "Nothing beyond the self appears anywhere in the transcript — no cause, lineage, or frame larger than his own ambition."
+    },
+    "C3": {
+      "score": 6,
+      "signal": "low",
+      "evidence": [
+        "Ein fauler, unambitioneter Mensch, der nur von seiner Idee träumt, statt sie tatsächlich umzusetzen."
+      ],
+      "note": "Names a self he fears becoming, not an outcome — strong; held off 7 because it mirrors his slot-2 answer about someone else rather than being owned in the first person."
+    },
+    "G1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Ich denke über meine Ziele und... Oh, hey!"
+      ],
+      "note": "Opens with a generic activity (thinking about goals) and is cut off before anything surfaces; no sense of what the empty room actually produces."
+    },
+    "G2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No disruption or turning point was asked about or volunteered anywhere in the session."
+    },
+    "G3": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Nee, nee, nee, nee, er kam alleine zu mir."
+      ],
+      "note": "The best-day question returns an unrelated fragment directed at someone off-mic; loved ones never appear in the answer at all."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Session appears to break down from slot 6 onward: [7] ends mid-sentence with 'Oh, hey!' and [8] is addressed to someone outside the interview ('Nee, nee, nee, nee, er kam alleine zu mir. So, jetzt auf.'). G1 and G3 scores rest on non-answers, not on evidence of absence — consider re-running those slots.",
+    "Transcript shows likely speech-to-text corruption: 'Hack-Up-Bug' (probably 'Hackathon'/'Bug'?), 'Expros' (probably 'Expos'), 'Inwiegendwie'. F1 evidence may be misrendered — verify against audio before relying on the 2.",
+    "Answer [3] contains an apparent transcription or logic inversion: 'Es ist nicht delusional und hat keine Perspektive' — the 'nicht' sits oddly against the rest of the answer. F3 read as negative toward the settled person; confirm.",
+    "F2, C1 and G2 were never targeted by any question in this spine. Those three scores reflect missing data, not a measured low.",
+    "Total subject word count is very low (~80 words across 8 answers). Overall profile is under-evidenced; treat all scores as provisional."
+  ],
+  "mirror": "Ein fauler, unambitioneter Mensch, der nur von seiner Idee träumt, statt sie tatsächlich umzusetzen.",
+  "take_home": "Woran genau würdest du zuerst merken, dass du anfängst, nur noch von deiner Idee zu träumen?"
+}

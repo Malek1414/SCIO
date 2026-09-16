@@ -1,0 +1,99 @@
+{
+  "subject_code": "S07",
+  "session_id": "S07_2026-09-16T11-00-40",
+  "scored_at": "2026-09-16T11:14:43.299031+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No driver is ever named; the slot-1 answer is a verbatim echo of the question and no later answer describes what he wants, only what it costs."
+    },
+    "F2": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ganz viel Zeit, viel Schlaf",
+        "Kosten, Gas, Transportkosten",
+        "Nerven, Freunde, Zeit, bestimmt auch Gesundheit"
+      ],
+      "note": "Real costs are listed (time, sleep, fuel/transport money) but as generic categories with no concrete instance; the second answer shifts to future/hypothetical ('bestimmt auch')."
+    },
+    "F3": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Malik drückt sich davor, weil er Angst hat."
+      ],
+      "note": "No prompt targeted settling; the only adjacent answer is a one-line attribution of fear to a gifted peer, with no warmth and no heat — insufficient signal, scored low by absence."
+    },
+    "C1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [],
+      "note": "No stated code and no pressure decision anywhere in the transcript, so no alignment can be observed; scored low by absence of data rather than by demonstrated contradiction."
+    },
+    "C2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "Nothing larger than the self appears; the widest frame reached is a circle of friends/family being present and healthy, with no account of it shaping a choice."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Die alte Version von mir, die es nicht geschafft hat",
+        "Eine egozentrische, unempathische Version"
+      ],
+      "note": "Names a self to avoid rather than an outcome — egocentric, unempathetic — which is above outcome-level, but stays at trait labels without a scene or mechanism, and arrives after a long derailment."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude prompt was administered and the subject never touches what surfaces when alone; no basis above the floor."
+    },
+    "G2": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Ich habe die Menschen um mich herum anders behandelt",
+        "mich von dem Ereignis und den Dingen, die wieder fahren sind, distanziert"
+      ],
+      "note": "Owns post-event changes in first-person active language (treated people differently, distanced himself), but the event is unnamed and the change stays general rather than a specific thing built or dro"
+    },
+    "G3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Sie sind um mich rum, gehen zusammen in einen Kaffee",
+        "sie sind grundsätzlich nah bei mir",
+        "Allen geht's gut und sind gesund."
+      ],
+      "note": "People are present and mutually engaged — talking with each other, their health mattering — not an audience; held back from the top anchor by a generic scene with no individuated person and no self-ob"
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Slot 1: the recorded 'answer' is a word-for-word echo of the question — almost certainly a recording/ASR artifact rather than a response. F1 has no usable data; re-administer before relying on that score.",
+    "Slot 5: the answer is garbled and contains multiple voices and meta-talk about the recording ('kann ich das auch wieder löschen?'). The subject asked whether the recording could be deleted — check consent before using this segment.",
+    "Slot 5 also contains apparent cross-talk unrelated to the question ('du hast mich gestern ehrenlos geämmt', a non-German fragment). The C3 evidence was extracted from a noisy passage and should be verified against audio.",
+    "No prompts in this transcript target solitude (G1), a code-versus-pressure decision (C1), transcendence (C2), or attitude to settling (F3). Four low scores here reflect missing questions, not observed weakness.",
+    "Overall answer length is very short (one clause per slot); the session may have been rushed or truncated."
+  ],
+  "mirror": "Denk an jemanden, den du persönlich kennst und von dem du überzeugt bist, dass er es schaffen wird",
+  "take_home": "Was müsstest du aufhören zu tun, um die Person zu werden, die du zuerst beschrieben hast?"
+}

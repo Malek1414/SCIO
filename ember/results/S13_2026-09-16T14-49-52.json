@@ -1,0 +1,103 @@
+{
+  "subject_code": "S13",
+  "session_id": "S13_2026-09-16T14-49-52",
+  "scored_at": "2026-09-16T15:01:17.106050+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 1,
+      "signal": "high",
+      "evidence": [
+        "knowing exactly what they are going to do",
+        "trying to achieve their daily purposes",
+        "I have to stick to my own plan"
+      ],
+      "note": "Only process abstractions — plans, goals, daily purposes. No domain, no project, no description of the doing itself."
+    },
+    "F2": {
+      "score": 2,
+      "signal": "med",
+      "evidence": [
+        "you spend a lot of time, also money",
+        "you only care about your own goal",
+        "maybe you need help or you need more knowledge"
+      ],
+      "note": "Cost named only in generic second person about a hypothetical goal-seeker; no specific sacrifice he has actually paid."
+    },
+    "F3": {
+      "score": 3,
+      "signal": "med",
+      "evidence": [
+        "they will try to outperform their own performance",
+        "not try to do step by steps"
+      ],
+      "note": "Describes the stuck gifted person analytically and sympathetically — no warmth or envy for settling, but no restlessness or aversion either."
+    },
+    "C1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "I don't want to be different as the person I am right now",
+        "I don't really know if I've done recently something",
+        "you're not as efficient as if you really think"
+      ],
+      "note": "Code stated consistently across slots 4–6 but never tested — the pressure-decision question produced no actual decision, so the gap is untested rather than resolved."
+    },
+    "C2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "that's also giving a lot of hope",
+        "individuals that can be raised one day"
+      ],
+      "note": "Gestures at others' flourishing but names no frame exceeding the self and no choice shaped by one."
+    },
+    "C3": {
+      "score": 6,
+      "signal": "med",
+      "evidence": [
+        "a person who is careless and who is seeing people as assets",
+        "not to see people actually as individuals, but more as different ways to get more money",
+        "see people for what they are and not for what they can give me"
+      ],
+      "note": "Names a self he fears becoming with a clear mechanism; slightly short of 7 because it stays moral-category rather than a concrete recognisable figure."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No question in the transcript targeted solitude; no evidence of a stance either way. Score is floor-by-absence, not an observation."
+    },
+    "G2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No disruption or turning point named anywhere in the transcript; nothing to process. Score is floor-by-absence."
+    },
+    "G3": {
+      "score": 5,
+      "signal": "med",
+      "evidence": [
+        "people are doing the things they are supposed to do",
+        "They are trying to achieve their own goals too",
+        "treat them like individuals that can be raised one day"
+      ],
+      "note": "Places close people as separate agents with their own aims rather than audience, but the account is prescriptive and general rather than drawn from a remembered scene."
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C1",
+    "C2",
+    "G1",
+    "G2"
+  ],
+  "flags": [
+    "Slot 7 contains an unrelated interjection mid-answer — 'Why is everyone drinking in this class?' — and closes with 'Thank you.', suggesting the subject was distracted or the session was interrupted. Slot 7 data should be treated as unreliable.",
+    "No slot targeted G1 (solitude) or G2 (disruption). Both scored 1 by absence of evidence, not by observed behaviour — do not read these as findings.",
+    "Subject answers almost entirely in generalised second person ('you spend a lot of time') rather than first person, including on the direct cost question. This pattern may be a language-fluency artefact rather than evasion; worth checking before treating F2 as a real signal.",
+    "Possible tension: says a good Tuesday is rigid planning (slot 1) and that the stuck gifted fail by skipping steps (slot 2), yet in slot 4 the only thing he must become is someone with 'a more defined plan' — i.e. he locates himself in the failure mode he described but does not name it as such."
+  ],
+  "mirror": "see people for what they are and not treat people for what they do",
+  "take_home": "Who in your life are you already treating for what they do, not what they are?"
+}

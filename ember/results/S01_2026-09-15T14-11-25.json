@@ -1,0 +1,107 @@
+{
+  "subject_code": "S01",
+  "session_id": "S01_2026-09-15T14-11-25",
+  "scored_at": "2026-09-15T14:20:22.378184+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 2,
+      "signal": "high",
+      "evidence": [
+        "I get busier when I'm working on something or a project",
+        "when I'm locked in in a project and working on the project",
+        "their commitment to something they do"
+      ],
+      "note": "Never names his own domain or the sensation of doing it — 'a project' stays a placeholder across every slot; the closest thing to a driver is an abstract theory of commitment held about other people."
+    },
+    "F2": {
+      "score": 5,
+      "signal": "med",
+      "evidence": [
+        "It cost me time, people, and money to go for something I care about",
+        "people end up distancing themselves from you",
+        "sometimes I don't have the time to answer their calls, attend their meetings, play games with them"
+      ],
+      "note": "Real, already-paid costs named plainly and without self-admiration — friends back home drifting, unearned income — but the losses are described as a general pattern rather than one specific person or "
+    },
+    "F3": {
+      "score": 5,
+      "signal": "high",
+      "evidence": [
+        "They don't end up spending their time on stupid shit",
+        "she almost has no motivation, very lack of motivation to commit to it",
+        "is one factor that's going to bring a person down and stop them from succeeding"
+      ],
+      "note": "Clear distaste for drift and no warmth toward the settled, but the heat is aimed at a third party's wasted talent rather than showing restlessness in himself."
+    },
+    "C1": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "I would be a workaholic",
+        "that would essentially make me a loner and an asshole and almost a little bit a narcissistic",
+        "the reason I don't want to be that because at the end of the day"
+      ],
+      "note": "Names the tension between ambition and people pre-emptively, which is credit-worthy, but it is entirely forecast — no pressure decision already made is offered to test whether code and conduct actuall"
+    },
+    "C2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "you don't have friends around you that have been with you through this journey, what the fuck are you going to do after you reach your goals?"
+      ],
+      "note": "Nothing exceeds the self; the largest frame available is his own friend group, and even that is valued as what makes the achievement feel worth something afterwards."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "high",
+      "evidence": [
+        "Just a rude, disrespectful, arrogant person who believes that their point and their perspective is always the truest",
+        "that would essentially make me a loner and an asshole",
+        "my idea is the only one that's going to work, everyone else's fucking shit"
+      ],
+      "note": "Names a self rather than an outcome, and names it twice consistently across slots 4 and 5, but the portrait is trait-level — no concrete scene or recognisable figure behind it."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude prompt was administered in this spine and the subject never volunteered anything about unstructured time; score reflects absence of evidence, not a demonstrated deficit — see flags."
+    },
+    "G2": {
+      "score": 2,
+      "signal": "med",
+      "evidence": [
+        "I have no idea what the fuck this question means, bro",
+        "Why would I want to build something afterwards? It doesn't mean I have to build anything",
+        "I would always look at why I got knocked down, why I fell to begin with"
+      ],
+      "note": "No event is ever named. After rejecting the premise he supplies a generic recovery procedure in conditional tense, so there is no disruption and nothing built or dropped as a result."
+    },
+    "G3": {
+      "score": 4,
+      "signal": "high",
+      "evidence": [
+        "either working their jobs, doing their shit, or either hanging out when in their own spaces",
+        "without me, because I can't be enjoying or even join their group because I'm busy working on something",
+        "if you don't have people around you, you don't have friends around you that have been with you through this journey"
+      ],
+      "note": "People are not audience or fuel — they are genuinely elsewhere living their own lives — but their role is defined by his absence rather than as anchoring, and slot 4 frames them partly as what makes s"
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C1",
+    "C2",
+    "G1"
+  ],
+  "flags": [
+    "Slot 7 (G2) drew open hostility to the instrument — 'you guys got to stop creating so many mindfuck questions' — and he rewrote the question before answering it. Not scored as declined because he did engage, but the answer is to his own reframe, not the prompt.",
+    "No solitude/empty-room question appears in this transcript. G1 is scored 1 on absence of evidence only; re-run that slot before treating the score as meaningful.",
+    "Subject appears to be talking to others in the room during slot 7 ('Hey, Malik', 'Yo, write that shit'). Session may not have been private, which bears on candour across slots 4–7.",
+    "Persistent shift into second person and hypotheticals ('if I were to take it to an extreme', 'you pick yourself up') — nearly all self-description is forecast rather than recalled. Only slot 3 reports something that actually happened.",
+    "Possible tension worth reading by hand: slot 4 says losing friends to work is the thing he most wants to avoid, while slot 3 reports he is already not answering their calls, and he does not connect the two."
+  ],
+  "mirror": "if you don't have people around you, you don't have friends around you that have been with you through this journey, what the fuck are you going to do after you reach your goals?",
+  "take_home": "Who is on that journey with you right now, and when did you last answer their call?"
+}

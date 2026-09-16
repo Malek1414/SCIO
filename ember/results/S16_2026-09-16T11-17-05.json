@@ -1,0 +1,102 @@
+{
+  "subject_code": "S16",
+  "session_id": "S16_2026-09-16T11-17-05",
+  "scored_at": "2026-09-16T11:22:20.601323+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ich hab nichts gemacht, außer trainieren",
+        "also ich hab nur trainiert, ich war nach der Schule",
+        "Ich würde mein Leben mit The Rock tauschen"
+      ],
+      "note": "Training is named as a domain and consumed years, but it is only ever described as volume of hours from the outside — never what the doing feels like or why it pulls him; the aspiration figure (The Ro"
+    },
+    "F2": {
+      "score": 6,
+      "signal": "low",
+      "evidence": [
+        "mein ganzes Privatleben in meiner Jugend, ungefähr sieben Jahre",
+        "keine privaten Aktivitäten"
+      ],
+      "note": "A real, specific, already-paid cost stated plainly and without bidding for admiration; short of 7 only because the cost is described in bulk rather than named concretely (which relationships, what was"
+    },
+    "F3": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "der den ganzen Tag nur im Büro sitzt, vorm Computer und einfach nichts macht",
+        "und für andere Leute arbeitet"
+      ],
+      "note": "Clear aversion to a settled/office life, but it is stated flatly as a preference with no heat or restlessness; the one admired peer is praised precisely for routine, which cuts against a strong anti-s"
+    },
+    "C1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [],
+      "note": "No code is stated and no pressure decision is reported — the question that targeted this (slot 4) was returned as an echo of the question, so no gap can be observed or self-named."
+    },
+    "C2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Ich würde mein Leben mit The Rock tauschen.",
+        "Am besten mit mir und wir machen irgendwas, was Spaß macht."
+      ],
+      "note": "Nothing larger than the self appears anywhere in the transcript; the aspirational frame is an individual celebrity and the best-day frame centres on his own enjoyment."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Ich will auf gar keinen Fall ein Mensch werden, der den ganzen Tag nur im Büro sitzt",
+        "und für andere Leute arbeitet"
+      ],
+      "note": "Names a self he fears becoming rather than just an outcome, which lifts him above 4 — but it is a stock archetype and the 'warum macht dir genau der Angst' half of the question went unanswered."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude/empty-room question was put to the subject in this transcript; scored at floor for absence of evidence, not for a demonstrated failure. See flags."
+    },
+    "G2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Ich habe reflektiert und einfach probiert daran zu arbeiten."
+      ],
+      "note": "The disruptive event itself is never named and the aftermath is a generic 'reflected and worked on it' — no decision, no thing built or dropped, no causal ownership."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Am besten mit mir und wir machen irgendwas, was Spaß macht."
+      ],
+      "note": "Loved ones are placed 'with me' doing something unspecified and fun; they are present but functionally scenery, and the pattern is not examined."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "No solitude item was administered — G1 is scored at floor purely for lack of data and should not be read as a finding. Re-run with the empty-room question before using G1.",
+    "Slot 4 (the 'what person did you have to become' item) was answered by repeating the question back: 'Was für ein Mensch ist, was du beschrieben hast.' This reads as comprehension failure rather than refusal — possible language or framing issue, worth re-asking in simpler terms.",
+    "Answers are uniformly very short (one clause each) across all seven spine slots; the instrument may not have engaged this subject. Overall profile is thin and low-confidence apart from F2.",
+    "Tension worth a human read: the person he is certain will 'make it' is admired for daily routine and to-do lists, while his own stated identity is seven years of single-minded training and a refusal of structured work for others. He does not notice the mismatch."
+  ],
+  "mirror": "Ich hab nichts gemacht, außer trainieren.",
+  "take_home": "Du hast nichts gemacht, außer trainieren — wem hast du damit eigentlich etwas beweisen wollen?"
+}

@@ -1,0 +1,106 @@
+{
+  "subject_code": "S12",
+  "session_id": "S12_2026-09-16T14-43-07",
+  "scored_at": "2026-09-16T14:49:15.605499+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ich habe mich um den akademischen Weg gekümmert anstatt um ein eigenes Projekt.",
+        "an potenzielle Lösungen, potenzielle Vergleichswerte denken, die ich in mein Projekt einmustern kann"
+      ],
+      "note": "Refers repeatedly to \"mein Projekt\" but never names what it is or what the work feels like; the closest to a mechanism is generic problem-solving language."
+    },
+    "F2": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ich habe mich um den akademischen Weg gekümmert anstatt um ein eigenes Projekt.",
+        "Ich habe den akademischen Weg gewechselt, der jetzt kompatibel mit dem Projekt ist."
+      ],
+      "note": "A real cost is named but inverted (he sacrificed the project for academia) and immediately presented as already resolved and reversible — no cost currently standing."
+    },
+    "F3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "jemand, der auf der konservativen Schiene sitzen bleibt, das macht mir Angst",
+        "Sie ist zu inkonsequent und zieht seine eigenen Ziele nicht durch."
+      ],
+      "note": "Clear heat around settling and explicit fear of the \"konservative Schiene\"; describes the stalled talented person critically rather than warmly, but the discomfort stays abstract."
+    },
+    "C1": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "dadurch, dass es das verbindet, was andere von mir erwarten und das, was ich eigentlich umsetzen möchte, bin ich damit sehr zufrieden",
+        "Aber der ist hier an der Code möglich, deswegen ergibt sich das."
+      ],
+      "note": "Names the tension between societal expectation and own ambition only under probing, then dissolves it with a convenience rationalisation — the conflict is declared closed rather than examined."
+    },
+    "C2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Die Person konzentriert sich nur auf sich selbst.",
+        "weil ich dann mein potenzielles Potenzial nicht ausleben könnte"
+      ],
+      "note": "No frame larger than the self anywhere in the transcript; self-focus is named as the admired trait and potential-realisation is the terminal value."
+    },
+    "C3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "ein Mensch werden, der seine Ziele nicht erreicht und der nicht erfolgreich wird",
+        "jemand, der auf der konservativen Schiene sitzen bleibt"
+      ],
+      "note": "Starts with a generic failure outcome; the \"konservative Schiene\" image gestures at a feared self-type but carries no concrete detail or scene."
+    },
+    "G1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Ich würde vermutlich an mein Projekt denken und an potenzielle Lösungen"
+      ],
+      "note": "The empty room is filled immediately with productive work-thinking; nothing is reported as surfacing and the minute-forty question is not engaged."
+    },
+    "G2": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ich habe den akademischen Weg gewechselt, der jetzt kompatibel mit dem Projekt ist."
+      ],
+      "note": "No disruption is offered at all; the one owned decision is a path switch presented as tidy alignment, with no account of what it cost or displaced."
+    },
+    "G3": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Sind wahrscheinlich in meiner Nähe, sind supportive, anstatt das Gegenteil."
+      ],
+      "note": "Loved ones appear only in a support function defined by what they do for him, with no sense of their own activity and no awareness of the pattern."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Possible contradiction: the admired trait in slot 1 is \"konzentriert sich nur auf sich selbst\", while the best-day answer requires people nearby being \"supportive\" — self-sufficiency is praised in others but not claimed for himself.",
+    "Answers are unusually short across all seven spine slots; two probes were needed on slot 4 alone and both were answered with further abstraction rather than detail. Low elaboration may understate several constructs.",
+    "Slot 6 mentions \"an der Code\" — appears to be an institution name; worth confirming context, as the whole values resolution rests on it.",
+    "\"mein potenzielles Potenzial\" in slot 5 — circular phrasing suggests the success frame has not been examined concretely."
+  ],
+  "mirror": "Die Person konzentriert sich nur auf sich selbst.",
+  "take_home": "Wenn die Person, die es schafft, sich nur auf sich selbst konzentriert — wen lässt du dafür aus dem Blick?"
+}

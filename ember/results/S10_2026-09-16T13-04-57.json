@@ -1,0 +1,90 @@
+{
+  "subject_code": "S10",
+  "session_id": "S10_2026-09-16T13-04-57",
+  "scored_at": "2026-09-16T15:22:26.938376+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 1,
+      "signal": "med",
+      "evidence": [
+        "They take action, have customers and have good contacts.",
+        "You have to get a lot of information and execute them correctly, right place at the right time."
+      ],
+      "note": "Never names what 'this' is — no domain, project, or moment of doing; only generic success mechanics observed from outside."
+    },
+    "F2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Things that I'm not really interested in and things that I cannot stay disciplined with."
+      ],
+      "note": "The stated sacrifice is things he didn't want and couldn't sustain anyway — no cost actually paid."
+    },
+    "F3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "They have the right ideas but they do not have the right tools for that and they do not have the context to get started with what they want to do."
+      ],
+      "note": "Explains the stalled person structurally (tools, context) with no heat, envy, or restlessness either way; stance toward settling never surfaces."
+    },
+    "C1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No code stated and no pressure decision reached in these four slots — nothing to align or contradict."
+    },
+    "C2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "You have to read a lot."
+      ],
+      "note": "Frame is entirely self-improvement and personal execution; nothing larger than self appears anywhere."
+    },
+    "C3": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No fear named; slot 4 was answered as a skills list rather than as a self he might become."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "Solitude was never targeted and never volunteered; no data."
+    },
+    "G2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No disruption or turning point raised in the transcript."
+    },
+    "G3": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "They take action, have customers and have good contacts."
+      ],
+      "note": "The only appearance of other people is as contacts and customers — instrumental, and the pattern goes unnoticed."
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F2",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Transcript covers only 4 spine slots; C1, C3, G1, G2 were never targeted, so their low scores reflect absence of data rather than observed absence of the trait.",
+    "Slot 4 answer appears garbled — 'I have to become more in Diagem or read full' reads like a speech-to-text error. Worth checking the audio before treating F1/C3 as settled.",
+    "Slot 3 is a soft deflection: asked what he gave up, he named things he was not interested in and could not stay disciplined with — an inversion of the question."
+  ],
+  "mirror": null,
+  "take_home": null
+}

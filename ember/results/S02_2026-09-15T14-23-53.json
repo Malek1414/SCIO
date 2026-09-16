@@ -1,0 +1,113 @@
+{
+  "subject_code": "S02",
+  "session_id": "S02_2026-09-15T14-23-53",
+  "scored_at": "2026-09-15T14:38:27.668990+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "vor allem so Hard Skills wie Home oder was es halt braucht für verschiedene Projekte",
+        "Ich glaube tatsächlich, dass ich schon auf dem richtigen Weg bin",
+        "Das sind halt noch so Sachen, die ich gerne lernen möchte"
+      ],
+      "note": "Never names the thing itself — only 'Projekte', 'Skills' and being on the right path; no domain, no description of the doing."
+    },
+    "F2": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "Es gibt nicht wirklich etwas, was ich aufgegeben habe",
+        "muss ich halt schon sehr früh übernehmen"
+      ],
+      "note": "A real, already-paid cost (youth, free time) named plainly and without self-pity — but it was imposed by family circumstance, not chosen for a stated goal, and he opens by denying any sacrifice."
+    },
+    "F3": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "Ich würde sagen, bei ihm ist er eine sehr gelassene Person"
+      ],
+      "note": "The targeting item (life-swap) was not answered; only warmth toward a calm, principled brother is available. Score is weakly supported."
+    },
+    "C1": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "beziehungsweise Abmachungen halte ich schon ein, aber ich würde sagen, dass ich Sachen vergesse, die einigermaßen wichtig sind",
+        "Weil ich aber im Alltag sehr gestresst bin",
+        "für meine Mutter und mein Bruder zu Hause etwas größere Konsequenzen haben, als ich sozusagen am Anfang denken würde"
+      ],
+      "note": "Names the gap between reliability and forgetting, and owns the consequences for others — but immediately cushions it with the stress rationalisation and 'nur Kleinigkeiten'."
+    },
+    "C2": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "versuche ich auf jeden Fall, mein Glaube an erste Stelle zu stellen",
+        "Und versuche halt eine Lösung zu finden, wie beides funktioniert",
+        "ich bewundere meine alleinerziehende Mutter und meinen kleinen Bruder"
+      ],
+      "note": "Faith and family are named as larger frames, but when asked which yields he engineers a both/and — no concrete decision the frame has actually changed."
+    },
+    "C3": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Also ich glaube generell nicht, dass mich irgendwas aufhalten kann, sei denn ich sterbe oder ich werde krank",
+        "Und ich glaube, dass das die einzigen Dinge sind, die mich aufhalten könnten"
+      ],
+      "note": "No fear offered; obstacles are externalised to death or illness. No feared self, no feared outcome."
+    },
+    "G1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude item was administered and nothing in the transcript speaks to it; score is a placeholder, not evidence-based."
+    },
+    "G2": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "dadurch, dass ich familiäre Umstände sehr früh sehr viel Verantwortung übernehmen musste",
+        "deshalb Sachen wie im Haushalt oder Bürokratie, solche Sachen halt, was halt dazugehört, muss ich halt schon sehr früh übernehmen",
+        "weil ich sozusagen der ältere Teil bin und sozusagen einfach mehr Verantwortung tragen muss als er"
+      ],
+      "note": "Clear disruption with clear consequences, but consistently in 'musste' language — duties that landed on him, not choices he made or things he built in response."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ich weiß nicht genau, was Menschen an dem Tag machen",
+        "Ich würde mich freuen, die ich lieben voll. Ich gebe das natürlich auch wieder zurück",
+        "ich bewundere meine alleinerziehende Mutter und meinen kleinen Bruder"
+      ],
+      "note": "Cannot picture what close people are doing on a best day; warmth toward mother and brother exists elsewhere but their role in his good state stays undefined."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Spine slot 2 (life-swap, targets F3) returned only 'Entschuldigung, mein Liegen gar nicht stoßen' — unintelligible or a deflection. Recommend re-asking before relying on the F3 score.",
+    "Heavy ASR corruption throughout: slot 1 ends in 'اج improper 로 pena AMD Boeing'; slot 6 has 'Hard Skills wie Home'; slot 8 is largely incoherent ('was Menschen an den Gegenung machen'). Verbatim quotes reflect the transcript, not necessarily what was said.",
+    "No solitude/empty-room item was administered — G1 has zero evidence base.",
+    "Self-contradiction in probe slot 1: 'ich lass mich nicht beeinflussen, aber ich würde schon sagen, dass ich sehr open-minded bin' — offered as the contrast to his brother's rigidity, but describes the same trait.",
+    "Contradiction between slot 4 ('Es gibt nicht wirklich etwas, was ich aufgegeben habe') and the substantial cost he then describes; he does not appear to notice.",
+    "Live caregiving load disclosed (mother 'pflegebedürftig', single-parent household, Jobcenter). Worth an operator read for context, not for scoring.",
+    "F2: 1 evidence quote(s) not verbatim, dropped"
+  ],
+  "mirror": "versuche halt eine Lösung zu finden, wie beides funktioniert",
+  "take_home": "Wann hast du zuletzt keine Lösung gefunden, in der beides funktioniert — und was hast du dann gewählt?"
+}

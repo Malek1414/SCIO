@@ -1,0 +1,103 @@
+{
+  "subject_code": "S14",
+  "session_id": "S14_2026-09-16T15-13-36",
+  "scored_at": "2026-09-16T15:20:53.317808+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Die Person öffnet sich Menschen ganz anders und geht ganz anders mit denen um",
+        "Also eröffnet sich Menschen ganz anders.",
+        "Es kommt darauf an, wie viel man halt bereit ist aufzugeben."
+      ],
+      "note": "\"Die Sache, die dir wichtig ist\" is never named once across seven slots — no domain, no project, no moment of doing; the probe returned a tautology rather than content."
+    },
+    "F2": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Vor allem Zeit mit Menschen, die einem zwar wichtig sind",
+        "nicht jeder kann immer nachvollziehen, wieso man Dinge aufgibt"
+      ],
+      "note": "A real category of cost (time with people who matter) but no specific person, event or amount, and the follow-up pivots to others failing to understand him rather than to the cost itself."
+    },
+    "F3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Am Ball bleiben und einfach weiter die Ziele, die sie hat, verfolgen",
+        "das kontinuierlich durchzuziehen"
+      ],
+      "note": "Diagnoses the stalled person's missing behaviour flatly — no warmth, no envy, but also no heat or restlessness; affect-neutral rather than mixed-by-reflection."
+    },
+    "C1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ich habe mich für mich entschieden, weil ich geglaubt habe, dass mein Weg der richtige ist",
+        "einen besseren Output sowohl für mich, wie auch in langer Sicht für die andere Person"
+      ],
+      "note": "States a values-code in slot 5, then resolves the cost-to-someone decision by claiming it was secretly good for the other person too — a rationalisation he does not flag as one."
+    },
+    "C2": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ich möchte nicht vergessen, wo ich herkomme, für welche Werte ich einstehe",
+        "unabhängig davon, wie erfolgreich ich bin oder was ich in meinem Leben erreiche"
+      ],
+      "note": "Origin and values gestured at as a reference point larger than current self, but stays a principle — no decision is shown being bent by it, and slot 7 runs the other way."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "dass man sich einfach so extrem von dem Ursprünglichen entfernt, was man eigentlich für das Richtige hält",
+        "nur weil man auf einmal andere Möglichkeiten besitzt"
+      ],
+      "note": "Names a self he fears becoming — the man changed by new options into someone unrecognisable to his origins — but describes it in the generalised \"man\" rather than with a concrete face or instance."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude question was put in this transcript and the subject volunteered nothing about being alone; score reflects absence of evidence, not a demonstrated stance."
+    },
+    "G2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No disruption or rupture question was asked and none surfaced unprompted; nothing in the transcript shows an event or what he built from it."
+    },
+    "G3": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Mir den Rücken frei halten und dafür sorgen, dass ich die Zeit und die Umstände habe",
+        "die ich für sowas brauche, um meine Bestform zu geben"
+      ],
+      "note": "At his best the closest people are described purely by their function as support staff for his conditions; no reciprocity and no sign he notices the framing."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Probe at slot 1 [2] was answered with a literal restatement of the interviewer's own words (\"Genau das habe ich gesagt. Also eröffnet sich Menschen ganz anders.\") — the probe extracted zero new content. Worth re-running that thread by hand.",
+    "The spine never reached solitude (G1) or disruption (G2). Those two scores are absence-of-evidence floors, not assessments — do not read them as findings.",
+    "Possible contradiction between slot 5 and slot 7: he names losing his original values as his core fear, then in the fast decision chose himself and justified it as ultimately better for the other party. He does not notice the pairing."
+  ],
+  "mirror": "Ich habe mich für mich entschieden, weil ich geglaubt habe, dass mein Weg der richtige ist",
+  "take_home": "Wenn dein Weg der richtige war — wen hast du gefragt, bevor du dich für dich entschieden hast?"
+}

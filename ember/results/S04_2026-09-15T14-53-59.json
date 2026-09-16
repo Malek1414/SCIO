@@ -1,0 +1,114 @@
+{
+  "subject_code": "S04",
+  "session_id": "S04_2026-09-15T14-53-59",
+  "scored_at": "2026-09-15T15:00:36.152366+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "open-minded, curious Person werden",
+        "konstant an den Dingen dranbleibt",
+        "Arbeitsmentalität und den Erfolgssinn sehr, sehr interessant"
+      ],
+      "note": "Driver is stated entirely as character traits and an admired mentality; no domain, no project, no description of the doing itself."
+    },
+    "F2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "schon eine Weile keinen Kontakt hatten",
+        "Eine Weile ist übertrieben",
+        "dadurch oft uns auch vernachlässigen in unserer Beziehung"
+      ],
+      "note": "A real cost (neglected friendship) is named and then immediately walked back under probe; nothing concrete has been paid and owned."
+    },
+    "F3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Ich möchte immer aus meiner Komfortzone rauskommen",
+        "der in seiner Komfortzone lebt",
+        "Tatsächlich bin ich sehr zufrieden mit meinem Leben"
+      ],
+      "note": "Clear aversion to comfort-zone living, framed as fear, but tempered by open contentment with his current life; discomfort is stated rather than visible."
+    },
+    "C1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "weil wir beide sehr vertieft sind in unsere Dinge",
+        "weil wir in unterschiedlichen Bubbles sind",
+        "dadurch oft uns auch vernachlässigen in unserer Beziehung"
+      ],
+      "note": "Names the ambition-versus-friendship tension but dissolves it into circumstance and retracts its severity; no real pressure decision was surfaced to test the code."
+    },
+    "C2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "sehr fanatisch auf seine Familie",
+        "seine Mutter sehr stolz machen",
+        "Ich muss dafür eine sehr open-minded, curious Person werden"
+      ],
+      "note": "The only larger-than-self frame in the transcript belongs to the friend, not the subject; his own frame is self-development with no decision attached."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "die über andere judgt",
+        "der in seiner Komfortzone lebt",
+        "nicht open-minded durch die Welt zu gehen"
+      ],
+      "note": "Names a self he fears becoming rather than an outcome, but the portrait stays categorical — no scene, no specific person it resembles."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude prompt was administered and the subject volunteered nothing about being alone; scored at floor for absence of evidence, not a demonstrated deficit — see flags."
+    },
+    "G2": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "das der Grund, warum ich an der Code bin",
+        "meine Ambitionen in die Person einer anderen Person gelegt",
+        "seine Träume im Hier und Jetzt behandeln"
+      ],
+      "note": "Owns a causal chain from the disruption to a concrete action (switching universities), but the rebuild is otherwise described as a maxim rather than changed behaviour."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Das beeindruckt mich sehr.",
+        "weil wir in unterschiedlichen Bubbles sind",
+        "meine Ambitionen in die Person einer anderen Person gelegt"
+      ],
+      "note": "People appear as admired examples or as contacts lost to distance; the one relational pattern he touches is named but never connected to how he relates now."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "No solitude/empty-room question was asked in this transcript; G1 is scored at floor purely for lack of evidence and should be re-run before it is treated as a real signal.",
+    "Direct contradiction between slot 3 and its probe: 'schon eine Weile keinen Kontakt hatten' is retracted one turn later as 'Eine Weile ist uebertrieben'. May be minimisation under pressure rather than correction.",
+    "Slot 7 (the unspoken vow) returns the same content as slot 6 ('Dass ich an die Code wechsle'), so the secret-commitment probe produced no independent material.",
+    "Slot 2 was answered with a famous person (Cristiano Ronaldo) although slot 1 had explicitly excluded famous figures; the subject may be substituting public figures for personal reference points."
+  ],
+  "mirror": "als hätte ich meine Träume, meine Ambitionen in die Person einer anderen Person gelegt",
+  "take_home": "Wessen Person trägt heute noch ein Stück deiner Träume und deiner Ambitionen, ohne dass du es aussprichst?"
+}

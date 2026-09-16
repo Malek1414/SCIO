@@ -7,3 +7,4 @@ tests/fixtures/audio/
 .env
 graph/data.js
 outbox/
+identities.local.json

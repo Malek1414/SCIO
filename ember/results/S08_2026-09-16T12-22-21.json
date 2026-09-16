@@ -1,0 +1,115 @@
+{
+  "subject_code": "S08",
+  "session_id": "S08_2026-09-16T12-22-21",
+  "scored_at": "2026-09-16T12:32:47.808986+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "ist so ein bisschen Musikkarriere, würde ich sagen",
+        "etwas, wo ich von mir selber behaupte, ich bin gut, aber das ist halt noch nicht in einem beruflichen Kontext getestet",
+        "fürs Studium nach Berlin gegangen bin, an die Code, statt nach Mailand zu gehen"
+      ],
+      "note": "Domains appear (music, design, studies) but always described from the outside as decisions and credentials; never a moment or mechanism of the doing itself, and no good-day description."
+    },
+    "F2": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "ist so ein bisschen Musikkarriere, würde ich sagen",
+        "das ist nichts, was Leute um mich herum nicht verstanden hätten, weil es ja klare Argumente dagegen und dafür gibt",
+        "Vielleicht bin ich von meiner Passion weggegangen"
+      ],
+      "note": "A real cost is named (music career, Milan over Berlin) but immediately softened with balanced argument; the later admission of walking away from his passion adds weight without ownership of the price."
+    },
+    "F3": {
+      "score": 6,
+      "signal": "low",
+      "evidence": [
+        "irgendwie Dad zu sein oder alterer Vater und einfach irgendwie so grummelig zu sein und so sauer auf die Welt",
+        "das Gefühl zu haben, das Leben verpasst zu haben und es nicht versucht zu haben",
+        "Dieses Gefühl und Bild will ich absolut vermeiden"
+      ],
+      "note": "Clear heat and restlessness around a settled, untried life; aimed at a feared future self rather than at settled people around him, which keeps it just short of 7."
+    },
+    "C1": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "hatte ich Angst, da zu versagen in der Hinsicht",
+        "Vielleicht bin ich weggegangen von dem ehrlichen Feedback der Wirtschaft",
+        "Aber es ist nicht immer so einfach und schwarz und weiß für mich"
+      ],
+      "note": "Names the avoidance himself — fear of real-market feedback — then partly resolves it with the stability rationalisation; also self-corrects an earlier claim in the probe."
+    },
+    "C2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Ich glaube erst mal gegen keins Bestimmtes"
+      ],
+      "note": "Nothing larger than self anywhere in the transcript: no cause, lineage, tradition or duty; even the father image is framed purely as a personal outcome to avoid."
+    },
+    "C3": {
+      "score": 6,
+      "signal": "low",
+      "evidence": [
+        "Ich habe nicht die eine Art Mensch, die ich nicht werden will, aber ich habe ein Bild, was ich unbedingt vermeiden will",
+        "im Endeffekt bist du nur unzufrieden, weil du nicht das probiert hast, worauf du eigentlich Bock hattest",
+        "dann aber mit 50 sehen, ah, man hätte sie einfach machen sollen"
+      ],
+      "note": "Names a specific self he fears becoming — the grumbling older man soured by untried ambitions — with the mechanism attached; slightly hedged at the opening."
+    },
+    "G1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "einen ganz klaren Plan machen, was ich will, was mir fehlt, wo ich hin will",
+        "du hast jeden Tag einfach diese Menge"
+      ],
+      "note": "No solitude question was put to him; the nearest material shows inner quiet being filled with planning and daily quotas rather than anything surfacing. Low-confidence score."
+    },
+    "G2": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Ich habe manchmal Momente, wo du merkst, so geht es nicht weiter",
+        "Was ich danach anders gemacht habe, ist einen ganz klaren Plan machen",
+        "diesen Schritt für Schritt in eine Wochenplanung einzubauen und einfach irgendwo durchzuziehen"
+      ],
+      "note": "Owns what he built afterwards in causal language, but the disruption itself stays generic ('Momente'), so the chain is half-anchored."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "sie sind mir zugewandt, sie hören mir zu, sie lächeln mich an",
+        "Auch die Perception, was sie machen und wie sie sind, hat natürlich auch was mit meiner Stimmung zu tun",
+        "so eine Antwort auf deine Stimmung, auf meine Stimmung"
+      ],
+      "note": "At his best, people function as a responsive mirror to his mood; he half-notices the projection but does not name the audience pattern as his own, and they have no independent presence."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "No solitude/empty-room question was asked in this transcript; G1 is scored on adjacent material only and should be re-probed before it is used.",
+    "Self-contradiction across [2] and [3]: he first says he would swap with someone who 'noch alles vor sich hat', then corrects that the actual person he had in mind 'hat sich auch schon festgelegt'. Worth reading by hand — the correction is honest but the original answer may have been a stock response.",
+    "Slot 6 contains the richest self-disclosure (fear of failing under real market feedback) but is heavily hedged with repeated 'vielleicht'; tone matters here and is not recoverable from text.",
+    "Slot 9 answer trails off and partly repeats itself ('Und dann sind sie ja auch in den Menschen vorhanden'), suggesting the relational question was the least prepared-for; possible hesitation or discomfort."
+  ],
+  "mirror": "das ist etwas, wo ich von mir selber behaupte, ich bin gut, aber das ist halt noch nicht in einem beruflichen Kontext getestet",
+  "take_home": "Wann lässt du das, wovon du behauptest, gut zu sein, testen — und von wem?"
+}

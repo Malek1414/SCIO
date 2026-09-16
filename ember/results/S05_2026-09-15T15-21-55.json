@@ -1,0 +1,107 @@
+{
+  "subject_code": "S05",
+  "session_id": "S05_2026-09-15T15-21-55",
+  "scored_at": "2026-09-15T15:26:51.710326+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Das ist ein ganz normales Dienstag.",
+        "durch meinen Kopf gehen sehr, sehr viele Ideen in kurzer Zeitraum"
+      ],
+      "note": "The free-money Tuesday prompt was returned as a non-answer; no domain, project or moment of the doing is ever named. The only trace of an itch is generic 'ideas' with no content."
+    },
+    "F2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "basiert auf dem Schlechten, was ich durchgemacht habe"
+      ],
+      "note": "No cost paid by choice anywhere in the transcript — only hardship that happened to him. Sacrifice is never discussed, not even hypothetically."
+    },
+    "F3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Also diese Person hat für nichts Lust und sie gibt auch keinen Input.",
+        "man hat keine Fortschritte mit der Person und darum würde ich sagen, es ist eher kontraproduktiv"
+      ],
+      "note": "Clear rejection of the settled person, framed as something to move away from, but the tone is cool and instrumental (no learning gain) rather than restless or fearful."
+    },
+    "C1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Ich würde immer alle gleich behandeln.",
+        "Für mich ist es sehr wichtig, auf persönlicher Ebene Menschen kennenzulernen"
+      ],
+      "note": "A code is stated but the pressure-decision question was not understood or answered, so there is no decision to test it against; the instrumental view of people in slot 3 sits unexamined beside it."
+    },
+    "C2": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Also ich glaube, es ist viel mehr Menschlichkeit im Spiel, als eigentlich darüber geredet wird."
+      ],
+      "note": "Gestures at a humanistic value larger than career self-interest, but names no frame beyond himself and no choice it has shaped."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Also ich würde auf keinen Fall eine eklige Persönlichkeit entwickeln, in der ich Leute schlecht mache oder sie unter mir stelle.",
+        "Das ist für mich das allerletzte."
+      ],
+      "note": "Names a self he fears becoming rather than an outcome, which is strong — but leaves the 'why does that one frighten you' half untouched, so it stays at the level of a stated standard."
+    },
+    "G1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "was ich oft mache, ist einfach in meinem Notizbuch meine Ideen einfach aufzufassen",
+        "dass ich sozusagen immer so einen kleinen Notizblock mit mir habe"
+      ],
+      "note": "The empty room is immediately filled with a productive habit; the forty-minute mark is never approached and nothing is described as surfacing."
+    },
+    "G2": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Ich habe meinen ganzen akademischen Erfolg darauf aufgebaut.",
+        "Jetzt, wo ich gerade bin, basiert auf dem Schlechten, was ich durchgemacht habe."
+      ],
+      "note": "Owns a causal line from the disruption to what he built, but the answer is very short and names no specific decision, habit or thing dropped."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Und mit solchen Personen lernt man auch nicht und man hat keine Fortschritte mit der Person",
+        "nicht nur dieses oberflächliche Networken"
+      ],
+      "note": "People are evaluated by the input and progress they supply; he voices a counter-value about genuine personal connection but never notices the tension between the two."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Slot 2 (free-money Tuesday) was effectively refused: the subject answered only 'Das ist ein ganz normales Dienstag.' — worth re-asking, as F1 is scored on near-zero material.",
+    "Slot 4 was not answered; the subject bounced the question back ('Was für ein Mensch ist, was du beschrieben hast?'), which may indicate a comprehension or audio issue rather than avoidance. C1 has no pressure decision to score.",
+    "Possible contradiction: slot 3 treats people as sources of input and progress, while slot 5 rejects superficial networking and insists on personal-level humanity. The subject shows no awareness of the tension.",
+    "Several answers are unusually short relative to the prompts; overall data density is low and scores are correspondingly low-confidence."
+  ],
+  "mirror": "Jetzt, wo ich gerade bin, basiert auf dem Schlechten, was ich durchgemacht habe.",
+  "take_home": "Wenn das Schlechte, worauf alles basiert, eines Tages verblasst — worauf steht dann, was du gebaut hast?"
+}

@@ -1,0 +1,88 @@
+{
+  "subject_code": "S06",
+  "session_id": "S06_2026-09-15T15-27-50",
+  "scored_at": "2026-09-16T15:22:50.795234+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Verschiedene Perspektiven zu Ideen entwickeln und auch in die Umsetzung gehen",
+        "Pläne und Ideen einfach umsetzen."
+      ],
+      "note": "Only generic execution abstractions, and always about other people — never names his own domain, project, or any moment of the doing."
+    },
+    "F2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No cost of any kind mentioned, hypothetical or real; no question reached this territory before the transcript ended."
+    },
+    "F3": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Pläne und Ideen einfach umsetzen."
+      ],
+      "note": "Describes the stalled talented person in flat, mechanical terms — no warmth or envy, but equally no heat or restlessness; too little affect to place above the low end."
+    },
+    "C1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No stated code and no pressure decision surfaced; nothing to assess."
+    },
+    "C2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "Nothing larger than self appears anywhere in the three exchanges."
+    },
+    "C3": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No fear named, generic or specific; the question was never reached."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "Solitude never raised; no evidence."
+    },
+    "G2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No disruption or turning point named."
+    },
+    "G3": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Nein, das ist nicht egal. Oder bist du verbunden?"
+      ],
+      "note": "The only human reference is an apparent aside to someone off-interview; other people appear solely as comparison objects with no described role."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "The probe response at [2] is incoherent relative to the question — 'Oder bist du verbunden? Nein, oder?' suggests the subject believed the line had dropped or was speaking to someone else in the room. This is likely a technical failure, not a refusal, and the probe was never actually answered.",
+    "Transcript is extremely thin: two spine questions and one broken probe. Seven of nine constructs have zero evidence. Scores of 1 here reflect absence of data, not observed low standing — do not treat this as a valid profile.",
+    "Both substantive answers are about other people's execution ('umsetzen') with no first-person content at all; recommend a re-run before any interpretation."
+  ],
+  "mirror": null,
+  "take_home": null
+}

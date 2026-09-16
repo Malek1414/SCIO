@@ -1,0 +1,102 @@
+{
+  "subject_code": "S03",
+  "session_id": "S03_2026-09-15T14-38-48",
+  "scored_at": "2026-09-15T14:52:18.546426+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Personen, die ihr Hobby zum Beruf gemacht haben und ortsunabhängig arbeiten können?",
+        "Die Person verzaubert ihr Umfeld mit seiner charismatischen Art."
+      ],
+      "note": "Desire is described entirely as a lifestyle outcome (hobby-as-job, location independence) with no domain, craft or moment of doing named; even the answer is phrased as a question."
+    },
+    "F2": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Es hat mich gekostet, mit manchen Menschen nicht mehr die Zeit zu verbringen, die man damals gerne verbracht hat.",
+        "Genauso hat man Investitionen getätigt, die sich nicht ausgezahlt haben, aus denen man gelernt hat."
+      ],
+      "note": "Real costs already paid — relationships, time, money lost — stated without self-pity, but generalised into impersonal 'man' and softened by the learning frame, so short of a fully owned specific."
+    },
+    "F3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Personen, die ihr Hobby zum Beruf gemacht haben und ortsunabhängig arbeiten können?"
+      ],
+      "note": "No settled person was described anywhere; only inferable signal is admiration for an unconventional life, which implies mild distance from settling but carries no heat or discomfort."
+    },
+    "C1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "Viele Schritte außerhalb der Komfortzone und viele Rückschläge."
+      ],
+      "note": "No stated code and no pressure decision surfaced in the transcript; the cost-of-success answer stays at generic effort language, so no gap is either shown or named."
+    },
+    "C2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Und in der Zukunft an bestimmte familiäre und freundschaftliche Kontakte halten, um sich weiterzuentwickeln."
+      ],
+      "note": "Nothing beyond the self appears; family and friendships are invoked instrumentally, as scaffolding for personal development rather than as a frame that exceeds him."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "Jemand, der zu überzeugt ist von sich selber, allerdings sich in seinen eigenen Gedanken verlaufen hat",
+        "jemand, der wirklich jedes Detail zu einem Thema genau weiß, aber nicht weiß, damit umzugehen"
+      ],
+      "note": "Names a self he fears becoming rather than an outcome, with two distinct portraits, but keeps it in third-person type language and never says why that one frightens him."
+    },
+    "G1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude question was put in this spine; the nearest material (continuing the daily routine after the worst event) describes activity, not what surfaces — insufficient basis for more than a low-mid"
+    },
+    "G2": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "Ich habe meinen Alltag fortgeführt und versucht es zu verarbeiten, indem man sich und seinen Alltag in den Vordergrund stellt",
+        "sodass man wieder ein Fundament hat, worauf man aufbauen kann"
+      ],
+      "note": "Names what he did after — restored routine, leaned on specific contacts — but the event itself stays unnamed and the shift is described as coping rather than a decision he owns."
+    },
+    "G3": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Im besten Fall an meiner Seite stehen, sonst wäre ich nicht in Bestform."
+      ],
+      "note": "Closest people are positioned as a precondition for his peak state — fuel, not anchors — and the dependency is stated without any awareness of the pattern."
+    }
+  },
+  "language": "de",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Pervasive shift from 'ich' to impersonal 'man' whenever cost or aftermath is discussed (slots 3 and 6) — may indicate distancing from personally owned material; worth probing by hand.",
+    "Slot 2 answer ends in a question mark ('...arbeiten können?'), suggesting the subject was checking whether the answer was acceptable rather than reporting a desire.",
+    "Three constructs (F3, C1, G1) had no question in this spine that targeted them directly; their scores rest on inference from adjacent answers and should be treated as low-confidence.",
+    "Slot 6 never names the event itself, only the recovery — the disruption content is missing, not withheld explicitly."
+  ],
+  "mirror": "Im besten Fall an meiner Seite stehen, sonst wäre ich nicht in Bestform.",
+  "take_home": "Wenn niemand an deiner Seite steht — wer bist du dann an so einem Tag?"
+}
