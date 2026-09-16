@@ -1,0 +1,107 @@
+{
+  "subject_code": "S01",
+  "session_id": "S01_2026-09-15T14-03-01",
+  "scored_at": "2026-09-15T14:14:24.996740+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 3,
+      "signal": "high",
+      "evidence": [
+        "I spend a lot of my personal time pursuing my sport and trying to be great at it",
+        "Becoming one of the best in the world",
+        "get somewhere I want to be"
+      ],
+      "note": "Names a domain (his sport) but only ever from the outside — ranking, greatness, 'somewhere I want to be'. No moment, sensation or mechanism of the doing itself."
+    },
+    "F2": {
+      "score": 3,
+      "signal": "med",
+      "evidence": [
+        "I spend a lot of my personal time pursuing my sport",
+        "there's so much more to my sport specifically, I think, than to others that I just couldn't afford",
+        "I won't pursue that sport in a more professional way"
+      ],
+      "note": "A real cost (time, and a dropped ambition) is named, but generically and partly reframed as a sensible pivot to 'the fun part'; explicitly refuses future costs to friendships."
+    },
+    "F3": {
+      "score": 2,
+      "signal": "high",
+      "evidence": [
+        "they work just a lot harder than me",
+        "you can find a really good path between not sacrificing as much and achieving a really great goal as well",
+        "I think people who had it easier than me"
+      ],
+      "note": "No heat around settling at all — argues for the moderate path and envies ease rather than resisting it; comparison to harder workers is flat self-assessment, not restlessness."
+    },
+    "C1": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "something like Friends, for example, will always be one of my top priorities",
+        "I won't be able to sacrifice friendships, for example, for success in business",
+        "I decided for myself that I won't pursue that sport in a more professional way"
+      ],
+      "note": "Stated code (people first) is broadly consistent with the one real decision described, but the withdrawal is cushioned by 'couldn't afford it' and no pressure decision is examined; gap never self-name"
+    },
+    "C2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "being socially aware and socially active is something very, very important to myself and to my friends as well"
+      ],
+      "note": "Largest frame offered is his friend group; gestures at 'worth living for' but attaches it to nothing beyond the self."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "med",
+      "evidence": [
+        "I don't want to become a person that is business-driven, just business-driven and don't have any social contacts",
+        "I fear that I'll become obsolete in friendships, in business as well",
+        "There's more to it, but not now"
+      ],
+      "note": "Names a self rather than an outcome, with some specificity ('obsolete in friendships'), but stops short and withholds the rest."
+    },
+    "G1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude prompt in this spine and nothing surfaces unprompted; the only adjacent moment is a closed door ('not now'). Scored low on absence of any stance, not on refusal."
+    },
+    "G2": {
+      "score": 2,
+      "signal": "med",
+      "evidence": [
+        "I think when something really bad happens to you, you try to find the solution to the specific problem",
+        "everything that happens to you is based on everything you do, you think, you act",
+        "it's actually pretty easy when you try to find something that you did wrong"
+      ],
+      "note": "Answers in the second person and in general principle — no event, no consequence, no owned change. 'Pretty easy' suggests the question was kept at arm's length."
+    },
+    "G3": {
+      "score": 5,
+      "signal": "med",
+      "evidence": [
+        "the people who I care most about, or the people that care most about me, are with me",
+        "I think I'll be with my friends doing anything at all",
+        "Just being active and being outside probably"
+      ],
+      "note": "People are companions and mutual, not audience — but their role stays soft ('anything at all'); no examination of what they anchor."
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C1",
+    "C2",
+    "G1"
+  ],
+  "flags": [
+    "Slot 5: 'There's more to it, but not now' — subject explicitly withheld material on the fear construct. Worth revisiting; C3 may be underscored.",
+    "Slot 7 (disruption) was answered entirely in second-person generalities with no event named — either no disruption is available to him or it was actively avoided. The phrase 'it's actually pretty easy' sits oddly against the question.",
+    "Contradiction to check: slot 3 says he withdrew from professional sport partly because he 'couldn't afford' it, while slot 4 claims a balanced path avoids heavy sacrifice — the first reads as a constraint, the second as a philosophy. May be post-hoc reframing.",
+    "No solitude prompt was administered in this spine; G1 is scored from absence, not from subject behaviour.",
+    "C2: 1 evidence quote(s) not verbatim, dropped"
+  ],
+  "mirror": "I have to sacrifice a version of myself and probably a lot of stuff I want or wanted to do",
+  "take_home": "Which version of yourself did you already sacrifice last year, and who did you tell about it?"
+}

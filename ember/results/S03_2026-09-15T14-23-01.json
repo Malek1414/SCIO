@@ -1,0 +1,104 @@
+{
+  "subject_code": "S03",
+  "session_id": "S03_2026-09-15T14-23-01",
+  "scored_at": "2026-09-15T14:33:24.796151+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 3,
+      "signal": "med",
+      "evidence": [
+        "I'd like to at least be a high-ranking engineer at one of the frontier AI companies",
+        "I don't have a specific company yet in mind",
+        "immerse myself in the field of machine learning and deep learning"
+      ],
+      "note": "Names the domain (ML/deep learning) and a target role, but the pull is described entirely as position and field membership — no moment, mechanism or sensation of the work itself."
+    },
+    "F2": {
+      "score": 6,
+      "signal": "med",
+      "evidence": [
+        "I was going to be a dentist, but then I dropped out",
+        "They thought that I was like making a foolish mistake and like throwing my future away",
+        "it was a difficult period for sure"
+      ],
+      "note": "A real, irreversible cost already paid — career path and family understanding — stated plainly; slight bid for credit in 'something that a lot of people don't see' keeps it off 7."
+    },
+    "F3": {
+      "score": 5,
+      "signal": "high",
+      "evidence": [
+        "just, you know, starting your own B2B SaaS business that could be replaced in the next few years",
+        "Just like take what was given to you",
+        "why do something that is very volatile and could go the wrong way?"
+      ],
+      "note": "Clear distaste for the safe route and for replaceable work, voiced mostly against his family's position rather than as personal restlessness; no warmth toward settled lives, but no visible discomfort "
+    },
+    "C1": {
+      "score": 3,
+      "signal": "med",
+      "evidence": [
+        "they were always more or less against that",
+        "try to finish your degree in dentistry and keep operating the dental clinic"
+      ],
+      "note": "Answered the stated-code-versus-conduct question as a family disagreement about career, not as a gap between what he says and what he does; no gap named, but no unnoticed contradiction surfaced either"
+    },
+    "C2": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "a person who disregards AI safety and responsibility when it comes to data and information",
+        "Especially when a lot of people depend on you, you have to make informed conscious choices"
+      ],
+      "note": "Gestures at a larger obligation (AI safety, people who depend on him) but supplies no decision that this frame has actually altered."
+    },
+    "C3": {
+      "score": 4,
+      "signal": "med",
+      "evidence": [
+        "I would say a person who disregards AI safety and responsibility",
+        "I think I'll have to do as best of a job as I can"
+      ],
+      "note": "Names a self-type rather than a mere outcome, but it is a role he does not yet occupy and is phrased as professional duty — no felt, personal version of the feared self."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No solitude probe in this spine and nothing in the transcript touches what surfaces when unoccupied; scored at floor for absence of evidence, not for a demonstrated deficit."
+    },
+    "G2": {
+      "score": 5,
+      "signal": "med",
+      "evidence": [
+        "I wasn't really like reflecting on like why I was failing and why my trajectory was going downhill",
+        "every time like I get lazy or I don't want to do something, I try to like reflect on it like every single time"
+      ],
+      "note": "Owns a concrete before/after practice he built in causal language; the triggering disruption is mild (failed tests, lost interest) and the change is a habit rather than a structural decision."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "my friend Friedrich, by the way, the one that you met yesterday",
+        "my family and friends didn't understand it back then",
+        "when a lot of people depend on you"
+      ],
+      "note": "People appear as admired exemplar, as doubters, and as an abstract dependent public; no relationship described as an anchor and no awareness of the pattern."
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C2",
+    "G1",
+    "G3"
+  ],
+  "flags": [
+    "G1 was never asked — the spine contains no solitude slot, so its score of 1 reflects missing data and should not be read as a finding.",
+    "Slot 4 required three interviewer pushes before an answer; the final response 'For now, as of 2026, yes' is a time-bounded hedge on a question about who he is willing to become — worth a manual read.",
+    "Slot 7 is heavily co-constructed: the interviewer supplies 'The safe way', 'Taking the safe route' and 'But not risking a position that thousands of people are applying to', and the subject largely assents with 'Yeah, yeah, exactly'. Low confidence that C1/F3 language here is his own.",
+    "Slot 2 (envy probe) returned Jensen Huang — a public figure and an admiration rather than an uncomfortable feeling; the question's intended discomfort was not engaged."
+  ],
+  "mirror": "For now, as of 2026, yes.",
+  "take_home": "What happens to that \"for now\" when the year changes and the free time is already gone?"
+}

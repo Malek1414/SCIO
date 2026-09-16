@@ -1,0 +1,103 @@
+{
+  "subject_code": "S12",
+  "session_id": "S12_2026-09-15T16-09-42",
+  "scored_at": "2026-09-15T16:16:00.491091+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 1,
+      "signal": "high",
+      "evidence": [
+        "they always knew what their goal was since they were a teenager",
+        "you would just get the thing you've always dreamed",
+        "what's your new goal? And then it's just going up till the end"
+      ],
+      "note": "Never names a domain, project, or activity — only 'goal', 'dream', 'making it' as abstractions; no description of the doing."
+    },
+    "F2": {
+      "score": 1,
+      "signal": "med",
+      "evidence": [
+        "No, I don't think it would have a cost as a person, actually",
+        "you can just, I think, relax"
+      ],
+      "note": "Explicitly denies any cost when directly asked; no sacrifice named, hypothetical or real."
+    },
+    "F3": {
+      "score": 5,
+      "signal": "high",
+      "evidence": [
+        "It's really sad that you feel like they should have done more in their life",
+        "They just don't find a way to do it, like to make it",
+        "I'm afraid to not go anywhere"
+      ],
+      "note": "Pity rather than warmth toward the settled person, and the same state appears as a personal fear — discomfort present but expressed at a distance, not as visible restlessness."
+    },
+    "C1": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "I pick not doing it because for me it's more valuable what the person is feeling"
+      ],
+      "note": "Stated value and the decision align, but the account is generic and undated — no specific incident, so alignment is asserted rather than demonstrated."
+    },
+    "C2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "I just think about my future, just thinking about what I did",
+        "what's your new goal? And then it's just going up till the end"
+      ],
+      "note": "No frame larger than the self anywhere in the transcript; horizon is personal advancement only."
+    },
+    "C3": {
+      "score": 2,
+      "signal": "med",
+      "evidence": [
+        "I'm afraid to not go anywhere",
+        "finding people in life that are way better than you",
+        "It's just low self-esteem for me. But just not getting to expectations"
+      ],
+      "note": "Names a generic outcome (going nowhere, unmet expectations) with a comparison mechanism attached, but no specific self they fear becoming."
+    },
+    "G1": {
+      "score": 2,
+      "signal": "med",
+      "evidence": [
+        "I just think about my future, just thinking about what I did",
+        "if I don't have anything, I will just sleep, I guess"
+      ],
+      "note": "Describes the hour from outside as activities and then deflects to sleep; nothing about what surfaces or is avoided."
+    },
+    "G2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [],
+      "note": "No disruptive event named anywhere in the transcript and no slot targeted one; scored at floor for absence of evidence, not refusal."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "for me it's more valuable what the person is feeling than the things to get it fast",
+        "finding people in life that are way better than you"
+      ],
+      "note": "One genuine other-regarding instance, but elsewhere people function as a measuring stick for the subject's own standing; role unexamined."
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C2",
+    "G2",
+    "G3"
+  ],
+  "flags": [
+    "Slot 2 asked about the most talented person who isn't going anywhere; the subject answered about themselves ('I don't have the good self-esteem to try new things') — either a comprehension slip or an unprompted self-disclosure. Worth reading by hand.",
+    "Phrasing throughout suggests a non-native English speaker; several answers shift between 'you' and 'I' mid-sentence, which makes ownership of statements ambiguous (esp. slots 3, 4, 7).",
+    "'Low self-esteem' recurs across three separate slots (2, 3, 7) as the explanation for anyone's failure including the subject's — a single-cause frame the rubric does not capture.",
+    "Slot 4 contradiction: denies any cost as a person, yet slot 7 describes ongoing fear of falling short and being outmatched. Optimism in slot 4 may be performed rather than held.",
+    "G2 has no evidence base — the spine never posed a disruption question. Score of 1 should not be read as a finding."
+  ],
+  "mirror": "I don't have the good self-esteem to try new things.",
+  "take_home": "What was the new thing you were picturing when you said you don't have the good self-esteem?"
+}

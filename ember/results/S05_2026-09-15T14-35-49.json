@@ -1,0 +1,104 @@
+{
+  "subject_code": "S05",
+  "session_id": "S05_2026-09-15T14-35-49",
+  "scored_at": "2026-09-15T14:45:05.355914+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 2,
+      "signal": "high",
+      "evidence": [
+        "I would have to become financially free",
+        "financially comfortable people that are also stress-free",
+        "He's also very productive and he still finds the time for family and friends"
+      ],
+      "note": "Driver is stated only as a financial/emotional end-state; no domain, project, or moment of the doing anywhere in the transcript."
+    },
+    "F2": {
+      "score": 5,
+      "signal": "med",
+      "evidence": [
+        "just not being there constantly as I used to be",
+        "I'm just not there because I'm busy most of the time",
+        "I don't really have any time to talk, to go out"
+      ],
+      "note": "Real relational cost already being paid and stated plainly without self-congratulation, but unspecific — no named person, moment, or consequence."
+    },
+    "F3": {
+      "score": 2,
+      "signal": "high",
+      "evidence": [
+        "people who are okay with how they are and also are just stress-free and live in a farm",
+        "Maybe I would like to live in a farm",
+        "A lazy person who has no plans, no dreams, and no motivation"
+      ],
+      "note": "Open, warm envy of settled stress-free life and wanting a farm sits near anchor 1; small lift only because he separately names laziness as a feared self."
+    },
+    "C1": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "I'm not so sure it's the best thing because I would just be bored"
+      ],
+      "note": "No pressure decision was ever probed, so little to test; credit for spontaneously naming a tension between his stated goal and what he'd actually want."
+    },
+    "C2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "he still finds the time for family and friends, which is a very good combo",
+        "I would have to become financially free"
+      ],
+      "note": "Nothing larger than self appears; family and friends are cited only as an admired trait in someone else, never as a frame that moves a decision."
+    },
+    "C3": {
+      "score": 5,
+      "signal": "low",
+      "evidence": [
+        "A lazy person who has no plans, no dreams, and no motivation"
+      ],
+      "note": "Names a feared self rather than an outcome, which clears anchor 4, but the portrait is stock and carries no specific detail or scene."
+    },
+    "G1": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "I'm probably painting or reading a book"
+      ],
+      "note": "Answers the empty room with activities only and volunteers nothing about what surfaces; thinner than the anchor-4 example and no curiosity about the question."
+    },
+    "G2": {
+      "score": 6,
+      "signal": "med",
+      "evidence": [
+        "I built structure just for how things are supposed to go",
+        "I built some structure in how I do my job and what I expect from people around me"
+      ],
+      "note": "Owns the causal chain from bad experience to a built system he still runs; short of 7 because the disruption itself stays generic and undescribed."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "what I expect from people around me",
+        "I had a lot of bad experiences with previous co-workers",
+        "I don't really have any time to talk, to go out"
+      ],
+      "note": "People appear as friction to be managed by structure or as a cost of being busy; no anchoring role and no awareness of the pattern."
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C1",
+    "C2",
+    "G3"
+  ],
+  "flags": [
+    "Direct contradiction across slots 2 and 5: openly envies stress-free farm life and being 'okay with how they are', then names his feared self as 'A lazy person who has no plans, no dreams, and no motivation'. Worth probing by hand — it may be the central tension in this profile.",
+    "Slot 4 self-correction mid-answer ('Or no, I am financially independent') suggests the stated goal is not settled or may already be partly met; the driver may be something he has not named.",
+    "No pressure/values decision was put to the subject, so C1 rests on a single incidental remark rather than tested evidence.",
+    "Answers are uniformly very short (slots 5 and 6 are one line each); overall signal is thin and scores should be treated as low-confidence."
+  ],
+  "mirror": "And I'm not so sure it's the best thing because I would just be bored.",
+  "take_home": "What if the boredom you'd be left with is just rest you won't let yourself take?"
+}

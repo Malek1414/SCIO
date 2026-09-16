@@ -1,0 +1,110 @@
+{
+  "subject_code": "S07",
+  "session_id": "S07_2026-09-15T14-48-53",
+  "scored_at": "2026-09-15T14:59:37.787851+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 1,
+      "signal": "high",
+      "evidence": [
+        "maybe he spends also more time for this kind of project or for his kind of project",
+        "I'm always trying to fulfill the goal that I was setting",
+        "I need to work on myself and put even more effort into things"
+      ],
+      "note": "No domain, project, or mechanism of his own is ever named — only generic effort, goals and 'working on myself'. The one concrete 'project' belongs to someone else."
+    },
+    "F2": {
+      "score": 2,
+      "signal": "high",
+      "evidence": [
+        "I'm only 19 years on this earth so I haven't given up a big thing",
+        "I'm not the person that gives up easily",
+        "I'm not really keeping in touch with them, but I should"
+      ],
+      "note": "Explicitly denies having paid any cost; the one real cost (contact with family) surfaces only later and is framed as a personal failing rather than a trade-off he chose."
+    },
+    "F3": {
+      "score": 2,
+      "signal": "med",
+      "evidence": [
+        "I would not take that life because if it would be a stressful life then he would cut out a lot of social aspects and hobbies",
+        "I would just live my life and he can live his life",
+        "I enjoy that so I would just live my life"
+      ],
+      "note": "Warm, settled stance toward the balanced life; admires the harder-driving peer but actively declines that life. No restlessness about comfort."
+    },
+    "C1": {
+      "score": 5,
+      "signal": "med",
+      "evidence": [
+        "I don't contact my family very often. They say I should do it more often",
+        "But I don't do it because I'm very busy, I'm working on myself and working a lot",
+        "They always remind me to do, but I did not"
+      ],
+      "note": "Names the gap himself and ends without softening it, but routes through a 'too busy' rationalisation first — partial ownership, not full."
+    },
+    "C2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "I would love to have a father role in my childhood",
+        "I don't want to focus only on myself, also on others"
+      ],
+      "note": "Gestures at others and family but nothing larger than self is named, and nothing shown to have shaped a decision."
+    },
+    "C3": {
+      "score": 6,
+      "signal": "high",
+      "evidence": [
+        "Sometimes I'm afraid that I turn into my dad because he was kind of a workaholic",
+        "So he couldn't raise me at all",
+        "And I don't want to be a spoiled person"
+      ],
+      "note": "Names a specific self he fears becoming, anchored in a lived example. Short of 7 because he never connects it to any present behaviour of his own."
+    },
+    "G1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "I tried to distract myself because it was really stuck in my head",
+        "And I was only thinking on this kind of thing"
+      ],
+      "note": "No solitude question was asked; the only adjacent material shows reflexive distraction from what surfaces, with no account of what that is."
+    },
+    "G2": {
+      "score": 3,
+      "signal": "med",
+      "evidence": [
+        "So I started to distract myself and try to find a new way to get this done",
+        "In order to overcome that kind of worst thing, I tried to distract myself"
+      ],
+      "note": "Event never named; describes a coping move rather than anything built, decided or dropped. Slightly above 1 because he owns the action in causal language."
+    },
+    "G3": {
+      "score": 4,
+      "signal": "low",
+      "evidence": [
+        "And maybe ask also others for advice. So I'm not alone because I was dealing a lot of stuff as my own",
+        "I don't want to focus only on myself, also on others. More socializing",
+        "not as much time for social life or whatever"
+      ],
+      "note": "People are consistently present and valued, and he half-notices his go-it-alone pattern, but their role stays vague and he doesn't examine why contact has lapsed."
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C2",
+    "G1",
+    "G3"
+  ],
+  "flags": [
+    "Unnoticed contradiction: names fear of becoming his workaholic father who 'couldn't raise me at all' [7], then explains neglecting his own family with 'I'm very busy, I'm working on myself and working a lot' [9]. He does not connect the two.",
+    "Slot 2 targeted jealousy and he reframed the question away from it ('jealous is a hard word... I would not say that I'm jealous') before answering something adjacent — read F3 with that in mind.",
+    "Slot 3 is a stall/long pause ('I'm very... I don't know how to say... I'm very...'); the probe recovered it, but the self-description that followed ('always harsh on myself', 'overthink a lot') is the only interior material in the transcript and was never followed up.",
+    "Slot 6 transcript is garbled — interviewer reformulations appear inside the subject's answer block, and the closing exchange ('That I'm gracious. Yes. That I'm gracious.') looks like the interviewer supplying the word rather than the subject. Treat that answer as low-confidence.",
+    "No solitude question was administered; G1 is scored on indirect material only."
+  ],
+  "mirror": "I don't want to be as workaholic as he was.",
+  "take_home": "When you're too busy to call them, how far is that from being as workaholic as he was?"
+}

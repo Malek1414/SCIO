@@ -1,0 +1,99 @@
+{
+  "subject_code": "S09",
+  "session_id": "S09_2026-09-15T15-00-20",
+  "scored_at": "2026-09-15T15:08:01.067347+00:00",
+  "rubric_version": "1.0.0",
+  "scores": {
+    "F1": {
+      "score": 1,
+      "signal": "med",
+      "evidence": [
+        "a successful professional career, whatever that might be",
+        "They are all on top of their tasks"
+      ],
+      "note": "No driver named at all; ambition is described as a generic category ('whatever that might be') and success is framed as scheduling discipline rather than any specific pull."
+    },
+    "F2": {
+      "score": 1,
+      "signal": "med",
+      "evidence": [
+        "I think it's a compromise on how much time you want to spend with your friends",
+        "with a good schedule and a good time management, it's possible to achieve both"
+      ],
+      "note": "Cost is entirely hypothetical and immediately dissolved by time management; nothing has actually been paid. The probe produced only a restatement."
+    },
+    "F3": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "They are relaxed and it's fun."
+      ],
+      "note": "Settled person described with straightforward warmth and no discomfort; the comfortable life reads as appealing."
+    },
+    "C1": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "Probably not to the extent you would if you just chose one, but I think a compromise is possible."
+      ],
+      "note": "No code stated and no pressure decision surfaced, so alignment cannot be observed; the one tension named is resolved by assertion rather than examined."
+    },
+    "C2": {
+      "score": 2,
+      "signal": "low",
+      "evidence": [
+        "a happy life with a family and a wife and kids and so on"
+      ],
+      "note": "Family appears only as a time-allocation variable on the other side of a trade-off, not as a frame exceeding the self or shaping any concrete choice."
+    },
+    "C3": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "Oh, you can'tYK, you can't."
+      ],
+      "note": "Question not engaged; no fear named in any form."
+    },
+    "G1": {
+      "score": 1,
+      "signal": "med",
+      "evidence": [
+        "I would probably read and probably work out some pushups",
+        "Try to pass time in a way or another."
+      ],
+      "note": "Empty room filled with activity, plus negotiation of the constraint ('But a book is okay'); nothing about what surfaces."
+    },
+    "G2": {
+      "score": 1,
+      "signal": "low",
+      "evidence": [
+        "I don't think there were big differences, just minor improvements."
+      ],
+      "note": "No event named and no change accounted for; the question is closed off rather than answered."
+    },
+    "G3": {
+      "score": 3,
+      "signal": "low",
+      "evidence": [
+        "how much time you want to spend with your friends and improve your relationships with people around you",
+        "how much time you invest into work"
+      ],
+      "note": "People are present but appear only as a budget line competing with work; relationships are framed as something to 'invest' in, with no examination of their role."
+    }
+  },
+  "language": "en",
+  "declined": [
+    "C1",
+    "C2",
+    "C3",
+    "G3"
+  ],
+  "flags": [
+    "Slot 5 probe on 'a compromise is possible' returned a near-verbatim restatement with no new content — probe effectively failed; consider re-running with a concrete-instance prompt.",
+    "Slot 6 answer 'Oh, you can'tYK, you can't.' is garbled — possible transcription or audio failure rather than a genuine refusal; verify against source recording before treating C3 as scored.",
+    "Subject ends slot 4 with 'Thank you.', suggesting the session was treated as a performance or was being closed out early; overall answer length is very low across all eight slots, so the whole profile rests on thin data.",
+    "Slot 6 also contains 'But a book is okay. What else do you think?' — subject renegotiates the constraint and turns the question back on the interviewer."
+  ],
+  "mirror": "I don't think there were big differences, just minor improvements.",
+  "take_home": "If only minor improvements followed the worst thing, what would have to happen for a big difference?"
+}
