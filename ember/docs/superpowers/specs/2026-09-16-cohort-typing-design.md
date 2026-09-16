@@ -66,17 +66,25 @@ Clustering on **shape** does find structure. Within-person z-scoring removes lev
 distance with average linkage then yields merge heights of 0.08, 0.12, 0.12, 0.16, 0.18 before
 jumping to 0.76 and 1.07.
 
-### 2.4 Groups at k=4
+### 2.4 Groups
+
+**k is chosen from the merge heights, not fixed.** The heights run
+0.079 … 0.460, 0.482, 0.506, 0.667, 1.101. Merges 11–13 sit within 0.02 of each other, so any
+cut through them is arbitrary — and demonstrably so: re-scoring two subjects during the §6
+repair reshuffled a k=4 grouping entirely while leaving every cohort constant byte-identical.
+`choose_k` therefore takes the largest gap, skipping cuts that only peel one outlier off the
+cohort, since a type needs at least two members.
+
+That selects **k=3** at a gap of 0.161:
 
 | Group | n | Signature |
 |---|---|---|
-| Relational, uncosted | 4 | G3 4.2, C3 5.0 high; F2 1.8, F1 1.2 low |
-| Costed | 7 | F2 3.4, F3 4.0, C3 5.1 |
-| Processed | 4 (+2 excluded) | G2 3.3, F3 4.3; C3 lower at 3.5 |
-| Inverse | 1 | The only subject with low C3, alongside high F2/F3/C1 |
+| Relational, processed | 7 | C3 5.0, G2 3.6, G3 3.6 |
+| Costed | 8 | C3 4.9, F3 4.5, F2 3.8 |
+| Inverse | 1 | S02 — high F2/F3/C1, the only subject with low C3 |
 
 Group names are descriptive labels for the observed pattern, not claims about psychological
-types. The page states n for every group.
+types. The page states n and the cut gap for every grouping.
 
 ### 2.5 Subjects excluded from typing
 

@@ -148,7 +148,34 @@ def constants_and_discriminators(subjects: list[dict]) -> dict:
     return {"constants": constants, "discriminators": discriminators, "stats": stats}
 
 
-DEFAULT_K = 4
+DEFAULT_K = None       # None = let the merge heights choose; an int forces that many groups
+MAX_K = 6              # beyond this, groups are too small to mean anything at this cohort size
+
+
+def choose_k(merges: list[Merge], *, kmax: int = MAX_K) -> tuple[int, float]:
+    """Pick the number of groups from where the merge heights actually jump.
+
+    A cut is only meaningful if the next merge is markedly higher than the last one applied.
+    Cutting inside a run of near-equal heights produces groups that reshuffle whenever a
+    single subject is re-scored.
+
+    Cuts that merely peel one outlier off the cohort are skipped: a type needs at least two
+    members, so a usable cut leaves at least two groups of two or more. If no cut qualifies,
+    the largest gap wins regardless.
+    """
+    n = len(merges) + 1
+    if n < 3:
+        return (n, 0.0)
+    best = (2, -1.0)
+    best_any = (2, -1.0)
+    for k in range(2, min(kmax, n - 1) + 1):
+        i = n - k                                  # merges[:i] applied; merges[i] is the next one
+        gap = merges[i].height - merges[i - 1].height
+        if gap > best_any[1]:
+            best_any = (k, gap)
+        if sum(1 for g in cut(merges, k) if len(g) >= 2) >= 2 and gap > best[1]:
+            best = (k, gap)
+    return best if best[1] >= 0 else best_any
 
 
 def bank_coverage(bank) -> dict[str, int]:
@@ -161,7 +188,7 @@ def bank_coverage(bank) -> dict[str, int]:
     return counts
 
 
-def analyse(subjects: list[dict], bank, *, k: int = DEFAULT_K,
+def analyse(subjects: list[dict], bank, *, k: int | None = DEFAULT_K,
             pilots: tuple[str, ...] = PILOT_CODES) -> dict:
     """The whole analysis block for graph/data.js. Pure; deterministic; no I/O.
 
@@ -181,12 +208,15 @@ def analyse(subjects: list[dict], bank, *, k: int = DEFAULT_K,
 
     groups: list[dict] = []
     order: list[str] = []
+    cut_gap, heights = 0.0, []
     if len(typed) >= 2:
         profiles = {s["subject_code"]: zprofile({c: score_of(s, c) for c in CONSTRUCTS}) for s in typed}
         merges = linkage(profiles)
         order = seriate(merges)
+        chosen_k, cut_gap = choose_k(merges) if k is None else (k, 0.0)
+        heights = [round(m.height, 3) for m in merges]
         by_code = {s["subject_code"]: s for s in typed}
-        for members in cut(merges, min(k, len(typed))):
+        for members in cut(merges, min(chosen_k, len(typed))):
             mean_profile = {c: round(st.mean([score_of(by_code[m], c) for m in members]), 2)
                             for c in CONSTRUCTS}
             ranked = sorted(CONSTRUCTS, key=lambda c: -mean_profile[c])
@@ -201,4 +231,5 @@ def analyse(subjects: list[dict], bank, *, k: int = DEFAULT_K,
             "stats": split["stats"], "bank_coverage": bank_coverage(bank),
             "n_questions": len(bank.candidates),
             "excluded": excluded, "k": len(groups),
+            "cut_gap": round(cut_gap, 3), "merge_heights": heights,
             "n_typed": len(typed), "n_total": len(subjects)}
