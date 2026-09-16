@@ -27,16 +27,35 @@ usually zipped. This skill takes whatever arrived and folds it into the graph.
    matter: two machines commonly send files with identical names, and a flat unzip
    silently overwrites one with the other.
 
-4. **Ingest.** From the repo:
+4. **Check for a re-send BEFORE ingesting.** Subjects in `results/` are stored
+   pseudonymized (`S01`…), so `session_id` no longer matches what a sender's file
+   carries — ember's own dedup cannot see the duplicate, and ingesting a re-sent zip
+   files 16 fresh copies under real names. **Identity is the timestamp**
+   (`\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}`), not the id. For each incoming file,
+   pull its timestamp, find the `results/` file with the same one, and compare the
+   payload with `subject_code` and `session_id` removed. Report counts of identical /
+   new / changed, and ingest **only** the genuinely new ones. If nothing is new, say
+   so and stop — do not ingest, do not commit.
+
+5. **Ingest.** From the repo:
    ```sh
    cd ~/SCIO/ember && unset ANTHROPIC_API_KEY && uv run ember ingest <every staged .json>
    ```
    `ingest` copies them into `results/` and rebuilds `graph/data.js` in one step — do
    not run `export` afterward.
 
-5. **Open the graph:** `open graph/index.html`.
+6. **Pseudonymize before committing.** Real names never go to the public repo.
+   Assign the next free `S##` chronologically, continuing from the highest already in
+   `ember/identities.local.json` (gitignored, the name↔code map). A returning subject
+   keeps their existing code — look them up by real name first. Rewrite both
+   `subject_code` and `session_id`; build the new id by matching the timestamp with an
+   anchored regex, never by splitting on `_` (names contain underscores, and a split
+   leaks the surname into the filename). Then grep the staged diff for every real name
+   before committing.
 
-6. **Report** how many subjects the rebuild reported, and name the subject codes that
+7. **Open the graph:** `open graph/index.html`.
+
+8. **Report** how many subjects the rebuild reported, and name the subject codes that
    were newly added versus already present.
 
 ## What to expect
