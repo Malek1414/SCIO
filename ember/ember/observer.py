@@ -163,6 +163,10 @@ def score(transcript: dict, bank: Bank, llm, *, now: float | None = None) -> Obs
 
 def observe_session(session_dir: Path, bank: Bank, llm) -> Path:
     transcript = json.loads((session_dir / "transcript.json").read_text(encoding="utf-8"))
+    lang = transcript.get("language", "en")
+    if lang != bank.language:            # coverage() keys on question TEXT, which is per-language
+        from .bank import load_bank
+        bank = load_bank(lang)
     result = score(transcript, bank, llm)
     out = session_dir / "observer.json"
     out.write_text(json.dumps(result.model_dump(), indent=2, ensure_ascii=False), encoding="utf-8")
