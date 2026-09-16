@@ -40,7 +40,10 @@ Four constructs behave nearly identically for everyone and therefore distinguish
 | F1 Driver specificity | 1.81 | 3 | 0 / 16 | 5 of 21 questions |
 | C2 Transcendence frame | 1.88 | 4 | 0 / 16 | 2 of 21 |
 | G1 Solitude stance | 1.69 | 3 | 0 / 16 | **1 of 21** |
-| C3 Fear specificity | 4.81 | 6 | 12 / 16 | 1 of 21 |
+
+C3 Fear specificity is the mirror image — mean 4.39 on n=18, with 12 of 18 scoring ≥5 — but it
+is **not** a constant: S02 scores 2 on it, so it carries real between-person information and is
+classified as a discriminator. The contrast with F1 stands on the means, not on C3 being uniform.
 
 The headline: **this cohort describes what it fears precisely and what it wants vaguely.**
 F1 is the credible half — it is the best-covered construct in the bank, so it was asked

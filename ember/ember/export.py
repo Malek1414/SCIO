@@ -10,6 +10,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .analysis import analyse
 from .bank import Bank
 from .constructs import CONSTRUCTS, CLUSTER_OF
 from .observer import load_results
@@ -65,7 +66,8 @@ def collect(sessions_root: Path, bank: Bank, *, now: float | None = None,
     return {"generated_at": ts, "rubric_version": RUBRIC_VERSION,
             "constructs": [{"id": c, "cluster": CLUSTER_OF[c], "name": bank.rubric[c].name, "inverse": bank.rubric[c].inverse}
                            for c in CONSTRUCTS],
-            "subjects": subjects}
+            "subjects": subjects,
+            "analysis": analyse(subjects, bank)}
 
 
 def write_data_js(data: dict, out: Path) -> Path:
