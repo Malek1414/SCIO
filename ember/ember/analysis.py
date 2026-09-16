@@ -199,5 +199,6 @@ def analyse(subjects: list[dict], bank, *, k: int = DEFAULT_K,
     return {"order": order, "groups": groups,
             "constants": split["constants"], "discriminators": split["discriminators"],
             "stats": split["stats"], "bank_coverage": bank_coverage(bank),
+            "n_questions": len(bank.candidates),
             "excluded": excluded, "k": len(groups),
             "n_typed": len(typed), "n_total": len(subjects)}

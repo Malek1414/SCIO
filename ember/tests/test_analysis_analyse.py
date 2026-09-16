@@ -91,3 +91,10 @@ def test_engagement_outliers_stay_in_the_construct_stats():
     """Spec §2.5: excluded from typing, but their scores are real data."""
     a = analyse(_cohort(), load_bank())
     assert a["stats"]["F1"]["n"] == a["n_total"], "stats should cover every non-pilot subject"
+
+
+def test_question_total_is_the_bank_size_not_the_sum_of_targets():
+    """Questions can target two constructs, so summing per-construct counts over-counts."""
+    a = analyse(_cohort(), load_bank())
+    assert a["n_questions"] == len(load_bank().candidates)
+    assert a["n_questions"] <= sum(a["bank_coverage"].values())

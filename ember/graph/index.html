@@ -47,11 +47,48 @@
   .q { color: var(--ink-2); display: block; margin-left: 14px; } .q::before { content: "“"; } .q::after { content: "”"; }
   .low { color: var(--muted); } blockquote { margin: 8px 0; padding-left: 12px; border-left: 2px solid var(--axis); color: var(--ink-2); }
   #back { background: none; border: 1px solid var(--axis); color: var(--ink); border-radius: 6px; padding: 4px 10px; font: inherit; cursor: pointer; }
+  #banner { margin: 0 0 14px; padding: 10px 12px; border: 1px solid var(--axis); border-radius: 8px;
+            background: var(--card); color: var(--ink-2); font-size: 12px; line-height: 1.55; }
+  #banner b { color: var(--ink); }
+  #banner ul { margin: 6px 0 0; padding-left: 18px; }
+  .heat { border-collapse: collapse; font-size: 11px; }
+  .heat th { font-weight: 600; padding: 2px 4px; color: var(--ink-2); text-align: center; }
+  .heat td.code { text-align: right; padding-right: 8px; color: var(--ink-2); white-space: nowrap; }
+  .heat td.cell { width: 26px; height: 18px; text-align: center; color: #0b0b0b; font-variant-numeric: tabular-nums; }
+  .heat tr.cut td { border-top: 2px solid var(--ink); }
+  .heat th.const { text-decoration: underline dotted; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .split ul { margin: 6px 0 0; padding-left: 16px; font-size: 12px; line-height: 1.7; }
+  .grp { margin-bottom: 10px; }
+  .grp .bar { display: inline-block; height: 9px; background: var(--s1); vertical-align: middle; }
+  .grp .bar.muted { background: var(--axis); }
+  .grp .row { font-size: 11px; color: var(--ink-2); white-space: nowrap; }
+  .caveat { color: #b4690e; }
 </style>
 <main>
   <section id="cohort" class="on">
     <h1>ember · cohort</h1>
     <p class="sub" id="meta"></p>
+    <div id="banner"></div>
+
+    <section id="panel-heat" class="card">
+      <h2>heat signature</h2>
+      <p class="sub">rows ordered by profile similarity; rules mark group boundaries</p>
+      <div style="overflow-x:auto"><table class="heat"><thead><tr id="heat-head"></tr></thead><tbody id="heat-body"></tbody></table></div>
+    </section>
+
+    <section id="panel-split" class="card">
+      <h2>what describes everyone vs what separates them</h2>
+      <div class="split">
+        <div><b>cohort constants</b><ul id="split-constants"></ul></div>
+        <div><b>type discriminators</b><ul id="split-discriminators"></ul></div>
+      </div>
+    </section>
+
+    <section id="panel-groups" class="card">
+      <h2>groups</h2>
+      <div id="groups-body"></div>
+    </section>
     <div class="controls">
       <label>x <select id="x-select"></select></label>
       <label>y <select id="y-select"></select></label>
@@ -67,8 +104,9 @@
     <table id="cohort-table"><thead><tr><th>subject</th><th id="th-x"></th><th id="th-y"></th><th id="th-c"></th><th>declined</th><th>flags</th></tr></thead><tbody></tbody></table>
   </section>
 
-  <section id="subject">
+  <section id="subject" data-panel="panel-subject">
     <p><button id="back">← cohort</button></p>
+    <span id="panel-subject" hidden></span>
     <h1 id="s-title"></h1>
     <p class="sub" id="s-meta"></p>
     <div class="two">
@@ -191,7 +229,103 @@ function openSubject(s) {
 }
 
 $("back").addEventListener("click", () => { $("subject").classList.remove("on"); $("cohort").classList.add("on"); });
+
+// ── analysis panels ─────────────────────────────────────────────────────────
+// Everything here renders values computed in ember/analysis.py. No statistics on this page.
+const A = D.analysis || null;
+const heatColour = v => {                       // 1..7 → pale to deep, readable in both themes
+  const t = Math.max(0, Math.min(1, (v - 1) / 6));
+  return `hsl(${28 - 20 * t} ${55 + 35 * t}% ${94 - 52 * t}%)`;
+};
+const put = (parent, tag, cls, text) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  parent.appendChild(e);
+  return e;
+};
+
+function drawBanner() {
+  const b = $("banner");
+  b.textContent = "";
+  if (!A) { put(b, "span", null, "no analysis block in data.js — run: uv run ember export"); return; }
+  const head = put(b, "div");
+  put(head, "b", null, `${A.n_typed} of ${A.n_total} subjects typed`);
+  put(head, "span", null, ` · ${A.k} groups · rubric ${D.rubric_version || "—"}`);
+  const ul = put(b, "ul");
+  for (const [code, reason] of Object.entries(A.excluded)) put(ul, "li", null, `${code} — ${reason}`);
+  put(ul, "li", null,
+      "signal and declined are unusable for German sessions scored before the bank-language fix; "
+      + "they are suppressed here until those sessions are re-contributed.");
+}
+
+function drawHeat() {
+  const head = $("heat-head"), body = $("heat-body");
+  head.textContent = ""; body.textContent = "";
+  if (!A || !A.order.length) return;
+  put(head, "th", null, "");
+  for (const c of ORDER) {
+    const th = put(head, "th", A.constants.includes(c) ? "const" : null, c);
+    th.title = NAME[c] + (A.constants.includes(c) ? " — cohort constant" : " — discriminator");
+  }
+  const groupOf = {};
+  (A.groups || []).forEach((g, i) => g.members.forEach(m => { groupOf[m] = i; }));
+  let prev = null;
+  for (const code of A.order) {
+    const s = D.subjects.find(x => x.subject_code === code);
+    if (!s) continue;
+    const tr = put(body, "tr", prev !== null && groupOf[code] !== prev ? "cut" : null);
+    prev = groupOf[code];
+    const td = put(tr, "td", "code", code);
+    td.style.cursor = "pointer";
+    td.addEventListener("click", () => showSubject(s));
+    for (const c of ORDER) {
+      const v = s.scores[c] ? s.scores[c].score : null;
+      const cell = put(tr, "td", "cell", v == null ? "" : String(v));
+      if (v != null) cell.style.background = heatColour(v);
+      cell.title = `${code} · ${NAME[c]} · ${v == null ? "—" : v}`;
+    }
+  }
+}
+
+function drawSplit() {
+  // a question can target two constructs, so the bank size is NOT the sum of the per-construct counts
+  const total = (A && A.n_questions) || 0;
+  for (const [id, ids] of [["split-constants", A ? A.constants : []],
+                           ["split-discriminators", A ? A.discriminators : []]]) {
+    const ul = $(id);
+    ul.textContent = "";
+    for (const c of ids) {
+      const st = A.stats[c] || {}, cov = (A.bank_coverage || {})[c];
+      const li = put(ul, "li");
+      put(li, "b", null, `${c} ${NAME[c]}`);
+      put(li, "span", null, ` — mean ${st.mean == null ? "—" : st.mean}, max ${st.max == null ? "—" : st.max}, `
+                            + `${st.n_high}/${st.n} scored ≥5 · asked by ${cov} of ${total} questions`);
+      if (cov === 1) put(li, "span", "caveat", "  ⚠ one question only — read with care");
+    }
+  }
+}
+
+function drawGroups() {
+  const box = $("groups-body");
+  box.textContent = "";
+  if (!A) return;
+  for (const g of A.groups) {
+    const d = put(box, "div", "grp");
+    put(d, "b", null, `n=${g.n}`);
+    put(d, "span", null, "  " + g.members.join(", "));
+    for (const c of ORDER) {
+      const v = g.mean_profile[c];
+      const row = put(d, "div", "row");
+      put(row, "span", null, `${c} `.padEnd(4, " "));
+      const bar = put(row, "span", A.constants.includes(c) ? "bar muted" : "bar");
+      bar.style.width = Math.round((v / 7) * 150) + "px";
+      put(row, "span", null, ` ${v}`);
+    }
+  }
+}
+
 $("meta").textContent = `${D.subjects.length} subject${D.subjects.length === 1 ? "" : "s"} · generated ${D.generated_at || "—"} · rubric ${D.rubric_version || "—"}`;
-fillSelects(); drawCohort();
-matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { drawCohort(); });
+fillSelects(); drawCohort(); drawBanner(); drawHeat(); drawSplit(); drawGroups();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { drawCohort(); drawHeat(); });
 </script>
